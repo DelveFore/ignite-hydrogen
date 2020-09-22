@@ -4,7 +4,7 @@
   "license": "MIT",
   "repository": "delvefore/ignite-hydrogen",
   "homepage": "https://github.com/delvefore/ignite-hydrogen",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "files": [
     "boilerplate.js",
     "boilerplate",
