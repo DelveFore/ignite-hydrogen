@@ -37,7 +37,7 @@ export const install = async (toolbox: IgniteToolbox) => {
     meta,
   } = toolbox
   const { colors } = print
-  const { red, yellow, bold, gray, cyan } = colors
+  const { red, yellow, bold, gray, cyan, blue } = colors
   const isWindows = process.platform === "win32"
   const isMac = process.platform === "darwin"
   const reactNativeVersion = getReactNativeVersion(toolbox)
@@ -59,7 +59,7 @@ export const install = async (toolbox: IgniteToolbox) => {
     )
 
   const name = parameters.first
-  const spinner = print.spin(`using the ${red("Infinite Red")} Bowser boilerplate`).succeed()
+  const spinner = print.spin(`using the ${blue("DelveFore")} ${bold("Hydrogen")} boilerplate started from ${red("Infinite Red")} Bowser v5.x.x boilerplate`).succeed()
 
   let useExpo = parameters.options.expo
   const askAboutExpo = useExpo === undefined

@@ -1,37 +1,38 @@
-<p align="center"><img src="http://ir_public.s3.amazonaws.com/projects/ignite/ignite-bowser-launch-screen.png" alt="logo" width="414px"></p>
+# Ignite Hydrogen
 
-# Ignite Bowser - the hottest React Native boilerplate
+Extending from fantastic and "hotest" React Native boilerplate [Ignite Red's Bower](https://github.com/infinitered/ignit-bower), the Ignite Hydrogen project is aimed at easily implementing principles and concepts from DelveFore to a specific purpose (more to come soon!).
 
-<a href="https://badge.fury.io/js/ignite-bowser" target="_blank"><img src="https://badge.fury.io/js/ignite-bowser.svg" alt="npm version" height="20"></a>
+> In everyway those contributing Hydrogen want to promote the people and efforts with Ignite Red towards these open source projects. Please check out ways to support their efforts and the open source community!
 
-## Infinite Red's latest and greatest React Native boilerplate
+## Concepts
+There is a whole project soon to be released for everyone! In the meantime, some quick highlights we'll leverage in version 1 (see roadmap for details including GraphQL support and potentially support for Mobx-State-Tree)
 
-Once you've installed [React Native](https://shift.infinite.red/painless-react-native-setup-for-mac-windows-linux-956c23d2abf9) and the [Ignite CLI](https://github.com/infinitered/ignite), you can get started with this boilerplate.
-
-This is the boilerplate that the [Infinite Red](https://infinite.red) team recommends and uses on a day-to-day basis. Prior art includes [Ignite Andross](https://github.com/infinitered/ignite-andross).
+- Finite State Machine with asynchornous state management (via Saga and Redux)
+- Atomic Design UI Library implementing BEM and View Styling separation
+- Data structure abstraction from external asynchronous APIs
 
 Includes:
 
 - React Native
 - React Navigation 5
-- MobX State Tree [(Why MST?)](#About-The-Stack)
-- TypeScript
+- Redux
+- Redux Sauce
+- Saga Sauce
 - Reactotron (requires 2.x)
 - And more!
 
-To see it in action, check out the blog post by Robin Heinze here: [Creating a Trivia App with Ignite Bowser](https://shift.infinite.red/creating-a-trivia-app-with-ignite-bowser-part-1-1987cc6e93a1).
-
-You can also watch a [live coding demo](https://www.youtube.com/watch?v=OgiFKMd_TeY) at React Live Amsterdam where Jamon Holmgren codes an Ignite Bowser app in less than 30 minutes.
 
 ## Quick Start
 
 Prerequisites:
 
-- For classic React Native: [install the React Native CLI](https://facebook.github.io/react-native/docs/getting-started) -- choose React Native CLI
+- For classic React Native: -- choose React Native CLI
+  - [React Native](https://shift.infinite.red/painless-react-native-setup-for-mac-windows-linux-956c23d2abf9)
+  - [install the React Native CLI](https://facebook.github.io/react-native/docs/getting-started)
 - For Expo: [install the Expo CLI](https://facebook.github.io/react-native/docs/getting-started) -- choose Expo CLI
   - _Note:_ Expo support is experimental.
 
-First, install Ignite CLI globally:
+Install Ignite CLI globally:
 
 ```
 npm install -g ignite-cli
@@ -45,7 +46,7 @@ Make sure you have [CocoaPods](https://guides.cocoapods.org/using/getting-starte
 Then spin up a new Bowser-powered React Native app:
 
 ```
-ignite new MyApp -b bowser
+ignite new MyApp -b hydrogen
 ```
 
 `cd` into your new app and run `react-native run-ios` or `react-native run-android` (note: in Android, you'll need an Android emulator running or an Android phone attached).
@@ -54,9 +55,12 @@ You should see an app that looks like the screenshot above!
 
 Next step -- follow this tutorial to learn how to create a trivia app with Ignite Bowser: https://shift.infinite.red/creating-a-trivia-app-with-ignite-bowser-part-1-1987cc6e93a1
 
+## Code Styles
+One major departure from Ignite Red's Bowser is the code style choices, the team managing the Hydrogen project(s) chose to use StandardJS styling which brought `'` vs `"` usage among a few other differences.
+
 ## Generators
 
-The true gem of Ignite Bowser. Generators help you scaffold your app very quickly, be it for a proof-of-concept, a demo, or a production app. Generators are there to save you time, keep your code consistent, and help you with the basic structure of your app.
+The true gem of Ignite Hydrogen. Generators help you scaffold your app very quickly, be it for a proof-of-concept, a demo, or a production app. Generators are there to save you time, keep your code consistent, and help you with the basic structure of your app.
 
 ```
 ignite generate
@@ -105,15 +109,15 @@ ignite generate screen awesome-screen
 
 - Creates the screen
 
-### Model generator
+### State Module generator
 
-Creates a Mobx-State-Tree model.
+Creates a Saucy Saga powered "Redux module"
 
 ```
-ignite generate model awesome-model
+ignite generate state awesome-model
 ```
 
-- Creates the model
+- Creates the state module
 - Creates a unit test file
 - Will make the required additions to configuration files.
 
@@ -132,7 +136,7 @@ ignite-project
 ├── app
 │   ├── components
 │   ├── i18n
-│   ├── models
+│   ├── state
 │   ├── navigation
 │   ├── screens
 │   ├── services
@@ -140,7 +144,9 @@ ignite-project
 │   ├── utils
 │   ├── app.tsx
 │   ├── environment-variables.ts
-|   ├── assets/fonts/
+|   ├── assets
+│   ├── fonts
+│   ├── images
 ├── storybook
 │   ├── views
 │   ├── index.ts
@@ -173,7 +179,7 @@ The inside of the `app` directory looks similar to the following:
 app
 │── components
 │── i18n
-├── models
+├── state
 ├── navigation
 ├── screens
 ├── services
@@ -188,7 +194,7 @@ This is where your React dumb components will live. Each component will have a d
 **i18n**
 This is where your translations will live if you are using `react-native-i18n`.
 
-**models**
+**state**
 This is where your app's models will live. Each model has a directory which will contain the `mobx-state-tree` model file, test file, and any other supporting files like actions, types, etc. There's also an extensions directory with useful shared extensions that you can include in your models like `.extend(withRootStore)` or `.extend(withEnvironment)` to access the root store or environment respectively.
 
 **navigation**
@@ -262,7 +268,7 @@ We also recognize no state management solution is perfect. MST has some known do
 - Fatal errors are sometimes too-easily triggered and error messages can be verbose and hard to grok
 - The API has a large surface area and the docs tend to be technical and unfriendly
 
-## Learning MobX State Tree
+## SagaSauce (Saga + Redux + ReduxSauce)
 
 MobX and MobX State Tree can be a lot to learn if you're coming from Redux, so here are a few of our favorite resources to learn the basics:
 
@@ -312,12 +318,15 @@ If you are new to TypeScript, here are some of our favorite resources:
 
 ## Previous Boilerplates
 
-- [2017 aka Andross](https://github.com/infinitered/ignite-andross)
-- [2016 aka Ignite 1.0](https://github.com/infinitered/ignite-ir-boilerplate-2016)
+Unlike Ignite Red this is the first Boilerplate from DelveFore and Hydrogen is a direct child of Bower from Ignite Red
 
 ## Premium Support
 
-[Ignite CLI](https://infinite.red/ignite), [Ignite Andross](https://github.com/infinitered/ignite-andross), and [Ignite Bowser](https://github.com/infinitered/ignite-bowser), as open source projects, are free to use and always will be. [Infinite Red](https://infinite.red/) offers premium Ignite CLI support and general mobile app design/development services. Email us at [hello@infinite.red](mailto:hello@infinite.red) to get in touch with us for more details.
+While Hydrogen is an open sourcep project and Github issues can provide most of the support, please contact DelveFore for premimum support, **coaching**, and general design/development services (see www.delvefore.com and www.delvefore.com/#Get-Started)
+*ALSO* **[Infinite Red](https://infinite.red/)** offers premimum support for Ignite CLI and **general mobile app design/development services.**
+
+[Ignite CLI](https://infinite.red/ignite) as open source projects, are free to use and always will be.
+Email us at [hello@infinite.red](mailto:hello@infinite.red) to get in touch with us for more details.
 
 ## Contribute
 

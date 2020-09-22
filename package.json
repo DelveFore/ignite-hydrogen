@@ -1,10 +1,10 @@
 {
-  "name": "ignite-bowser",
-  "description": "Infinite Red's hot boilerplate for React Native.",
+  "name": "@delvefore/ignite-hydrogen",
+  "description": "DelveFore's React Native boilerplate based on Infinite Red's boilerplate Bowser.",
   "license": "MIT",
-  "repository": "infinitered/ignite-bowser",
-  "homepage": "https://github.com/infinitered/ignite-bowser",
-  "version": "5.3.0",
+  "repository": "delvefore/ignite-hydrogen",
+  "homepage": "https://github.com/delvefore/ignite-hydrogen",
+  "version": "0.1.0",
   "files": [
     "boilerplate.js",
     "boilerplate",
@@ -14,9 +14,9 @@
     "readme.md"
   ],
   "author": {
-    "name": "Infinite Red",
-    "email": "npm@infinite.red",
-    "url": "https://github.com/infinitered/ignite-bowser"
+    "name": "DelveFore",
+    "email": "npm@delvefore",
+    "url": "https://github.com/delvefore/ignite-hydrogen"
   },
   "scripts": {
     "format": "npm-run-all format:*",
