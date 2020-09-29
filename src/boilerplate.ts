@@ -447,8 +447,6 @@ And here: https://guides.cocoapods.org/using/getting-started.html
       npx ignite-cli --help
       npx ignite-cli doctor
 
-    ${cyan("Need additional help? Join our Slack community at http://community.infinite.red.")}
-
     ${bold("Now get cooking! 🍽")}
 
     ${gray(
