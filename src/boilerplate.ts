@@ -200,7 +200,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     { template: ".env.example", target: ".env" },
     { template: ".prettierignore", target: ".prettierignore" },
     { template: ".solidarity", target: ".solidarity" },
-    { template: "babel.config.js", target: "babel.config.js" },
+    { template: "babel.config.js.ejs", target: "babel.config.js" },
     { template: "react-native.config.js", target: "react-native.config.js" },
     { template: "tsconfig.json", target: "tsconfig.json" },
     { template: "app/app.tsx.ejs", target: "app/app.tsx" },
