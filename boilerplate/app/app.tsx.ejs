@@ -26,6 +26,8 @@ import {
   useNavigationPersistence,
 } from "./navigation"
 import { RootStore, RootStoreProvider, setupRootStore } from "./models"
+<% //currently only NativeBase is supported %>
+import withTheme from './theming/withTheme'
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -79,4 +81,4 @@ function App() {
   )
 }
 
-export default App
+export default withTheme(App)
