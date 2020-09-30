@@ -1,0 +1,36 @@
+module.exports = function (api) {
+  const moduleResolver = [
+    'module-resolver',
+    {
+      root: ['.'],
+      alias: {
+        '@app/configs': './app/config',
+        '@app/screens': './app/screens',
+        '@app/theming': './app/theming',
+        '@app/themes': './app/theme',
+        '@app/components': './app/components',
+        i18n: './i18n'
+      }
+    }
+  ]
+  const plugins = [
+    moduleResolver,
+    [
+      '@babel/plugin-proposal-decorators',
+      {
+        legacy: true
+      }
+    ],
+    ['@babel/plugin-proposal-optional-catch-binding']
+  ]
+  return {
+    presets: [
+      <% if (!props.useExpo) { %>"module:react-native-dotenv",<% } %>
+      "module:metro-react-native-babel-preset"
+    ],
+    env: {
+      production: {}
+    },
+    plugins
+  }
+}

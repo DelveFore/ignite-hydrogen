@@ -36,6 +36,9 @@
     "mobx": "^4.15.4",
     "mobx-react-lite": "^1.4.1",
     "mobx-state-tree": "^3.14.1",
+  <% if(props.useNativeBase){ %>
+    "native-base": "^2.13.12",
+  <% } -%>
     "ramda": "0.27.1",
     "react-native-splash-screen": "3.2.0",
     "reactotron-mst": "^3.1.1",
@@ -48,6 +51,7 @@
   <% } else { -%>
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/masked-view": "0.1.10",
+    "react-native-dotenv": "^2.4.1",
     "react-native-safe-area-view": "1.1.1",
     "react-native-gesture-handler": "<%= props.reactNativeGestureHandlerVersion %>",
     "react-native-localize": "^1.0.0",

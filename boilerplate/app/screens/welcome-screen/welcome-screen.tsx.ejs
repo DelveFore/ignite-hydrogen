@@ -1,5 +1,6 @@
 import React from "react"
 import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
+import { connectStyle, Button as ButtonNB } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { observer } from "mobx-react-lite"
 import { Button, Header, Screen, Text, Wallpaper } from "../../components"
@@ -75,7 +76,7 @@ const FOOTER_CONTENT: ViewStyle = {
   paddingHorizontal: spacing[4],
 }
 
-export const WelcomeScreen = observer(function WelcomeScreen() {
+export const Screen = observer(function WelcomeScreen() {
   const navigation = useNavigation()
   const nextScreen = () => navigation.navigate("demo")
 
@@ -106,6 +107,7 @@ export const WelcomeScreen = observer(function WelcomeScreen() {
       </Screen>
       <SafeAreaView style={FOOTER}>
         <View style={FOOTER_CONTENT}>
+          <ButtonNB primary full><Text tx="welcomeScreen.continue" /></ButtonNB>
           <Button
           <% if (props.includeDetox) { -%>
             testID="next-screen-button"
@@ -120,3 +122,5 @@ export const WelcomeScreen = observer(function WelcomeScreen() {
     </View>
   )
 })
+
+export const WelcomeScreen = connectStyle('WelcomeScreen', {})(Screen)

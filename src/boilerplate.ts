@@ -19,6 +19,18 @@ export const isAndroidInstalled = (toolbox: IgniteToolbox): boolean => {
   return Boolean(hasAndroid)
 }
 
+const ejectNativeBaseTheme = async (toolbox: IgniteToolbox) => {
+  const { prompt, system, filesystem } = toolbox
+  const willEjectTheme = await prompt.confirm('Would you like to eject NativeBase Theme?')
+
+  if (willEjectTheme) {
+    await system.run('node node_modules/native-base/ejectTheme.js')
+    filesystem.move(`${process.cwd()}/native-base-theme/components`, `${process.cwd()}/app/theme/components`)
+    filesystem.move(`${process.cwd()}/native-base-theme/variables`, `${process.cwd()}/app/theme/variables`)
+    filesystem.remove(`${process.cwd()}/native-base-theme`)
+  }
+}
+
 /**
  * Let's install.
  */
@@ -188,7 +200,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     { template: ".env.example", target: ".env" },
     { template: ".prettierignore", target: ".prettierignore" },
     { template: ".solidarity", target: ".solidarity" },
-    { template: "babel.config.js", target: "babel.config.js" },
+    { template: "babel.config.js.ejs", target: "babel.config.js" },
     { template: "react-native.config.js", target: "react-native.config.js" },
     { template: "tsconfig.json", target: "tsconfig.json" },
     { template: "app/app.tsx.ejs", target: "app/app.tsx" },
@@ -231,6 +243,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     i18n: false,
     includeDetox,
     useExpo,
+    useNativeBase: true
   }
   await ignite.copyBatch(toolbox, templates, templateProps, {
     quiet: true,
@@ -303,7 +316,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
 
     ignite.log("adding boilerplate to project for generator commands")
 
-    const boilerplate = parameters.options.b || parameters.options.boilerplate || "ignite-bowser"
+    const boilerplate = parameters.options.b || parameters.options.boilerplate || "ignite-hydrogen"
     const isIgniteInstalled = await system.which(`ignite`)
     const igniteCommand = isIgniteInstalled ? "ignite" : "npx ignite-cli"
     await system.exec(`${igniteCommand} add ${boilerplate} ${debugFlag}`)
@@ -382,6 +395,9 @@ And here: https://guides.cocoapods.org/using/getting-started.html
   }
   spinner.succeed(`Installed dependencies`)
 
+  // run NativeBase Theme ejection
+  await ejectNativeBaseTheme(toolbox)
+
   // run react-native link to link assets
   if (!useExpo) {
     spinner.text = "linking assets"
@@ -430,8 +446,6 @@ And here: https://guides.cocoapods.org/using/getting-started.html
       ${runInfo}
       npx ignite-cli --help
       npx ignite-cli doctor
-
-    ${cyan("Need additional help? Join our Slack community at http://community.infinite.red.")}
 
     ${bold("Now get cooking! 🍽")}
 
