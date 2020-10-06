@@ -3,6 +3,7 @@ import { getReactNativeVersion } from "./lib/react-native-version"
 import { IgniteToolbox, IgniteRNInstallResult } from "./types"
 import { expo } from "./lib/expo"
 import * as StateMachine from "./lib/stateMachine"
+import * as UI from "./lib/ui"
 
 // We need this value here, as well as in our package.json.ejs template
 const REACT_NATIVE_GESTURE_HANDLER_VERSION = "^1.5.0"
@@ -18,18 +19,6 @@ export const isAndroidInstalled = (toolbox: IgniteToolbox): boolean => {
   const hasAndroid = hasAndroidEnv && toolbox.filesystem.exists(`${androidHome}/tools`) === "dir"
 
   return Boolean(hasAndroid)
-}
-
-const ejectNativeBaseTheme = async (toolbox: IgniteToolbox) => {
-  const { prompt, system, filesystem } = toolbox
-  const willEjectTheme = await prompt.confirm('Would you like to eject NativeBase Theme?')
-
-  if (willEjectTheme) {
-    await system.run('node node_modules/native-base/ejectTheme.js')
-    filesystem.move(`${process.cwd()}/native-base-theme/components`, `${process.cwd()}/app/theme/components`)
-    filesystem.move(`${process.cwd()}/native-base-theme/variables`, `${process.cwd()}/app/theme/variables`)
-    filesystem.remove(`${process.cwd()}/native-base-theme`)
-  }
 }
 
 /**
@@ -73,7 +62,6 @@ export const install = async (toolbox: IgniteToolbox) => {
 
   const name = parameters.first
   const spinner = print.spin(`using the ${blue("DelveFore")} ${bold("Hydrogen")} boilerplate started from ${red("Infinite Red")} Bowser v5.x.x boilerplate`).succeed()
-
   let useExpo = parameters.options.expo
   const askAboutExpo = useExpo === undefined
   if (askAboutExpo) {
@@ -139,6 +127,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
   }
 
   const { selected: selectedStateMachine } = await StateMachine.select(toolbox)
+  const { selected: selectedUI, willEjectNativeBaseTheme } = await UI.select(toolbox)
   // attempt to install React Native or die trying
   let rnInstall: IgniteRNInstallResult
   if (useExpo) {
@@ -246,6 +235,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     includeDetox,
     useExpo,
     useStateMachineMST: StateMachine.OPTIONS.MST === selectedStateMachine,
+    useNativeBase: UI.OPTIONS.NativeBase === selectedUI
   }
   await ignite.copyBatch(toolbox, templates, templateProps, {
     quiet: true,
@@ -398,7 +388,10 @@ And here: https://guides.cocoapods.org/using/getting-started.html
   spinner.succeed(`Installed dependencies`)
 
   // run NativeBase Theme ejection
-  await ejectNativeBaseTheme(toolbox)
+  if (willEjectNativeBaseTheme) {
+    await UI.ejectNativeBaseTheme(toolbox)
+    await UI.cleanUp(toolbox, selectedUI)
+  }
   await StateMachine.cleanUp(toolbox, selectedStateMachine)
 
   // run react-native link to link assets
