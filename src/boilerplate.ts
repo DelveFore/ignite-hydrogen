@@ -2,6 +2,7 @@ import { merge, pipe, assoc, omit, __ } from "ramda"
 import { getReactNativeVersion } from "./lib/react-native-version"
 import { IgniteToolbox, IgniteRNInstallResult } from "./types"
 import { expo } from "./lib/expo"
+import * as StateMachine from "./lib/stateMachine"
 
 // We need this value here, as well as in our package.json.ejs template
 const REACT_NATIVE_GESTURE_HANDLER_VERSION = "^1.5.0"
@@ -137,6 +138,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     }
   }
 
+  const { selected: selectedStateMachine } = await StateMachine.select(toolbox)
   // attempt to install React Native or die trying
   let rnInstall: IgniteRNInstallResult
   if (useExpo) {
@@ -232,7 +234,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     },
     { template: "storybook/storybook.tsx.ejs", target: "storybook/storybook.tsx" },
     { template: "bin/postInstall", target: "bin/postInstall" },
-  ]
+  ].concat(StateMachine.TEMPLATES)
   const templateProps = {
     name,
     igniteVersion: meta.version(),
@@ -243,7 +245,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     i18n: false,
     includeDetox,
     useExpo,
-    useNativeBase: true
+    useStateMachineMST: StateMachine.OPTIONS.MST === selectedStateMachine,
   }
   await ignite.copyBatch(toolbox, templates, templateProps, {
     quiet: true,
@@ -397,6 +399,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
 
   // run NativeBase Theme ejection
   await ejectNativeBaseTheme(toolbox)
+  await StateMachine.cleanUp(toolbox, selectedStateMachine)
 
   // run react-native link to link assets
   if (!useExpo) {
