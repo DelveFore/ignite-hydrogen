@@ -156,6 +156,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
   filesToRemove.map(filesystem.remove)
 
   // copy our App, Tests & storybook directories
+  spinner.stop()
   spinner.text = "▸ copying files"
   spinner.start()
   const boilerplatePath = `${__dirname}/../boilerplate`
@@ -196,6 +197,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     { template: "tsconfig.json", target: "tsconfig.json" },
     { template: "app/app.tsx.ejs", target: "app/app.tsx" },
     { template: "app/i18n/i18n.ts.ejs", target: "app/i18n/i18n.ts" },
+    // Reactotron
     {
       template: "app/services/reactotron/reactotron.ts.ejs",
       target: "app/services/reactotron/reactotron.ts",
@@ -443,7 +445,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
       npx ignite-cli --help
       npx ignite-cli doctor
 
-    ${bold("Now get cooking! 🍽")}
+    ${bold('🔥 Boom!')}
 
     ${gray(
       "(Running yarn install one last time to make sure everything is installed -- please be patient!)",
