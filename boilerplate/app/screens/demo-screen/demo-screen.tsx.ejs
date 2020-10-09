@@ -3,6 +3,7 @@ import { Image, ImageStyle, Platform, TextStyle, View, ViewStyle } from "react-n
 import { useNavigation } from "@react-navigation/native"
 import { connectState } from '@app/state'
 import { BulletItem, Button, Header, Text, Screen, Wallpaper } from "../../components"
+import { connectStyle, Button as ButtonNB } from "native-base"
 import { color, spacing } from "../../theme"
 import { Api } from "../../services/api"
 import { save } from "../../utils/storage"
@@ -77,7 +78,7 @@ const HINT: TextStyle = {
   marginVertical: spacing[2],
 }
 
-export const DemoScreen = connectState(function DemoScreen() {
+export const Component = connectState(function () {
   const navigation = useNavigation()
   const goBack = () => navigation.goBack()
 
@@ -155,3 +156,5 @@ export const DemoScreen = connectState(function DemoScreen() {
     </View>
   )
 })
+
+export const DemoScreen = connectStyle('DemoScreen', {})(Component)
