@@ -1,5 +1,5 @@
 import { put } from 'redux-saga/effects'
-import Events from '../modules/events'
+import Users from '../modules/users'
 
 // process STARTUP actions
 export function * startup() {
@@ -26,5 +26,5 @@ export function * startup() {
       }
     })
   }
-  yield put(Events.Creators.getData())
+  yield put(Users.Creators.getData())
 }

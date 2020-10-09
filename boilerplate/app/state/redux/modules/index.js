@@ -7,10 +7,10 @@ import reduce from 'lodash/reduce'
  */
 // -------------------- REGISTER MODULES -------------------------------- //
 // 1. Import Modules
-import Events from './events'
+import Users from './users'
 
 // 2. Register Modules
-const RegisteredModules = { Events }
+const RegisteredModules = { Users }
 // add imported module HERE ^
 
 // ------------------------------------------------------------- //
@@ -39,11 +39,11 @@ export const makeReducers = ({ resettable }) => {
     {}
   )
 }
-export const makeSagas = () =>
+export const makeSagas = (api) =>
   reduce(
     RegisteredModules,
     (acc, value) => {
-      return acc.concat(value.Sagas)
+      return acc.concat(value.createSagas(api))
     },
     []
   )

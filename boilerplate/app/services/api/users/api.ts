@@ -1,12 +1,14 @@
 import { ApisauceInstance, create, ApiResponse } from "apisauce"
-import { getGeneralApiProblem } from "./api-problem"
-import { ApiConfig, DEFAULT_API_CONFIG } from "./api-config"
+import { getGeneralApiProblem } from "../api-problem"
+import { DEFAULT_API_CONFIG } from "./api-config"
 import * as Types from "./api.types"
+import { ApiConfig, HydrogenAPI, SagaSauceAPI } from "../IHydrogenAPI"
 
 /**
  * Manages all requests to the API.
+ * TODO Generator for APIs. We may need to connect to different APIs
  */
-export class Api {
+export class Api implements SagaSauceAPI, HydrogenAPI {
   /**
    * The underlying apisauce instance which performs the requests.
    */
@@ -44,12 +46,30 @@ export class Api {
     })
   }
 
+  /* ----- Existing SagaSauce API Structure. There is much to improve though so make it your own. Very much a work in-progress ---- */
+  async getData(data): Promise<ApiResponse<any>> {
+    return await this.apisauce.get(`/`, data)
+  }
+
+  async createData(data): Promise<ApiResponse<any>> {
+    return await this.apisauce.post(`/`, data)
+  }
+
+  async updateData(data): Promise<ApiResponse<any>> {
+    return await this.apisauce.patch(`/`, data)
+  }
+
+  async deleteData(data): Promise<ApiResponse<any>> {
+    return await this.apisauce.delete(`/${data.id}`, data)
+  }
+
+  /* ------ For existing Mobx-State-Tree support until we standardize on an Interface ---- */
   /**
    * Gets a list of users.
    */
-  async getUsers(): Promise<Types.GetUsersResult> {
+  async getUsers(): Promise<Types.GetListResult> {
     // make the api call
-    const response: ApiResponse<any> = await this.apisauce.get(`/users`)
+    const response: ApiResponse<any> = await this.apisauce.get(`/`)
 
     // the typical ways to die when calling an api
     if (!response.ok) {
@@ -57,6 +77,7 @@ export class Api {
       if (problem) return problem
     }
 
+    // TODO API contract mutations should be in a seperate place then inside API interactions
     const convertUser = raw => {
       return {
         id: raw.id,
@@ -68,7 +89,7 @@ export class Api {
     try {
       const rawUsers = response.data
       const resultUsers: Types.User[] = rawUsers.map(convertUser)
-      return { kind: "ok", users: resultUsers }
+      return { kind: "ok", data: resultUsers }
     } catch {
       return { kind: "bad-data" }
     }
@@ -78,9 +99,9 @@ export class Api {
    * Gets a single user by ID
    */
 
-  async getUser(id: string): Promise<Types.GetUserResult> {
+  async getUser(id: string): Promise<Types.GetSingleResult> {
     // make the api call
-    const response: ApiResponse<any> = await this.apisauce.get(`/users/${id}`)
+    const response: ApiResponse<any> = await this.apisauce.get(`/${id}`)
 
     // the typical ways to die when calling an api
     if (!response.ok) {
@@ -94,7 +115,7 @@ export class Api {
         id: response.data.id,
         name: response.data.name,
       }
-      return { kind: "ok", user: resultUser }
+      return { kind: "ok", data: resultUser }
     } catch {
       return { kind: "bad-data" }
     }
