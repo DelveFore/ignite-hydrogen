@@ -1,8 +1,9 @@
-import { Api } from "../../services/api"
+import { useReactotron } from '../config/env'
+import { Api } from "../services/api"
 
 let ReactotronDev
-if (__DEV__) {
-  const { Reactotron } = require("../../services/reactotron")
+if (useReactotron) {
+  const { Reactotron } = require("../services/reactotron")
   ReactotronDev = Reactotron
 }
 
@@ -13,7 +14,7 @@ if (__DEV__) {
 export class Environment {
   constructor() {
     // create each service
-    if (__DEV__) {
+    if (useReactotron) {
       // dev-only services
       this.reactotron = new ReactotronDev()
     }
@@ -22,7 +23,7 @@ export class Environment {
 
   async setup() {
     // allow each service to setup
-    if (__DEV__) {
+    if (useReactotron) {
       await this.reactotron.setup()
     }
     await this.api.setup()
@@ -37,4 +38,17 @@ export class Environment {
    * Our api.
    */
   api: Api
+}
+
+/**
+ * Setup the environment that all the models will be sharing.
+ *
+ * The environment includes other functions that will be picked from some
+ * of the models that get created later. This is how we loosly couple things
+ * like events between models.
+ */
+export async function createEnvironment() {
+  const env = new Environment()
+  await env.setup()
+  return env
 }

@@ -15,12 +15,16 @@ import { startup } from './Startup'
 // to the sagas which need it.
 
 /* ------------- Connect Types To Sagas ------------- */
-export default function * root() {
-  yield all(
-    [
-      fork(startup),
-      // some sagas only receive an action
-      takeLatest(StartupTypes.STARTUP, startup)
-    ].concat(makeSagas())
-  )
+export const createRoot = ({ api }) => {
+  return function * root() {
+    yield all(
+      [
+        fork(startup),
+        // some sagas only receive an action
+        takeLatest(StartupTypes.STARTUP, startup)
+      ].concat(makeSagas(api))
+    )
+  }
 }
+
+export default createRoot

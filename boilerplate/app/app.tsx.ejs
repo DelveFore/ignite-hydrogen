@@ -39,6 +39,7 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
 /**
  * This is the root component of our app.
+ * TODO Move Environment construction into this file for better control over Environment creation and test isolation
  */
 function App() {
   const navigationRef = useRef<NavigationContainerRef>()
@@ -57,7 +58,8 @@ function App() {
     <% if (props.useExpo) { -%>
       await initFonts()
     <% } -%>
-      setupRootStore().then(setRootStore)
+      const store = await setupRootStore()
+      setRootStore(store)
     })()
   }, [])
 
@@ -65,11 +67,16 @@ function App() {
   // In the meantime, don't render anything. This will be the background
   // color set in native by rootView's background color. You can replace
   // with your own loading component if you wish.
+  // TODO Make a Loading Screen view that works for both Expo and React Native
   if (!rootStore) return null
 
   // otherwise, we're ready to render the app
   return (
-    <RootStoreProvider value={rootStore}>
+    <% if (props.useStateMachineMST) { -%>
+      <RootStoreProvider value={rootStore}>
+    <% } else { -%>
+      <RootStoreProvider store={rootStore}>
+    <% } -%>
       <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
         <RootNavigator
           ref={navigationRef}

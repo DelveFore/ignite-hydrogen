@@ -8,7 +8,7 @@
  * While the primary reason is to make Hydrogen easier to maintain,
  *  there is an added benefit of centralizing State Machine connection.
  */
-export default (Component, options) => {
+export default (Component, options = {}) => {
 <% if (props.useStateMachineMST) { -%>
   return observer(Component)
 <% } else { -%>

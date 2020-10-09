@@ -17,8 +17,8 @@ export const connectState = _connectState
 <% if (props.useStateMachineMST) { -%>
   export { setupRootStore } from './models'
 <% } else { -%>
-  export const setupRootStore = () => {
-    return setupRootStoreCore().store
+  export const setupRootStore = async () => {
+    return await setupRootStoreCore().store
   }
 <% } -%>
 
