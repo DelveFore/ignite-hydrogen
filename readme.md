@@ -1,6 +1,7 @@
 # Ignite Hydrogen
+> This project is still in early development. We do encourage participation and feel free to open Github Issues.
 
-Extending from fantastic and "hotest" React Native boilerplate [Ignite Red's Bower](https://github.com/infinitered/ignit-bower), the Ignite Hydrogen project is aimed at easily implementing principles and concepts from DelveFore to a specific purpose (more to come soon!).
+Extending from fantastic and hotest React Native boilerplate [Ignite Red's Bower](https://github.com/infinitered/ignit-bower), the Ignite Hydrogen project is aimed at easily implementing principles and concepts from DelveFore to a specific purpose (more to come soon!).
 
 > In everyway those contributing Hydrogen want to promote the people and efforts with Ignite Red towards these open source projects. Please check out ways to support their efforts and the open source community!
 
@@ -15,10 +16,12 @@ Includes:
 
 - React Native
 - React Navigation 5
-- Redux
-- Redux Sauce
-- Saga Sauce
+- Redux (optional - if not Mobx State Tree)
+  - Redux Sauce
+  - Saga Sauce
+- Mobx State Tree (optional - if not Redux)
 - Reactotron (requires 2.x)
+- NativeBase (alternatives coming soon)
 - And more!
 
 
