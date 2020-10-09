@@ -35,7 +35,8 @@ export const cleanUp = async (toolbox: IgniteToolbox, selected) => {
   const { filesystem } = toolbox
   if (selected === OPTIONS.SAGA_SAUCE) {
     filesystem.copy(`${process.cwd()}/app/state/redux`, `${process.cwd()}/app/state/`, { overwrite: true })
-    filesystem.remove(`${process.cwd()}/app/state/redux`)
     filesystem.remove(`${process.cwd()}/app/state/models`)
   }
+
+  filesystem.remove(`${process.cwd()}/app/state/redux`)
 }
