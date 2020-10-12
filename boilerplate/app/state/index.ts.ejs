@@ -18,7 +18,8 @@ export const connectState = _connectState
   export { setupRootStore } from './models'
 <% } else { -%>
   export const setupRootStore = async () => {
-    return await setupRootStoreCore().store
+    const result = await setupRootStoreCore()
+    return result.store
   }
 <% } -%>
 
