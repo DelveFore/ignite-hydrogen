@@ -16,6 +16,7 @@ module.exports = function (api) {
     }
   ]
   const plugins = [
+    <% if (!props.useExpo) { %>['module:react-native-dotenv'],<% } %>
     moduleResolver,
     [
       '@babel/plugin-proposal-decorators',
@@ -27,7 +28,6 @@ module.exports = function (api) {
   ]
   return {
     presets: [
-      <% if (!props.useExpo) { %>"module:react-native-dotenv",<% } %>
       "module:metro-react-native-babel-preset"
     ],
     env: {
