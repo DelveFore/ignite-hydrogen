@@ -1,8 +1,9 @@
 import React from "react"
 import { Image, ImageStyle, Platform, TextStyle, View, ViewStyle } from "react-native"
 import { useNavigation } from "@react-navigation/native"
-import { observer } from "mobx-react-lite"
+import { connectState } from '@app/state'
 import { BulletItem, Button, Header, Text, Screen, Wallpaper } from "../../components"
+import { connectStyle, Button as ButtonNB } from "native-base"
 import { color, spacing } from "../../theme"
 import { Api } from "../../services/api"
 import { save } from "../../utils/storage"
@@ -77,7 +78,7 @@ const HINT: TextStyle = {
   marginVertical: spacing[2],
 }
 
-export const DemoScreen = observer(function DemoScreen() {
+export const Component = connectState(function () {
   const navigation = useNavigation()
   const goBack = () => navigation.goBack()
 
@@ -149,9 +150,11 @@ export const DemoScreen = observer(function DemoScreen() {
         <View style={LOVE_WRAPPER}>
           <Text style={LOVE} text="Made with" />
           <Image source={heart} style={HEART} />
-          <Text style={LOVE} text="by Infinite Red" />
+          <Text style={LOVE} text="by Infinite #ff0000" />
         </View>
       </Screen>
     </View>
   )
 })
+
+export const DemoScreen = connectStyle('DemoScreen', {})(Component)

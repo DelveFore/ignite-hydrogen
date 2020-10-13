@@ -4,10 +4,17 @@ import { AsyncStorage } from "react-native"
 <% } else { -%>
 import AsyncStorage from "@react-native-community/async-storage"
 <% } -%>
-import { RootStore } from "../../models/root-store/root-store"
-import { onSnapshot } from "mobx-state-tree"
+<% if (props.useStateMachineMST) { -%>
+  import { RootStore } from "../../models/root-store/root-store"
+  import { onSnapshot } from "mobx-state-tree"
+  import { mst } from "reactotron-mst"
+<% } else { -%>
+  import Immutable from 'seamless-immutable'
+  import { reactotronRedux as reduxPlugin } from 'reactotron-redux'
+  import sagaPlugin from 'reactotron-redux-saga'
+<% } -%>
+
 import { ReactotronConfig, DEFAULT_REACTOTRON_CONFIG } from "./reactotron-config"
-import { mst } from "reactotron-mst"
 import { clear } from "../../utils/storage"
 import { RootNavigation } from "../../navigation"
 
@@ -106,7 +113,9 @@ export class Reactotron {
       }
 
       // @ts-ignore
-      console.tron.trackMstNode(rootStore)
+      <% if (props.useStateMachineMST) { -%>
+        console.tron.trackMstNode(rootStore)
+      <% } -%>
     }
   }
 
@@ -133,12 +142,18 @@ export class Reactotron {
       // ignore some chatty `mobx-state-tree` actions
       const RX = /postProcessSnapshot|@APPLY_SNAPSHOT/
 
-      // hookup mobx-state-tree middleware
-      Tron.use(
-        mst({
-          filter: event => RX.test(event.name) === false,
-        }),
-      )
+      // hookup State middleware
+      <% if (props.useStateMachineMST) { -%>
+        Tron.use(
+          mst({
+            filter: event => RX.test(event.name) === false,
+          }),
+        )
+      <% } else { -%>
+        Tron
+          .use(reduxPlugin({ onRestore: Immutable }))
+          .use(sagaPlugin())
+      <% } -%>
 
       // connect to the app
       Tron.connect()

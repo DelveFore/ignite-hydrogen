@@ -1,0 +1,31 @@
+<% if (!props.useStateMachineMST) { -%>
+  import setupRootStoreCore from './setupRootStore'
+  import { rootReducer } from './setupRootStore'
+<% } -%>
+import _connectState from './connect'
+
+export const connectState = _connectState
+
+<%# StoreProvider -%>
+<% if (props.useStateMachineMST) { -%>
+  export { StoreProvider } from './models'
+<% } else { -%>
+  export { Provider as RootStoreProvider } from 'react-redux'
+<% } -%>
+
+<%# setupRootStore -%>
+<% if (props.useStateMachineMST) { -%>
+  export { setupRootStore } from './models'
+<% } else { -%>
+  export const setupRootStore = async () => {
+    const result = await setupRootStoreCore()
+    return result.store
+  }
+<% } -%>
+
+<%# RootStore -%>
+<% if (props.useStateMachineMST) { -%>
+  export { RootStore } from './models'
+<% } else { -%>
+  export type RootState = ReturnType<typeof rootReducer>
+<% } -%>
