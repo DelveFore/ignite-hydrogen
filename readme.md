@@ -319,9 +319,23 @@ If you are new to TypeScript, here are some of our favorite resources:
 - [TypeScript and VSCode](https://code.visualstudio.com/docs/typescript/typescript-tutorial) for awesome developer tools
 - [Official Docs](https://www.typescriptlang.org/docs/home.html)
 
-## Previous Boilerplates
+## Contribute
+When contributing back to the project the recommended way is to integrate it with an example project. The follow are steps to making that happen.
 
-Unlike Ignite Red this is the first Boilerplate from DelveFore and Hydrogen is a direct child of Bower from Ignite Red
+Clone this project to a directory similar to ~/Development or where ever you put your development projects, then...
+
+```bash
+cd ignite-hydrogen
+yarn link
+cd ..
+ignite new HydrogenExample -b ./ignite-hydrogen
+# answer the prompts
+cd HydrogenExample
+yarn link "ignite-hydrogen"
+```
+
+Now you're able to make changes in the `ignite-hydrogen/boilerplate` and then in your example project do `ignite generate boilerplate`. Keep in mind, this will overrite the existing files of the path in your `HydrogenExample` project.
+
 
 ## Premium Support
 
@@ -330,7 +344,3 @@ While Hydrogen is an open sourcep project and Github issues can provide most of 
 
 [Ignite CLI](https://infinite.red/ignite) as open source projects, are free to use and always will be.
 Email us at [hello@infinite.red](mailto:hello@infinite.red) to get in touch with us for more details.
-
-## Contribute
-
-#### [Contribute to Ignite Bowser](https://github.com/infinitered/ignite-bowser/blob/master/.github/CONTRIBUTING.md) - Getting up and running for your first pull request

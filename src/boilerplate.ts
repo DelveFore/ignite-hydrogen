@@ -4,9 +4,10 @@ import { IgniteToolbox, IgniteRNInstallResult } from "./types"
 import { expo } from "./lib/expo"
 import * as StateMachine from "./lib/stateMachine"
 import * as UI from "./lib/ui"
+import { generateBoilerplate, TemplateProps } from "./lib/boilerplate"
 
 // We need this value here, as well as in our package.json.ejs template
-const REACT_NATIVE_GESTURE_HANDLER_VERSION = "^1.5.0"
+export const REACT_NATIVE_GESTURE_HANDLER_VERSION = "^1.5.0"
 
 /**
  * Is Android installed?
@@ -155,78 +156,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
   ]
   filesToRemove.map(filesystem.remove)
 
-  // copy our App, Tests & storybook directories
-  spinner.stop()
-  spinner.text = "▸ copying files"
-  spinner.start()
-  const boilerplatePath = `${__dirname}/../boilerplate`
-  const copyOpts = { overwrite: true, matching: "!*.ejs" }
-  filesystem.copy(`${boilerplatePath}/app`, `${process.cwd()}/app`, copyOpts)
-  filesystem.copy(`${boilerplatePath}/assets`, `${process.cwd()}/assets`, copyOpts)
-  filesystem.copy(`${boilerplatePath}/test`, `${process.cwd()}/test`, copyOpts)
-  filesystem.copy(`${boilerplatePath}/storybook`, `${process.cwd()}/storybook`, copyOpts)
-  filesystem.copy(`${boilerplatePath}/bin`, `${process.cwd()}/bin`, copyOpts)
-  includeDetox && filesystem.copy(`${boilerplatePath}/e2e`, `${process.cwd()}/e2e`, copyOpts)
-  if (!useExpo) {
-    filesystem.remove(`${process.cwd()}/app/theme/fonts/index.ts`)
-  } else {
-    const mocksToRemove = [
-      "__snapshots__",
-      "mock-async-storage.ts",
-      "mock-i18n.ts",
-      "mock-react-native-localize.ts",
-      "mock-reactotron.ts",
-      "setup.ts",
-    ]
-    mocksToRemove.map(mock => filesystem.remove(`${process.cwd()}/test/${mock}`))
-  }
-  spinner.stop()
-
-  // generate some templates
-  spinner.text = "▸ generating files"
-
-  const templates = [
-    { template: "index.js.ejs", target: useExpo ? "App.js" : "index.js" },
-    { template: "README.md", target: "README.md" },
-    { template: ".gitignore.ejs", target: ".gitignore" },
-    { template: ".env.example", target: ".env" },
-    { template: ".prettierignore", target: ".prettierignore" },
-    { template: ".solidarity", target: ".solidarity" },
-    { template: "babel.config.js.ejs", target: "babel.config.js" },
-    { template: "react-native.config.js", target: "react-native.config.js" },
-    { template: "tsconfig.json", target: "tsconfig.json" },
-    { template: "app/app.tsx.ejs", target: "app/app.tsx" },
-    { template: "app/i18n/i18n.ts.ejs", target: "app/i18n/i18n.ts" },
-    // Reactotron
-    {
-      template: "app/services/reactotron/reactotron.ts.ejs",
-      target: "app/services/reactotron/reactotron.ts",
-    },
-    { template: "app/utils/storage/storage.ts.ejs", target: "app/utils/storage/storage.ts" },
-    {
-      template: "app/utils/storage/storage.test.ts.ejs",
-      target: "app/utils/storage/storage.test.ts",
-    },
-    {
-      template: "app/screens/welcome-screen/welcome-screen.tsx.ejs",
-      target: "app/screens/welcome-screen/welcome-screen.tsx",
-    },
-    {
-      template: "app/screens/demo-screen/demo-screen.tsx.ejs",
-      target: "app/screens/demo-screen/demo-screen.tsx",
-    },
-    {
-      template: "app/navigation/root-navigator.tsx.ejs",
-      target: "app/navigation/root-navigator.tsx",
-    },
-    {
-      template: "app/navigation/primary-navigator.tsx.ejs",
-      target: "app/navigation/primary-navigator.tsx",
-    },
-    { template: "storybook/storybook.tsx.ejs", target: "storybook/storybook.tsx" },
-    { template: "bin/postInstall", target: "bin/postInstall" },
-  ].concat(StateMachine.TEMPLATES)
-  const templateProps = {
+  const templateProps: TemplateProps = {
     name,
     igniteVersion: meta.version(),
     reactNativeVersion: rnInstall.version,
@@ -239,10 +169,8 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     useStateMachineMST: StateMachine.OPTIONS.MST === selectedStateMachine,
     useNativeBase: UI.OPTIONS.NativeBase === selectedUI
   }
-  await ignite.copyBatch(toolbox, templates, templateProps, {
-    quiet: true,
-    directory: `${ignite.ignitePluginPath()}/boilerplate`,
-  })
+
+  await generateBoilerplate(templateProps, spinner, toolbox, ignite.ignitePluginPath())
 
   await ignite.setIgniteConfig("navigation", "react-navigation")
 
@@ -252,10 +180,13 @@ And here: https://guides.cocoapods.org/using/getting-started.html
    * to fix this.
    */
   if (!useExpo && includeDetox) {
+    spinner.stop()
+    spinner.text = 'Fix Detox Testing (https://github.com/react-native-community/cli/issues/462)'
     await ignite.patchInFile(`ios/${name}.xcodeproj/xcshareddata/xcschemes/${name}.xcscheme`, {
       replace: 'buildForRunning = "YES"\n            buildForProfiling = "NO"',
       insert: 'buildForRunning = "NO"\n            buildForProfiling = "NO"',
     })
+    spinner.succeed('Fixed Detox Testing')
   }
 
   /**
@@ -269,7 +200,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
    */
   async function mergePackageJsons() {
     // transform our package.json so we can replace variables
-    ignite.log("merging Bowser package.json with React Native package.json")
+    ignite.log("merging Hydrogen package.json with React Native package.json")
     const rawJson = await template.generate({
       directory: `${ignite.ignitePluginPath()}/boilerplate`,
       template: "package.json.ejs",

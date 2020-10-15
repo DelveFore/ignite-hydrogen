@@ -1,5 +1,5 @@
 {
-  "name": "@delvefore/ignite-hydrogen",
+  "name": "ignite-hydrogen",
   "description": "DelveFore's React Native boilerplate based on Infinite Red's boilerplate Bowser.",
   "license": "MIT",
   "repository": "delvefore/ignite-hydrogen",
