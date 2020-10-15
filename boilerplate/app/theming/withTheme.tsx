@@ -10,6 +10,7 @@ import StyleProvider from './StyleProvider'
  * @param Component
  */
 export default (Component) => {
+  // eslint-disable-next-line react/display-name
   return (props) => (
     <StyleProvider>
       <Root>

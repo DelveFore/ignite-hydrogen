@@ -1,8 +1,21 @@
-import { ApisauceInstance, create, ApiResponse } from "apisauce"
-import { getGeneralApiProblem } from "../api-problem"
-import { DEFAULT_API_CONFIG } from "./api-config"
-import * as Types from "./api.types"
-import { ApiConfig, HydrogenAPI, SagaSauceAPI } from "../IHydrogenAPI"
+import { ApisauceInstance, create, ApiResponse } from 'apisauce'
+import { getGeneralApiProblem } from '../api-problem'
+import { DEFAULT_API_CONFIG } from './api-config'
+import * as Types from './api.types'
+import { ApiConfig, HydrogenAPI, SagaSauceAPI } from '../IHydrogenAPI'
+
+const DATA_KEY = 'results'
+
+/**
+ * TODO Return using User type
+ * @param value
+ */
+export const _mutateUser = (value) => {
+  return {
+    ...value,
+    id: value.id.value || '123434-234235453-ert342',
+  }
+}
 
 /**
  * Manages all requests to the API.
@@ -41,35 +54,15 @@ export class Api implements SagaSauceAPI, HydrogenAPI {
       baseURL: this.config.url,
       timeout: this.config.timeout,
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
     })
   }
 
   /* ----- Existing SagaSauce API Structure. There is much to improve though so make it your own. Very much a work in-progress ---- */
-  async getData(data): Promise<ApiResponse<any>> {
-    return await this.apisauce.get(`/`, data)
-  }
-
-  async createData(data): Promise<ApiResponse<any>> {
-    return await this.apisauce.post(`/`, data)
-  }
-
-  async updateData(data): Promise<ApiResponse<any>> {
-    return await this.apisauce.patch(`/`, data)
-  }
-
-  async deleteData(data): Promise<ApiResponse<any>> {
-    return await this.apisauce.delete(`/${data.id}`, data)
-  }
-
-  /* ------ For existing Mobx-State-Tree support until we standardize on an Interface ---- */
-  /**
-   * Gets a list of users.
-   */
-  async getUsers(): Promise<Types.GetListResult> {
-    // make the api call
-    const response: ApiResponse<any> = await this.apisauce.get(`/`)
+  getData = async (data) => {
+    const response: ApiResponse<any> = await this.apisauce.get(`/`, data && { ...data.query })
+    console.tron.log('API users->getData', response)
 
     // the typical ways to die when calling an api
     if (!response.ok) {
@@ -77,24 +70,29 @@ export class Api implements SagaSauceAPI, HydrogenAPI {
       if (problem) return problem
     }
 
-    // TODO API contract mutations should be in a seperate place then inside API interactions
-    const convertUser = raw => {
-      return {
-        id: raw.id,
-        name: raw.name,
-      }
-    }
-
     // transform the data into the format we are expecting
     try {
-      const rawUsers = response.data
-      const resultUsers: Types.User[] = rawUsers.map(convertUser)
-      return { kind: "ok", data: resultUsers }
+      const rawUsers = response.data[DATA_KEY]
+      const resultUsers: Types.User[] = rawUsers.map(_mutateUser)
+      return { ok: true, kind: 'ok', data: { data: resultUsers } }
     } catch {
-      return { kind: "bad-data" }
+      return { ok: false, kind: 'bad-data' }
     }
   }
 
+  createData = async (data) => {
+    return await this.apisauce.post(`/`, data)
+  }
+
+  updateData = async (data) => {
+    return await this.apisauce.patch(`/`, data)
+  }
+
+  deleteData = async (data) => {
+    return await this.apisauce.delete(`/${data.id}`, data)
+  }
+
+  /* ------ For existing Mobx-State-Tree support until we standardize on an Interface ---- */
   /**
    * Gets a single user by ID
    */
@@ -115,9 +113,9 @@ export class Api implements SagaSauceAPI, HydrogenAPI {
         id: response.data.id,
         name: response.data.name,
       }
-      return { kind: "ok", data: resultUser }
+      return { kind: 'ok', data: resultUser }
     } catch {
-      return { kind: "bad-data" }
+      return { kind: 'bad-data' }
     }
   }
 }
