@@ -26,8 +26,9 @@
     "format:ts": "prettier --write '**/*.ts{,x}'",
     "lint": "eslint src test --ext .ts --fix",
     "test": "yarn build && yarn lint && jest --runInBand && yarn clean",
-    "watch": "jest --runInBand --watch",
-    "coverage": "jest --runInBand --coverage",
+    "test:direct": "jest --runInBand",
+    "test:watch": "jest --runInBand --watch",
+    "test:coverage": "jest --runInBand --coverage",
     "ci:lint": "eslint src test --ext .ts",
     "ci:test": "yarn build && jest --runInBand && yarn ci:lint && yarn clean",
     "ci:publish": "yarn build && yarn semantic-release && yarn clean",
@@ -130,14 +131,28 @@
     "read-pkg-up": "^7.0.0"
   },
   "jest": {
+    "testMatch": [
+      "<rootDir>/src/**/*.test.{js,ts}",
+      "<rootDir>/test/**/*.test.{js,ts}",
+      "<rootDir>/boilerplate/app/state/**/*.test.{js,ts}"
+    ],
+    "coveragePathIgnorePatterns": [
+      "**/I[A-Z]*.{ts}"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx,js,jsx}",
+      "!**/node_modules/**",
+      "!**/coverage/**",
+      "!**/dist/**"
+    ],
     "testPathIgnorePatterns": [
-      "/node_modules",
-      "/boilerplate"
+      "/node_modules"
     ],
     "testEnvironment": "node",
     "transform": {
       "^.+\\.ts$": "ts-jest"
     },
+    "clearMocks": true,
     "moduleFileExtensions": [
       "ts",
       "tsx",
