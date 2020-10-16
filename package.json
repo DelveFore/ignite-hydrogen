@@ -118,6 +118,7 @@
     "fs-jetpack": "^2.2.3",
     "gluegun": "^4.0.2",
     "jest": "^24.9.0",
+    "memfs": "^3.2.0",
     "mobx": "^4.15.4",
     "mobx-react-lite": "^1.4.1",
     "mobx-state-tree": "^3.14.1",
@@ -127,7 +128,8 @@
     "sinon": "^7.5.0",
     "tempy": "^0.3.0",
     "ts-jest": "^24.1.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.6.4",
+    "unionfs": "^4.4.0"
   },
   "dependencies": {
     "ramda": "^0.26.1",
