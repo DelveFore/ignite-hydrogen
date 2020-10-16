@@ -35,9 +35,7 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: install
         run: yarn install --frozen-lockfile
-      - name: lint
-        run: yarn lint
       - name: test
-        run: yarn test:coverage --maxWorkers=4
+        run: yarn test --maxWorkers=4
         env:
           CI: true
