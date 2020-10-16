@@ -2,6 +2,7 @@
   import { observer } from "mobx-react-lite"
 <% } else { -%>
   import { connect } from 'react-redux'
+  import { mapDispatchToProps } from './dispatchers'
 <% } -%>
 
 /**
@@ -12,6 +13,6 @@ export default (Component, options = {}) => {
 <% if (props.useStateMachineMST) { -%>
   return observer(Component)
 <% } else { -%>
-  return connect(options.mapStateToProps, options.mapDispatchToProps)(Component)
+  return connect(options.mapStateToProps, mapDispatchToProps)(Component)
 <% } -%>
 }
