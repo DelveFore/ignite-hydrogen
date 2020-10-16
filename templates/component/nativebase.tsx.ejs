@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { ViewStyle } from 'react-native'
-import { View } from 'native-base'
+import { View, connectStyle } from 'native-base'
 
 export interface <%= props.pascalName %>Props {
   /**
@@ -17,3 +17,5 @@ export default (props: <%= props.pascalName %>Props) => {
     <View />
   )
 }
+// Connectstyle is expecting a fully qualified name, NOT a function. Need advisement
+export default connectStyle ()
