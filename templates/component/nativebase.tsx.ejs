@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { View, ViewStyle } from 'react-native'
+import { ViewStyle } from 'react-native'
+import { View } from 'native-base'
 
 export interface <%= props.pascalName %>Props {
   /**
@@ -11,8 +12,8 @@ export interface <%= props.pascalName %>Props {
 /**
  * <%= props.description %>
  */
-export function <%= props.pascalName %>(props: <%= props.pascalName %>Props) {
+export default (props: <%= props.pascalName %>Props) => {
   return (
     <View />
   )
-})
+}
