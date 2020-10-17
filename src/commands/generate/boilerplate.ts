@@ -1,11 +1,8 @@
-import { TemplateProps, generateBoilerplate } from '../../lib/boilerplate'
+import { BoilerplateProps, generateBoilerplate } from '../../lib/boilerplate'
 import { IgniteToolbox } from '../../types'
 import { read } from 'fs-jetpack'
 import * as StateMachine from "../../lib/stateMachine"
-
-export const getDepVersionFromPackage = (value, depKey) => {
-  return '' + value.dependencies[depKey] || 'not found'
-}
+import ProjectInfo, { getDepVersion } from "../../lib/ProjectInfo"
 
 export const description = "Generates directly from the Boilerplate overwrites existing files."
 export const run = async (toolbox: IgniteToolbox) => {
@@ -14,14 +11,14 @@ export const run = async (toolbox: IgniteToolbox) => {
   const packageJson = JSON.parse(read(process.cwd() + '/package.json'))
   const { name } = packageJson
   const pascalName = pascalCase(name)
-  const reactNativeVersion = getDepVersionFromPackage(packageJson, 'react-native')
-  const reactNativeGestureHandlerVersion = getDepVersionFromPackage(packageJson, 'react-native-gesture-handler')
+  const reactNativeVersion = getDepVersion(packageJson, 'react-native')
+  const reactNativeGestureHandlerVersion = getDepVersion(packageJson, 'react-native-gesture-handler')
   const { colors } = print
   const { red, bold, blue } = colors
 
   const spinner = print.spin(`using the ${blue("DelveFore")} ${bold("Hydrogen")} boilerplate started from ${red("Infinite Red")} Bowser v5.x.x boilerplate`).succeed()
 
-  const props: TemplateProps = {
+  const props: BoilerplateProps = {
     name: pascalName,
     igniteVersion: meta.version(),
     reactNativeVersion,
@@ -31,8 +28,8 @@ export const run = async (toolbox: IgniteToolbox) => {
     i18n: false,
     includeDetox: !!packageJson.dependencies.detox,
     useExpo: !!packageJson.dependencies.expo,
-    useStateMachineMST: !!packageJson.dependencies.mobx,
-    useNativeBase: !!packageJson.dependencies['native-base']
+    useStateMachineMST: ProjectInfo.hasMST(),
+    useNativeBase: ProjectInfo.hasNativeBase()
   }
   await generateBoilerplate(props, spinner, toolbox, `${__dirname}/../../../`)
   spinner.stop()
