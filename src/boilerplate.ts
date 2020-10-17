@@ -4,7 +4,7 @@ import { IgniteToolbox, IgniteRNInstallResult } from "./types"
 import { expo } from "./lib/expo"
 import * as StateMachine from "./lib/stateMachine"
 import * as UI from "./lib/ui"
-import { generateBoilerplate, TemplateProps } from "./lib/boilerplate"
+import { BoilerplateProps, generateBoilerplate } from "./lib/boilerplate"
 
 // We need this value here, as well as in our package.json.ejs template
 export const REACT_NATIVE_GESTURE_HANDLER_VERSION = "^1.5.0"
@@ -156,7 +156,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
   ]
   filesToRemove.map(filesystem.remove)
 
-  const templateProps: TemplateProps = {
+  const templateProps: BoilerplateProps = {
     name,
     igniteVersion: meta.version(),
     reactNativeVersion: rnInstall.version,

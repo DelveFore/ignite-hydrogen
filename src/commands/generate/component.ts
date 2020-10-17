@@ -1,5 +1,9 @@
 import { GluegunToolbox } from "gluegun"
+import ProjectInfo from "../../lib/ProjectInfo"
 
+/**
+ * TODO Support MST Components
+ */
 export const description = "Generates a component and a storybook test."
 export const run = async function(toolbox: GluegunToolbox) {
   // grab some features
@@ -7,6 +11,11 @@ export const run = async function(toolbox: GluegunToolbox) {
   const { camelCase, isBlank, kebabCase, pascalCase } = strings
 
   // validation
+  if (!ProjectInfo.hasNativeBase()) {
+    print.error("Currently, only NativeBase is supported")
+    return
+  }
+
   if (isBlank(parameters.first)) {
     print.info("A name is required.")
     print.info(`ignite generate component <name>\n`)

@@ -1,7 +1,7 @@
 import { IgniteToolbox } from "../types"
 import * as StateMachine from "./stateMachine"
 
-export interface TemplateProps {
+export interface BoilerplateProps {
   name: string
   igniteVersion: string
   reactNativeVersion: string
@@ -15,7 +15,7 @@ export interface TemplateProps {
   useNativeBase: boolean
 }
 
-export const generateBoilerplate = async (templateProps: TemplateProps, spinner, toolbox: IgniteToolbox, pluginPath: string) => {
+export const generateBoilerplate = async (templateProps: BoilerplateProps, spinner, toolbox: IgniteToolbox, pluginPath: string) => {
   const {
     filesystem,
     ignite,
