@@ -36,6 +36,6 @@ jobs:
       - name: install
         run: yarn install --frozen-lockfile
       - name: test
-        run: yarn test --maxWorkers=4
+        run: yarn ci:test
         env:
           CI: true
