@@ -23,9 +23,9 @@ jobs:
       - restore_cache:
           name: Restore node modules
           keys:
-            - v1-dependencies-bowser-{{ checksum "package.json" }}
+            - v1-dependencies-hydrogen-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-bowser-
+            - v1-dependencies-hydrogen-
       - run:
           name: Install dependencies
           command: yarn install
@@ -33,7 +33,7 @@ jobs:
           name: Save node modules
           paths:
             - node_modules
-          key: v1-dependencies-bowser-{{ checksum "package.json" }}
+          key: v1-dependencies-hydrogen-{{ checksum "package.json" }}
       - run:
           name: Install React Native CLI and Ignite CLI
           command: |
@@ -113,9 +113,9 @@ jobs:
       - restore_cache:
           name: Restore node modules
           keys:
-            - v1-dependencies-bowser-{{ checksum "package.json" }}
+            - v1-dependencies-hydrogen-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-bowser-
+            - v1-dependencies-hydrogen-
       # Run semantic-release after all the above is set.
       - run:
           name: Publish to NPM
