@@ -6,7 +6,7 @@ import { Header, Screen, Text, Wallpaper } from "../../components"
 import createScreen from '../createScreen'
 import { color } from '../../theme'
 import styles from './styles'
-const bowserLogo = require("./bowser.png")
+const logo = require("./bowser.png")
 
 export default createScreen('Welcome', (props) => {
   const navigation = useNavigation()
@@ -44,7 +44,7 @@ export default createScreen('Welcome', (props) => {
           <Text style={styles.TITLE} text="!" />
         </Text>
         <Text style={styles.TITLE} preset="header" tx="welcomeScreen.readyForLaunch" />
-        <Image source={bowserLogo} style={styles.BOWSER} />
+        <Image source={logo} style={styles.BOWSER} />
         <Text style={styles.CONTENT}>
           This probably isn't what your app is going to look like. Unless your designer handed you
           this screen and, in that case, congrats! You're ready to ship.
