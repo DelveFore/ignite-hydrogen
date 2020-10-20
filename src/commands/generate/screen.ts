@@ -31,7 +31,7 @@ export const run = async function(toolbox: GluegunToolbox) {
   const jobs = [
     {
       template: `screen.ejs`,
-      target: `app/screens/${kebabName}/${kebabName}.tsx`,
+      target: `app/screens/${kebabName}/index.tsx`,
     },
   ]
 
@@ -40,7 +40,7 @@ export const run = async function(toolbox: GluegunToolbox) {
 
   // patch the barrel export file
   const barrelExportPath = `${process.cwd()}/app/screens/index.ts`
-  const exportToAdd = `export * from "./${kebabName}/${kebabName}"\n`
+  const exportToAdd = `export * from "./${kebabName}"\n`
 
   if (!filesystem.exists(barrelExportPath)) {
     const msg =
