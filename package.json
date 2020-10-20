@@ -134,35 +134,5 @@
   "dependencies": {
     "ramda": "^0.26.1",
     "read-pkg-up": "^7.0.0"
-  },
-  "jest": {
-    "testMatch": [
-      "<rootDir>/src/**/*.test.{js,ts}",
-      "<rootDir>/test/**/*.test.{js,ts}",
-      "<rootDir>/boilerplate/app/state/**/*.test.{js,ts}"
-    ],
-    "coveragePathIgnorePatterns": [
-      "**/I[A-Z]*.{ts}"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx,js,jsx}",
-      "!**/node_modules/**",
-      "!**/coverage/**",
-      "!**/dist/**"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules"
-    ],
-    "testEnvironment": "node",
-    "transform": {
-      "^.+\\.ts$": "ts-jest"
-    },
-    "clearMocks": true,
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx"
-    ]
   }
 }
