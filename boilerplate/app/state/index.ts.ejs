@@ -1,10 +1,12 @@
-<% if (!props.useStateMachineMST) { -%>
+<% if (props.useStateMachineMST) { -%>
+  export connectState = './models/connect'
+<% } else { -%>
   import setupRootStoreCore from './setupRootStore'
   import { rootReducer } from './setupRootStore'
+  import _connectState from './connect'
+  export const connectState = _connectState
 <% } -%>
-import _connectState from './connect'
 
-export const connectState = _connectState
 
 <%# StoreProvider -%>
 <% if (props.useStateMachineMST) { -%>

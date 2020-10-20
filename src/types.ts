@@ -107,3 +107,17 @@ export type IgniteProjectConfig = {
   boilerplateVersion?: string
   examples?: string[]
 }
+
+export type BoilerplateProps = {
+  name: string
+  igniteVersion: string
+  reactNativeVersion: string
+  reactNativeGestureHandlerVersion: string
+  vectorIcons: boolean
+  animatable: boolean
+  i18n: boolean
+  includeDetox: boolean
+  useExpo: boolean
+  useStateMachineMST: boolean
+  useNativeBase: boolean
+}

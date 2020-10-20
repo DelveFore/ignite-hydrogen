@@ -1,21 +1,7 @@
-import { IgniteToolbox } from "../types"
+import { BoilerplateProps, IgniteToolbox } from "../types"
 import * as StateMachine from "./stateMachine"
 
-export interface BoilerplateProps {
-  name: string
-  igniteVersion: string
-  reactNativeVersion: string
-  reactNativeGestureHandlerVersion: string
-  vectorIcons: boolean
-  animatable: boolean
-  i18n: boolean
-  includeDetox: boolean
-  useExpo: boolean
-  useStateMachineMST: boolean
-  useNativeBase: boolean
-}
-
-export const generateBoilerplate = async (templateProps: BoilerplateProps, spinner, toolbox: IgniteToolbox, pluginPath: string) => {
+export const generateBoilerplate = async (toolbox: IgniteToolbox, templateProps: BoilerplateProps, spinner, pluginPath: string) => {
   const {
     filesystem,
     ignite,
