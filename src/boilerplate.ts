@@ -1,10 +1,10 @@
-import { merge, pipe, assoc, omit, __ } from "ramda"
 import { getReactNativeVersion } from "./lib/react-native-version"
-import { IgniteToolbox, IgniteRNInstallResult } from "./types"
+import { IgniteToolbox, IgniteRNInstallResult, BoilerplateProps } from "./types"
 import { expo } from "./lib/expo"
 import * as StateMachine from "./lib/stateMachine"
 import * as UI from "./lib/ui"
-import { BoilerplateProps, generateBoilerplate } from "./lib/boilerplate"
+import { generateBoilerplate } from "./lib/boilerplate"
+import mergePackageJsons from "./lib/mergePackageJsons"
 
 // We need this value here, as well as in our package.json.ejs template
 export const REACT_NATIVE_GESTURE_HANDLER_VERSION = "^1.5.0"
@@ -33,10 +33,8 @@ export const install = async (toolbox: IgniteToolbox) => {
     reactNative,
     print,
     system,
-    template,
     prompt,
     patching,
-    strings,
     meta,
   } = toolbox
   const { colors } = print
@@ -170,7 +168,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     useNativeBase: UI.OPTIONS.NativeBase === selectedUI
   }
 
-  await generateBoilerplate(templateProps, spinner, toolbox, ignite.ignitePluginPath())
+  await generateBoilerplate(toolbox, templateProps, spinner, ignite.ignitePluginPath())
 
   await ignite.setIgniteConfig("navigation", "react-navigation")
 
@@ -195,41 +193,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
   // https://github.com/facebook/react-native/issues/12724
   await filesystem.appendAsync(".gitattributes", "*.bat text eol=crlf")
 
-  /**
-   * Merge the package.json from our template into the one provided from react-native init.
-   */
-  async function mergePackageJsons() {
-    // transform our package.json so we can replace variables
-    ignite.log("merging Hydrogen package.json with React Native package.json")
-    const rawJson = await template.generate({
-      directory: `${ignite.ignitePluginPath()}/boilerplate`,
-      template: "package.json.ejs",
-      props: { ...templateProps, kebabName: strings.kebabCase(templateProps.name) },
-    })
-    const newPackageJson = JSON.parse(rawJson)
-
-    // read in the react-native created package.json
-    const currentPackage = filesystem.read("package.json", "json")
-
-    // deep merge
-    const newPackage = pipe(
-      assoc("dependencies", merge(currentPackage.dependencies, newPackageJson.dependencies)),
-      assoc(
-        "devDependencies",
-        merge(
-          omit(["@react-native-community/eslint-config"], currentPackage.devDependencies),
-          newPackageJson.devDependencies,
-        ),
-      ),
-      assoc("scripts", merge(currentPackage.scripts, newPackageJson.scripts)),
-      merge(__, omit(["dependencies", "devDependencies", "scripts"], newPackageJson)),
-    )(currentPackage)
-
-    // write this out
-    ignite.log("writing newly merged package.json")
-    filesystem.write("package.json", newPackage, { jsonIndent: 2 })
-  }
-  await mergePackageJsons()
+  await mergePackageJsons(toolbox, templateProps, spinner, ignite.ignitePluginPath())
 
   // pass long the debug flag if we're running in that mode
   const debugFlag = parameters.options.debug ? "--debug" : ""
