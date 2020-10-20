@@ -64,4 +64,36 @@ describe('ProjectInfo', () => {
       expect(ProjectInfo.hasMST()).toEqual(false)
     })
   })
+  describe('hasNativeBase', () => {
+    it('returns true', () => {
+      const vol = Volume.fromJSON(
+        {
+          "package.json": `{
+            "dependencies": {
+              "native-base": "^2.13.12"
+            }
+          }`,
+        },
+        process.cwd()
+      )
+      const fsMock: any = fs
+      fsMock.use(vol)
+      expect(ProjectInfo.hasNativeBase()).toEqual(true)
+    })
+    it('returns false', () => {
+      const vol = Volume.fromJSON(
+        {
+          "package.json": `{
+            "dependencies": {
+              "react-native-paper": "^4.20.0"
+            }
+          }`,
+        },
+        process.cwd()
+      )
+      const fsMock: any = fs
+      fsMock.use(vol)
+      expect(ProjectInfo.hasNativeBase()).toEqual(false)
+    })
+  })
 })

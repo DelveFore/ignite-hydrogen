@@ -1,5 +1,5 @@
-import { BoilerplateProps, generateBoilerplate } from '../../lib/boilerplate'
-import { IgniteToolbox } from '../../types'
+import { generateBoilerplate } from '../../lib/boilerplate'
+import { IgniteToolbox, BoilerplateProps } from '../../types'
 import { read } from 'fs-jetpack'
 import * as StateMachine from "../../lib/stateMachine"
 import ProjectInfo, { getDepVersion } from "../../lib/ProjectInfo"
@@ -31,7 +31,7 @@ export const run = async (toolbox: IgniteToolbox) => {
     useStateMachineMST: ProjectInfo.hasMST(),
     useNativeBase: ProjectInfo.hasNativeBase()
   }
-  await generateBoilerplate(props, spinner, toolbox, `${__dirname}/../../../`)
+  await generateBoilerplate(toolbox, props, spinner, `${__dirname}/../../../`)
   spinner.stop()
   spinner.text = 'State Machine cleanup'
   spinner.start()

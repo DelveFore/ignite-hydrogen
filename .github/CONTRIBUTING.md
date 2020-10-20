@@ -19,7 +19,7 @@ _These examples assume you're using yarn rather than npm. If you're not using ya
 
 ## Getting Started
 
-1. Fork and then clone the repo (`git clone git@github.com:<YOURGITHUBUSER>/ignite-bowser.git`)
+1. Fork and then clone the repo (`git clone git@github.com:<YOURGITHUBUSER>/ignite-hydrogen.git`)
 2. Pull all package dependencies (`yarn`)
 3. Make your changes
 
@@ -41,7 +41,7 @@ Refer to [this guide](https://github.com/infinitered/ignite/blob/master/.github/
 
 We use [Jest](https://jestjs.io) for testing.
 
-To run tests from the ignite-bowser folder:
+To run tests from the ignite-hydrogen folder:
 
 ```
 $ yarn test
@@ -51,7 +51,7 @@ $ yarn test
 
 Our CI enforces lint to pass, so we suggest you enable linting to keep your project compliant during development.
 
-**To Run Lint** from ignite-bowser's root directory:
+**To Run Lint** from ignite-hydrogen's root directory:
 
 ```
 $ yarn lint
