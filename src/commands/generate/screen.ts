@@ -40,7 +40,11 @@ export const run = async function(toolbox: GluegunToolbox) {
 
   // patch the barrel export file
   const barrelExportPath = `${process.cwd()}/app/screens/index.ts`
-  const exportToAdd = `export * from "./${kebabName}"\n`
+  const importToAdd = `import ${pascalName} from './${kebabName}'
+`
+
+  const exportAfter = `export { `
+  const exportWith = `${pascalName}, `
 
   if (!filesystem.exists(barrelExportPath)) {
     const msg =
@@ -49,7 +53,37 @@ export const run = async function(toolbox: GluegunToolbox) {
     print.warning(msg)
     process.exit(1)
   }
-  await patching.append(barrelExportPath, exportToAdd)
+  await patching.prepend(barrelExportPath, importToAdd)
+  await patching.patch(barrelExportPath, { after: exportAfter, insert: exportWith })
+
+  // patch the generated screen to navigation
+  const navigationExportPath = `${process.cwd()}/app/navigation/primary-navigator.tsx`
+  const importReplaceOf = ` } from '../screens'`
+  const importReplaceWith = `, ${pascalName} } from '../screens'`
+
+  const primaryParamListPatchAfter = `export type PrimaryParamList = {`
+  const primaryParamListPatchWith = `
+  ${camelName}: undefined`
+
+  const stackNavigatorPatchBefore = `</Stack.Navigator>`
+  const stackNavigatorPatchWith = `  <Stack.Screen name="${camelName}" component={${pascalName}} />
+    `
+
+  if (!filesystem.exists(navigationExportPath)) {
+    const msg =
+      `No '${navigationExportPath}' file found. Can't export screen.` +
+      `Export your new screen manually.`
+    print.warning(msg)
+    process.exit(1)
+  }
+  await patching.replace(navigationExportPath, importReplaceOf, importReplaceWith)
+  await patching.patch(
+    navigationExportPath,
+    { insert: primaryParamListPatchWith, after: primaryParamListPatchAfter }
+  )
+  await patching.patch(navigationExportPath,
+    { insert: stackNavigatorPatchWith, before: stackNavigatorPatchBefore }
+  )
 
   print.info(`Screen ${pascalName} created`)
 }
