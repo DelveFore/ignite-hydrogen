@@ -3,7 +3,7 @@
 
 Extending from fantastic and hotest React Native boilerplate [Ignite Red's Bower](https://github.com/infinitered/ignit-bower), the Ignite Hydrogen project is aimed at easily implementing principles and concepts from DelveFore to a specific purpose (more to come soon!).
 
-> In everyway those contributing Hydrogen want to promote the people and efforts with Ignite Red towards these open source projects. Please check out ways to support their efforts and the open source community!
+> In everyway those contributing `Hydrogen` want to promote the people and along with efforts of Ignite Red for these open source projects. Please check out ways to support their efforts and the open source community!
 
 ## Concepts
 There is a whole project soon to be released for everyone! In the meantime, some quick highlights we'll leverage in version 1 (see roadmap for details including GraphQL support and potentially support for Mobx-State-Tree)
@@ -93,13 +93,13 @@ ignite generate component awesome-component
 You can also bypass the choice by providing which component type you want to create:
 
 ```
-ignite generate component awesome-component --function-component
+ignite generate component AwesomeComponent --function-component
 ```
 
 Or
 
 ```
-ignite generate component awesome-component --stateless-function
+ignite generate component AwesomeComponent --stateless-function
 ```
 
 ### Screen generator
@@ -146,7 +146,6 @@ ignite-project
 │   ├── theme
 │   ├── utils
 │   ├── app.tsx
-│   ├── environment-variables.ts
 |   ├── assets
 │   ├── fonts
 │   ├── images
@@ -235,7 +234,7 @@ This directory will hold your Jest configs and mocks, as well as your [storyshot
 
 ## Why this stack?
 
-If you've used Ignite Andross (the first Ignite stack), you know we formerly used Redux for state management, as does much of the community. However, we encountered some pain points with Redux so went in search of a different solution to meet our needs and landed on `mobx-state-tree`. We find that it’s a great middle-ground between completely structured (like `redux`) and completely freestyle (like `mobx`). It brings more than just state-management to the table as well (such as dependency injection, serialization, and lifecycle events).
+If you've used Ignite Andross (the first Ignite stack), you know Ignite Red formerly used Redux for state management, as does much of the community. However, Ignite Red encountered some pain points with Redux so went in search of a different solution to meet our needs and landed on `mobx-state-tree`. We find that it’s a great middle-ground between completely structured (like `redux`) and completely freestyle (like `mobx`). It brings more than just state-management to the table as well (such as dependency injection, serialization, and lifecycle events).
 
 ### Some Highlights of MST
 
