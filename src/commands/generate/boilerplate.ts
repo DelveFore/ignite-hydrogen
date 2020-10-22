@@ -1,12 +1,12 @@
-import { generateBoilerplate } from '../../lib/boilerplate'
+import { codeStyleCleanUp, generateBoilerplate } from "../../lib/boilerplate"
 import { IgniteToolbox, BoilerplateProps } from '../../types'
 import { read } from 'fs-jetpack'
-import * as StateMachine from "../../lib/stateMachine"
+import Plugins from "../../plugins"
 import ProjectInfo, { getDepVersion } from "../../lib/ProjectInfo"
 
 export const description = "Generates directly from the Boilerplate overwrites existing files."
 export const run = async (toolbox: IgniteToolbox) => {
-  const { strings, meta, print, ignite, system } = toolbox
+  const { strings, meta, print } = toolbox
   const { pascalCase } = strings
   const packageJson = JSON.parse(read(process.cwd() + '/package.json'))
   const { name } = packageJson
@@ -17,6 +17,9 @@ export const run = async (toolbox: IgniteToolbox) => {
   const { red, bold, blue } = colors
 
   const spinner = print.spin(`using the ${blue("DelveFore")} ${bold("Hydrogen")} boilerplate started from ${red("Infinite Red")} Bowser v5.x.x boilerplate`).succeed()
+
+  const plugins = new Plugins(toolbox)
+  await plugins.select(true)
 
   const props: BoilerplateProps = {
     name: pascalName,
@@ -31,17 +34,10 @@ export const run = async (toolbox: IgniteToolbox) => {
     useStateMachineMST: ProjectInfo.hasMST(),
     useNativeBase: ProjectInfo.hasNativeBase()
   }
-  await generateBoilerplate(toolbox, props, spinner, `${__dirname}/../../../`)
+  await generateBoilerplate(toolbox, props, spinner, `${__dirname}/../../../`, plugins)
   spinner.stop()
-  spinner.text = 'State Machine cleanup'
+  spinner.text = 'Plugins cleanup'
   spinner.start()
-  await StateMachine.cleanUp(toolbox, packageJson.dependencies.mobx ? StateMachine.OPTIONS.MST : StateMachine.OPTIONS.SAGA_SAUCE)
-  ignite.log("linting")
-  spinner.text = "linting"
-  await system.spawn(`${ignite.useYarn ? "yarn" : "npm run"} lint`)
-  ignite.log("formatting")
-  spinner.text = "formatting"
-  await system.spawn(`${ignite.useYarn ? "yarn" : "npm run"} format`)
-  spinner.succeed("Linted and formatted")
-  spinner.stop()
+  await plugins.cleanUp()
+  await codeStyleCleanUp(toolbox, spinner)
 }
