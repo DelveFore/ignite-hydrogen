@@ -35,4 +35,44 @@ describe('Boilerplate Plugin UI', () => {
       expect(plugin.selected).toEqual(OPTIONS.NativeBase)
     })
   })
+  describe('postPackageInstall()', () => {
+    it('when eject NativeBase theme is selected then native-base eject script is executed', async () => {
+      const toolbox = new Toolbox()
+      toolbox.prompt = prompt
+      toolbox.system = {
+        ...toolbox.system,
+        run: jest.fn()
+      }
+      sendKeystrokes(async () => {
+        io.send(KEYS.Enter)
+        await delay(10)
+        io.send('y')
+        await delay(10)
+      })
+      const plugin = new UIPlugin(toolbox)
+      await plugin.select()
+      expect(plugin.willEjectNativeBaseTheme).toEqual(true)
+      await plugin.postPackageInstall()
+      expect(toolbox.system.run).toHaveBeenCalledWith('node node_modules/native-base/ejectTheme.js')
+    })
+    it('when eject NativeBase theme is NOT selected native-base eject script is not executed', async () => {
+      const toolbox = new Toolbox()
+      toolbox.prompt = prompt
+      toolbox.system = {
+        ...toolbox.system,
+        run: jest.fn()
+      }
+      sendKeystrokes(async () => {
+        io.send(KEYS.Enter)
+        await delay(10)
+        io.send('N')
+        await delay(10)
+      })
+      const plugin = new UIPlugin(toolbox)
+      await plugin.select()
+      expect(plugin.willEjectNativeBaseTheme).toEqual(false)
+      await plugin.postPackageInstall()
+      expect(toolbox.system.run).not.toHaveBeenCalledWith('node node_modules/native-base/ejectTheme.js')
+    })
+  })
 })

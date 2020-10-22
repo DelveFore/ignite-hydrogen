@@ -7,11 +7,6 @@ export const enum OPTIONS {
   Paper = 'Paper'
 }
 
-const ejectNativeBaseTheme = async (toolbox: IgniteToolbox) => {
-  const { system } = toolbox
-  await system.run('node node_modules/native-base/ejectTheme.js')
-}
-
 export default class Plugin implements BoilerplatePlugin {
   OPTIONS
   toolbox: IgniteToolbox
@@ -42,7 +37,7 @@ export default class Plugin implements BoilerplatePlugin {
 
   postPackageInstall = async () => {
     if (this.willEjectNativeBaseTheme) {
-      await ejectNativeBaseTheme(this.toolbox)
+      await this._ejectNativeBaseTheme()
     }
   }
 
@@ -85,5 +80,10 @@ export default class Plugin implements BoilerplatePlugin {
       selected: this.selected,
       willEjectNativeBaseTheme: this.willEjectNativeBaseTheme
     }
+  }
+
+  _ejectNativeBaseTheme = async () => {
+    const { system } = this.toolbox
+    await system.run('node node_modules/native-base/ejectTheme.js')
   }
 }
