@@ -1,7 +1,27 @@
 import { BoilerplateProps, IgniteToolbox } from "../types"
-import * as StateMachine from "./stateMachine"
+import { BoilerplatePlugin } from "../plugins/IBoilerplatePlugin"
 
-export const generateBoilerplate = async (toolbox: IgniteToolbox, templateProps: BoilerplateProps, spinner, pluginPath: string) => {
+export const codeStyleCleanUp = async (toolbox: IgniteToolbox, spinner) => {
+  const {
+    system,
+    ignite,
+  } = toolbox
+  ignite.log("linting")
+  spinner.text = "linting"
+  await system.spawn(`${ignite.useYarn ? "yarn" : "npm run"} lint`)
+  ignite.log("formatting")
+  spinner.text = "formatting"
+  await system.spawn(`${ignite.useYarn ? "yarn" : "npm run"} format`)
+  spinner.succeed("Linted and formatted")
+}
+
+export const generateBoilerplate = async (
+  toolbox: IgniteToolbox,
+  templateProps: BoilerplateProps,
+  spinner,
+  pluginPath: string,
+  boilerPlatePlugins: BoilerplatePlugin
+) => {
   const {
     filesystem,
     ignite,
@@ -10,6 +30,7 @@ export const generateBoilerplate = async (toolbox: IgniteToolbox, templateProps:
     includeDetox,
     useExpo
   } = templateProps
+
   // copy our App, Tests & storybook directories
   spinner.text = "▸ copying files"
   spinner.start()
@@ -84,7 +105,7 @@ export const generateBoilerplate = async (toolbox: IgniteToolbox, templateProps:
     { template: "storybook/storybook.tsx.ejs", target: "storybook/storybook.tsx" },
     { template: "bin/postInstall", target: "bin/postInstall" },
   ]
-    .concat(StateMachine.TEMPLATES)
+    .concat(boilerPlatePlugins.getTemplates())
     .concat(EXAMPLE_SCREENS)
 
   await ignite.copyBatch(toolbox, templates, templateProps, {
