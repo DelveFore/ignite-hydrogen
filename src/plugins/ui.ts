@@ -31,10 +31,12 @@ export default class Plugin implements BoilerplatePlugin {
 
   cleanUp = async () => {
     const { filesystem } = this.toolbox
-    if (OPTIONS.NativeBase === this.selected) {
-      filesystem.move(`${process.cwd()}/native-base-theme/components`, `${process.cwd()}/app/theme/components`)
-      filesystem.move(`${process.cwd()}/native-base-theme/variables`, `${process.cwd()}/app/theme/variables`)
-      filesystem.remove(`${process.cwd()}/native-base-theme`)
+    if (this.selected === OPTIONS.NativeBase) {
+      if (filesystem.exists(`${process.cwd()}/native-base-theme`)) {
+        filesystem.move(`${process.cwd()}/native-base-theme/components`, `${process.cwd()}/app/theme/components`)
+        filesystem.move(`${process.cwd()}/native-base-theme/variables`, `${process.cwd()}/app/theme/variables`)
+        filesystem.remove(`${process.cwd()}/native-base-theme`)
+      }
     }
   }
 
