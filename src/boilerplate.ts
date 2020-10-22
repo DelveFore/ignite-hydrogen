@@ -1,10 +1,9 @@
 import { getReactNativeVersion } from "./lib/react-native-version"
 import { IgniteToolbox, IgniteRNInstallResult, BoilerplateProps } from "./types"
 import { expo } from "./lib/expo"
-import * as StateMachine from "./lib/stateMachine"
-import * as UI from "./lib/ui"
-import { generateBoilerplate } from "./lib/boilerplate"
+import { codeStyleCleanUp, generateBoilerplate } from "./lib/boilerplate"
 import mergePackageJsons from "./lib/mergePackageJsons"
+import Plugins from "./plugins"
 
 // We need this value here, as well as in our package.json.ejs template
 export const REACT_NATIVE_GESTURE_HANDLER_VERSION = "^1.5.0"
@@ -61,6 +60,8 @@ export const install = async (toolbox: IgniteToolbox) => {
 
   const name = parameters.first
   const spinner = print.spin(`using the ${blue("DelveFore")} ${bold("Hydrogen")} boilerplate started from ${red("Infinite Red")} Bowser v5.x.x boilerplate`).succeed()
+
+  // Are we going to use Expo
   let useExpo = parameters.options.expo
   const askAboutExpo = useExpo === undefined
   if (askAboutExpo) {
@@ -83,6 +84,7 @@ export const install = async (toolbox: IgniteToolbox) => {
     }
   }
 
+  // Are we going to use Detox
   let includeDetox = false
   if (isMac && !useExpo) {
     const isCocoapodsInstalled = await system.which(`pod`)
@@ -125,8 +127,12 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     }
   }
 
-  const { selected: selectedStateMachine } = await StateMachine.select(toolbox)
-  const { selected: selectedUI, willEjectNativeBaseTheme } = await UI.select(toolbox)
+  // Plugins creation
+  const plugins = new Plugins(toolbox)
+
+  // Plugins selections (Ask everything first)
+  await plugins.select()
+
   // attempt to install React Native or die trying
   let rnInstall: IgniteRNInstallResult
   if (useExpo) {
@@ -164,11 +170,11 @@ And here: https://guides.cocoapods.org/using/getting-started.html
     i18n: false,
     includeDetox,
     useExpo,
-    useStateMachineMST: StateMachine.OPTIONS.MST === selectedStateMachine,
-    useNativeBase: UI.OPTIONS.NativeBase === selectedUI
+    useStateMachineMST: plugins.isMSTSelected(),
+    useNativeBase: plugins.isNativeBaseSelected()
   }
 
-  await generateBoilerplate(toolbox, templateProps, spinner, ignite.ignitePluginPath())
+  await generateBoilerplate(toolbox, templateProps, spinner, ignite.ignitePluginPath(), plugins)
 
   await ignite.setIgniteConfig("navigation", "react-navigation")
 
@@ -284,12 +290,10 @@ And here: https://guides.cocoapods.org/using/getting-started.html
   }
   spinner.succeed(`Installed dependencies`)
 
-  // run NativeBase Theme ejection
-  if (willEjectNativeBaseTheme) {
-    await UI.ejectNativeBaseTheme(toolbox)
-    await UI.cleanUp(toolbox, selectedUI)
-  }
-  await StateMachine.cleanUp(toolbox, selectedStateMachine)
+  spinner.text = 'Plugins: Running Post Package-Install'
+  spinner.start()
+  await plugins.postPackageInstall()
+  spinner.succeed('Plugins: completed Post Package-Install')
 
   // run react-native link to link assets
   if (!useExpo) {
@@ -307,15 +311,13 @@ And here: https://guides.cocoapods.org/using/getting-started.html
       return contents.split("\\").join("/")
     })
   }
+  spinner.text = 'Plugins: Cleaning up'
+  spinner.start()
+  await plugins.cleanUp()
+  spinner.succeed('Plugins: cleaned')
 
   // let eslint and prettier clean things up
-  ignite.log("linting")
-  spinner.text = "linting"
-  await system.spawn(`${ignite.useYarn ? "yarn" : "npm run"} lint`)
-  ignite.log("formatting")
-  spinner.text = "formatting"
-  await system.spawn(`${ignite.useYarn ? "yarn" : "npm run"} format`)
-  spinner.succeed("Linted and formatted")
+  await codeStyleCleanUp(toolbox, spinner)
 
   const perfDuration = (new Date().getTime() - perfStart) / 10 / 100
   spinner.succeed(`ignited ${yellow(name)} in ${perfDuration}s`)
