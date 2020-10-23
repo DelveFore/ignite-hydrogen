@@ -1,9 +1,8 @@
 import { stdin } from 'mock-stdin'
 import * as stdMocks from 'std-mocks'
-import { Toolbox } from "gluegun/build/domain/toolbox"
-import { prompt } from 'gluegun/prompt'
 import UIPlugin, { OPTIONS } from "../../../src/plugins/ui"
 import { KEYS, sendKeystrokes, delay } from "../../testUtils/cli"
+import { createBoilerplateToolbox } from "../../testUtils"
 
 describe('Boilerplate Plugin UI', () => {
   // Mock stdin so we can send messages to the CLI
@@ -18,8 +17,7 @@ describe('Boilerplate Plugin UI', () => {
   })
   describe('select()', () => {
     it('prompts and returns selected for NativeBase', async () => {
-      const toolbox = new Toolbox()
-      toolbox.prompt = prompt
+      const toolbox = createBoilerplateToolbox()
       sendKeystrokes(async () => {
         io.send(KEYS.Enter)
         await delay(10)
@@ -37,8 +35,7 @@ describe('Boilerplate Plugin UI', () => {
   })
   describe('postPackageInstall()', () => {
     it('when eject NativeBase theme is selected then native-base eject script is executed', async () => {
-      const toolbox = new Toolbox()
-      toolbox.prompt = prompt
+      const toolbox = createBoilerplateToolbox()
       toolbox.system = {
         ...toolbox.system,
         run: jest.fn()
@@ -56,8 +53,7 @@ describe('Boilerplate Plugin UI', () => {
       expect(toolbox.system.run).toHaveBeenCalledWith('node node_modules/native-base/ejectTheme.js')
     })
     it('when eject NativeBase theme is NOT selected native-base eject script is not executed', async () => {
-      const toolbox = new Toolbox()
-      toolbox.prompt = prompt
+      const toolbox = createBoilerplateToolbox()
       toolbox.system = {
         ...toolbox.system,
         run: jest.fn()

@@ -1,5 +1,5 @@
 import { codeStyleCleanUp, generateBoilerplate } from "../../lib/boilerplate"
-import { IgniteToolbox, BoilerplateProps } from '../../types'
+import { IgniteToolbox, BoilerplateProps, BoilerplateToolbox } from "../../types"
 import { read } from 'fs-jetpack'
 import Plugins from "../../plugins"
 import ProjectInfo, { getDepVersion } from "../../lib/ProjectInfo"
@@ -17,8 +17,14 @@ export const run = async (toolbox: IgniteToolbox) => {
   const { red, bold, blue } = colors
 
   const spinner = print.spin(`using the ${blue("DelveFore")} ${bold("Hydrogen")} boilerplate started from ${red("Infinite Red")} Bowser v5.x.x boilerplate`).succeed()
+  const boilerplateToolbox: BoilerplateToolbox = {
+    ...toolbox,
+    spinner,
+    name: pascalName,
+    useExpo: !!packageJson.dependencies.expo
+  }
 
-  const plugins = new Plugins(toolbox)
+  const plugins = new Plugins(boilerplateToolbox)
   await plugins.select(true)
 
   const props: BoilerplateProps = {
@@ -34,10 +40,10 @@ export const run = async (toolbox: IgniteToolbox) => {
     useStateMachineMST: ProjectInfo.hasMST(),
     useNativeBase: ProjectInfo.hasNativeBase()
   }
-  await generateBoilerplate(toolbox, props, spinner, `${__dirname}/../../../`, plugins)
+  await generateBoilerplate(boilerplateToolbox, props, `${__dirname}/../../../`, plugins)
   spinner.stop()
   spinner.text = 'Plugins cleanup'
   spinner.start()
   await plugins.cleanUp()
-  await codeStyleCleanUp(toolbox, spinner)
+  await codeStyleCleanUp(boilerplateToolbox)
 }

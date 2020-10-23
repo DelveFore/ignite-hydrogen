@@ -1,9 +1,8 @@
 import { stdin } from 'mock-stdin'
 import * as stdMocks from 'std-mocks'
-import { Toolbox } from "gluegun/build/domain/toolbox"
-import { prompt } from 'gluegun/prompt'
 import Plugins from "../../../src/plugins"
 import { KEYS, sendKeystrokes, delay } from "../../testUtils/cli"
+import { createBoilerplateToolbox } from "../../testUtils"
 
 describe('Boilerplate Plugin UI', () => {
   // Mock stdin so we can send messages to the CLI
@@ -17,9 +16,8 @@ describe('Boilerplate Plugin UI', () => {
     io.restore()
   })
   describe('select()', () => {
-    it('prompts for UI and StateMachine', async () => {
-      const toolbox = new Toolbox()
-      toolbox.prompt = prompt
+    it('prompts for Detox, UI, and StateMachine', async () => {
+      const toolbox = createBoilerplateToolbox()
       sendKeystrokes(async () => {
         io.send(KEYS.Enter)
         await delay(10)

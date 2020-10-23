@@ -1,4 +1,4 @@
-import { IgniteToolbox } from "../types"
+import { BoilerplateToolbox } from "../types"
 import { BoilerplatePlugin } from "./IBoilerplatePlugin"
 import ProjectInfo from "../lib/ProjectInfo"
 
@@ -9,11 +9,11 @@ export const enum OPTIONS {
 
 export default class Plugin implements BoilerplatePlugin {
   OPTIONS
-  toolbox: IgniteToolbox
+  toolbox: BoilerplateToolbox
   willEjectNativeBaseTheme: boolean
   selected: OPTIONS
 
-  constructor (toolbox: IgniteToolbox) {
+  constructor (toolbox: BoilerplateToolbox) {
     this.toolbox = toolbox
   }
 
