@@ -1,9 +1,8 @@
 import { stdin } from 'mock-stdin'
 import * as stdMocks from 'std-mocks'
-import { Toolbox } from "gluegun/build/domain/toolbox"
-import { prompt } from 'gluegun/prompt'
 import StateMachinePlugin, { OPTIONS } from "../../../src/plugins/stateMachine"
 import { KEYS, sendKeystrokes, delay } from "../../testUtils/cli"
+import { createBoilerplateToolbox } from "../../testUtils"
 
 describe('Boilerplate Plugin StateMachine', () => {
   // Mock stdin so we can send messages to the CLI
@@ -18,8 +17,7 @@ describe('Boilerplate Plugin StateMachine', () => {
   })
   describe('select()', () => {
     it('prompts and returns selected for Redux (SagaSauce)', async () => {
-      const toolbox = new Toolbox()
-      toolbox.prompt = prompt
+      const toolbox = createBoilerplateToolbox()
       sendKeystrokes(async () => {
         io.send(KEYS.Enter)
         await delay(10)

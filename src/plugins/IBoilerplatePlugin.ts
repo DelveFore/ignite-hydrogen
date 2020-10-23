@@ -1,4 +1,4 @@
-import { IgniteToolbox, IgniteCopyJob } from "../types"
+import { BoilerplateToolbox, IgniteCopyJob } from "../types"
 
 export interface GetTemplates {
   (): ReadonlyArray<IgniteCopyJob>
@@ -7,7 +7,7 @@ export interface GetTemplates {
 export interface BoilerplatePlugin {
   selected: any
   OPTIONS: Enumerator
-  toolbox: IgniteToolbox
+  toolbox: BoilerplateToolbox
   postPackageInstall: any
   cleanUp: any
   select: any
