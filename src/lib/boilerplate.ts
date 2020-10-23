@@ -1,10 +1,11 @@
-import { BoilerplateProps, IgniteToolbox } from "../types"
+import { BoilerplateProps, BoilerplateToolbox } from "../types"
 import { BoilerplatePlugin } from "../plugins/IBoilerplatePlugin"
 
-export const codeStyleCleanUp = async (toolbox: IgniteToolbox, spinner) => {
+export const codeStyleCleanUp = async (toolbox: BoilerplateToolbox) => {
   const {
     system,
     ignite,
+    spinner
   } = toolbox
   ignite.log("linting")
   spinner.text = "linting"
@@ -16,15 +17,15 @@ export const codeStyleCleanUp = async (toolbox: IgniteToolbox, spinner) => {
 }
 
 export const generateBoilerplate = async (
-  toolbox: IgniteToolbox,
+  toolbox: BoilerplateToolbox,
   templateProps: BoilerplateProps,
-  spinner,
   pluginPath: string,
   boilerPlatePlugins: BoilerplatePlugin
 ) => {
   const {
     filesystem,
     ignite,
+    spinner
   } = toolbox
   const {
     includeDetox,

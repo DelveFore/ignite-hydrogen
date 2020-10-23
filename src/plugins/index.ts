@@ -1,52 +1,60 @@
-import { IgniteToolbox } from "../types"
+import { BoilerplateToolbox } from "../types"
 import { BoilerplatePlugin } from "./IBoilerplatePlugin"
 import StateMachinePlugin, { OPTIONS as StateMachineOptions } from './stateMachine'
 import UIPlugin, { OPTIONS as UIOptions } from './ui'
+import DetoxPlugin from './detox'
 
 export default class Plugins implements BoilerplatePlugin {
   OPTIONS: never
-  toolbox: IgniteToolbox
+  toolbox: BoilerplateToolbox
   selected: never
-  plugins: Array<BoilerplatePlugin>
+  plugins: any
 
-  constructor (toolbox: IgniteToolbox) {
-    this.plugins = [
-      new StateMachinePlugin(toolbox),
-      new UIPlugin(toolbox)
-    ]
+  constructor (toolbox: BoilerplateToolbox) {
+    this.plugins = {
+      DetoxPlugin: new DetoxPlugin(toolbox),
+      StateMachinePlugin: new StateMachinePlugin(toolbox),
+      UIPlugin: new UIPlugin(toolbox)
+    }
+  }
+
+  _iteratePlugins = async (iteratee: Function) => {
+    const list = Object.values(this.plugins) as Array<BoilerplateToolbox>
+    for (const plugin of list) {
+      await iteratee(plugin)
+    }
   }
 
   cleanUp = async () => {
-    for (const plugin of this.plugins) {
-      await plugin.cleanUp()
-    }
+    return this._iteratePlugins(async (plugin) => await plugin.cleanUp())
   }
 
   select = async (useProjectInfo = false) => {
-    for (const plugin of this.plugins) {
-      await plugin.select(useProjectInfo)
-    }
+    return this._iteratePlugins(async (plugin) => await plugin.select(useProjectInfo))
   }
 
   postPackageInstall = async () => {
-    for (const plugin of this.plugins) {
-      await plugin.postPackageInstall()
-    }
+    return this._iteratePlugins(async (plugin) => await plugin.postPackageInstall())
   }
 
   getTemplates = () => {
+    const list = Object.values(this.plugins) as Array<BoilerplateToolbox>
     let result = []
-    this.plugins.forEach(plugin => {
+    list.forEach(plugin => {
       result = result.concat(plugin.getTemplates())
     })
     return result
   }
 
   isNativeBaseSelected = () => {
-    return this.plugins[1].selected === UIOptions.NativeBase
+    return this.plugins.UIPlugin.selected === UIOptions.NativeBase
   }
 
   isMSTSelected = () => {
-    return this.plugins[0].selected === StateMachineOptions.MST
+    return this.plugins.StateMachinePlugin.selected === StateMachineOptions.MST
+  }
+
+  isDetoxSelected = () => {
+    return this.plugins.DetoxPlugin.selected
   }
 }

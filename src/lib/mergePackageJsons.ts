@@ -1,4 +1,4 @@
-import { IgniteToolbox, BoilerplateProps } from "../types"
+import { BoilerplateProps, BoilerplateToolbox } from "../types"
 import { __, assoc, merge, omit, pipe } from "ramda"
 
 export const _mergePackages = (currentPackage, templatePackage) => {
@@ -19,8 +19,8 @@ export const _mergePackages = (currentPackage, templatePackage) => {
 /**
  * Merge the package.json from our template into the one provided from react-native init.
  */
-export default async (toolbox: IgniteToolbox, templateProps: BoilerplateProps, spinner, pluginPath: string) => {
-  const { ignite, template, strings, filesystem } = toolbox
+export default async (toolbox: BoilerplateToolbox, templateProps: BoilerplateProps, pluginPath: string) => {
+  const { ignite, template, strings, filesystem, spinner } = toolbox
   // transform our package.json so we can replace variables
   ignite.log("merging Hydrogen package.json with React Native package.json")
   const rawJson = await template.generate({
