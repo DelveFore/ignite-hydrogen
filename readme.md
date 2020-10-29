@@ -6,7 +6,7 @@ Extending from fantastic and hotest React Native boilerplate [Ignite Red's Bower
 > In everyway those contributing `Hydrogen` want to promote the people and along with efforts of Ignite Red for these open source projects. Please check out ways to support their efforts and the open source community!
 
 ## Concepts
-There is a whole project soon to be released for everyone! In the meantime, some quick highlights we'll leverage in version 1 (see roadmap for details including GraphQL support and potentially support for Mobx-State-Tree)
+(see roadmap for details including GraphQL and Mobx-State-Tree support)
 
 - Finite State Machine with asynchornous state management (via Saga and Redux)
 - Atomic Design UI Library implementing BEM and View Styling separation
@@ -16,12 +16,17 @@ Includes:
 
 - React Native
 - React Navigation 5
-- Redux (optional - if not Mobx State Tree)
-  - Redux Sauce
-  - Saga Sauce
-- Mobx State Tree (optional - if not Redux)
 - Reactotron (requires 2.x)
-- NativeBase (alternatives coming soon)
+- State Machine
+  - Redux (optional)
+    - Redux Sauce
+    - Saga Sauce
+  - Mobx State Tree (optional)
+- UI
+  - NativeBase (alternatives coming soon)
+- API
+  - jsonapi.org
+  - GraphQL (coming soon)
 - And more!
 
 

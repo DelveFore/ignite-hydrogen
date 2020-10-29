@@ -4,7 +4,7 @@ export const description = "Generates a React Native screen."
 export const run = async function(toolbox: GluegunToolbox) {
   // grab some features
   const { parameters, print, strings, ignite, filesystem, patching } = toolbox
-  const { camelCase, isBlank, kebabCase, pascalCase } = strings
+  const { camelCase, isBlank, pascalCase } = strings
 
   // validation
   if (isBlank(parameters.first)) {
@@ -25,13 +25,12 @@ export const run = async function(toolbox: GluegunToolbox) {
   // get permutations of the given name, suffixed
   const pascalName = pascalCase(name) + "Screen"
   const camelName = camelCase(name) + "Screen"
-  const kebabName = kebabCase(name) + "-screen"
 
-  const props = { pascalName, camelName }
+  const props = { pascalName, camelName, name }
   const jobs = [
     {
       template: `screen.ejs`,
-      target: `app/screens/${kebabName}/index.tsx`,
+      target: `app/screens/${pascalName}/index.tsx`,
     },
   ]
 
@@ -40,7 +39,7 @@ export const run = async function(toolbox: GluegunToolbox) {
 
   // patch the barrel export file
   const barrelExportPath = `${process.cwd()}/app/screens/index.ts`
-  const importToAdd = `import ${pascalName} from './${kebabName}'
+  const importToAdd = `import ${pascalName} from './${pascalName}'
 `
 
   const exportAfter = `export { `
