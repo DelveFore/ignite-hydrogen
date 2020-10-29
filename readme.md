@@ -308,7 +308,97 @@ In addition to `redux` --> `mobx-state-tree`, we've also transitioned to using `
 
 In Bowser, TypeScript is fully set up, so if you know TS, all you need to do is start coding!
 
-### Resources
+## GraphQL (Apollo) vs SagaSauce (Redux)
+GraphQL with Apollo requires changes in the Screen, Component, and creating a Schema
+
+### Design/Architecture
+#### Client Side
+- Screen. Apollo is used to wrap the screen
+```
+import { ApolloProvider } from 'react-apollo'
+import ApolloClient from 'apollo-boost'
+
+const client = new ApolloClient()
+
+return (
+  <ApolloProvider client={client}>
+    <View />
+  </ApolloProvider>
+)
+
+```
+Wrap the `return ()` inside of `ApolloProvider` and pass `client` to ApolloProvider 
+- Component. The structure of the query is stated and then exported with the component
+```
+import { graphql } from 'react-apollo'
+import { gql } from 'apollo-boost'
+
+const Contacts = ({ data: { loading, error, contacts } }) => {
+  if (loading) {
+    return <Text>Loading...</Text>
+  }
+  if (error) {
+    return <Text>{error.message}</Text>
+  }
+  return (...)
+}
+
+export const contactsListQuery = gql`
+  query ContactsQuery {
+    contacts {
+      id
+      firstName
+      lastName
+    }
+  }
+`
+
+export default graphql(contactsListQuery)(Contacts)
+```
+- Schema. _I do not know how this is used yet_
+```
+export const typeDefs = `
+  type Contact {
+    id:ID!
+    firstName: String
+    lastName: String
+  }
+  
+  type Query {
+    contacts: [Contact]
+  }
+`
+```
+#### Server Side 
+- Server.js
+```
+import express from 'express'
+import bodyParser from 'body-parser'
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express' (DOES NOT WORK SINCE appolo-server-express 1.0.0)
+import { schema } from './src/schema'
+```
+- Schema
+```
+import { makeExecutableSchema } from 'graphql-tools'
+
+const typeDefs = `
+  type Contact {
+    id:ID!
+    firstName: String
+    lastName: String
+  }
+  
+  type Query {
+    contacts: [Contact]
+  }
+ `
+
+const schema = makeExecutableSchema({ typeDefs })
+
+export { schema }
+```
+
+## Resources
 
 If you are new to TypeScript, here are some of our favorite resources:
 
