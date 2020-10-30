@@ -119,6 +119,7 @@
     "gluegun": "^4.5.0",
     "ignite-cli": "^3.5.3",
     "jest": "^24.9.0",
+    "jest-mock-process": "^1.4.0",
     "memfs": "^3.2.0",
     "mobx": "^4.15.4",
     "mobx-react-lite": "^1.4.1",
@@ -130,7 +131,7 @@
     "semantic-release": "^15.13.28",
     "sinon": "^7.5.0",
     "std-mocks": "^1.0.1",
-    "tempy": "^0.3.0",
+    "temp": "^0.9.2",
     "ts-jest": "^24.1.0",
     "typescript": "^3.6.4",
     "unionfs": "^4.4.0"

@@ -1,65 +1,62 @@
-import * as stdMocks from "std-mocks"
-import * as fs from "fs"
-import * as JetPack from 'fs-jetpack'
-import { Volume } from "memfs"
+import { read, write } from 'fs-jetpack'
 import { run } from "../../../src/commands/generate/screen"
-import { createBoilerplateToolbox } from "../../testUtils"
+import { createBoilerplateToolbox, getTemplateProps, Plugins } from "../../testUtils"
 import Console, { ConsoleMethod } from "../../testUtils/Console"
+import { generateBoilerplate } from "../../../src/lib/boilerplate"
+import temp = require('temp')
+import mockProcess = require('jest-mock-process')
 
-const screensFileContent = fs.readFileSync(process.cwd() + '/boilerplate/app/screens/index.ts', { encoding: 'utf8' })
-
-jest.mock('fs', () => {
-  const fs = jest.requireActual(`fs`)
-  const unionfs = require(`unionfs`).default
-  return unionfs.use(fs)
-})
-
+const originalDir = process.cwd()
+const projectPackage = read(originalDir + '/package.json')
 describe('Generate Screen', () => {
-  let vol = null
   const consoleSpies = new Console(console)
+  let mockExit = null
+  let toolbox = null
+  let templateProps = null
   beforeAll(() => {
-    stdMocks.use()
+    temp.track()
   })
-  afterAll(() => {
-    stdMocks.restore()
-  })
-  beforeEach(() => {
+  beforeEach(async () => {
     consoleSpies.mock([ConsoleMethod.log])
-    vol = Volume.fromJSON(
-      {
-        "app/screens/ExampleScreen/index.tsx": '',
-        "app/screens/index.ts": screensFileContent,
-      },
-      process.cwd()
-    )
-    const fsMock: any = fs
-    fsMock.use(vol)
+    mockExit = mockProcess.mockProcessExit()
+    const tempDir = temp.mkdirSync('temp')
+    process.chdir(tempDir)
+    write(process.cwd() + '/package.json', projectPackage)
+    toolbox = createBoilerplateToolbox({ cwd: originalDir })
+    templateProps = getTemplateProps(toolbox, JSON.parse(projectPackage))
+    await generateBoilerplate(toolbox, templateProps, originalDir, new Plugins(toolbox))
   })
   afterEach(() => {
     consoleSpies.restore()
-  })
-  describe('Bug with fs-jetpack', () => {
-    it('is able to write with mode=undefined being set to a default', async () => {
-      await JetPack.writeAsync('app/screens/ExampleScreen/index.tsx', 'sdfgsdgsdfgsdfgdf')
-    })
+    temp.cleanupSync()
+    process.chdir(originalDir)
+    mockExit.mockRestore()
   })
   describe('run()', () => {
     it('notifies user that name is required and stops', async () => {
-      const toolbox = createBoilerplateToolbox()
       await run(toolbox)
-
       expect(console.log).toHaveBeenCalledTimes(2)
       expect(console.log).toHaveProperty('mock.calls')
       expect(consoleSpies.log.mock.calls[0][0]).toContain('A name is required.')
     })
     it('writes CamelCased Screen', async () => {
-      const toolbox = createBoilerplateToolbox()
-      expect(toolbox).toHaveProperty('parameters')
       toolbox.parameters.first = 'Example'
-      expect(toolbox).toHaveProperty('parameters.first')
+      const { filesystem } = toolbox
       await run(toolbox)
       expect(consoleSpies.log.mock.calls[0][0]).not.toContain('A name is required.')
-      expect(vol.toJSON()).toEqual({ '/foo': 'bar' })
+      let dirs = filesystem.subdirectories('.')
+      expect(dirs).toContain('app')
+      dirs = filesystem.subdirectories('./app')
+      expect(dirs).toContain('app/screens')
+      expect(filesystem.list('app/screens')).toContain('ExampleScreen')
+    })
+    it('writes content into index.tsx that uses createScreen()', async () => {
+      toolbox.parameters.first = 'Example'
+      const { filesystem } = toolbox
+      await run(toolbox)
+      expect(filesystem.exists('./app/screens/ExampleScreen/index.tsx')).toBeTruthy()
+      const content = filesystem.read('app/screens/ExampleScreen/index.tsx')
+      expect(content).toContain('export default createScreen(\'ExampleScreen\'')
     })
   })
 })

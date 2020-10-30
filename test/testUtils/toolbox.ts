@@ -29,14 +29,19 @@ export const createBoilerplateToolbox = (options = BoilerplateToolboxDefaultOpti
   const packageJson = read(cwd + '/package.json', 'json')
   const plugin = new Plugin()
   plugin.name = packageJson.name
+  const spinnerInstance = Ora('Hydrogen')
+  const spinner = sinon.mock(spinnerInstance)
+  spinner.start = () => null
+  spinner.stop = () => null
+  spinner.succeed = () => null
   const toolbox = {
     ...coreToolbox,
-    build,
     name: 'HydrogenExample',
-    plugin,
     useExpo: true,
+    spinner,
+    build,
+    plugin,
     reactNative: undefined,
-    spinner: sinon.mock(Ora('Hydrogen')),
     print,
     filesystem,
     system,
