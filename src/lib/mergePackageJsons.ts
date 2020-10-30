@@ -34,7 +34,7 @@ export default async (toolbox: BoilerplateToolbox, templateProps: BoilerplatePro
   const currentPackage = filesystem.read("package.json", "json")
 
   // deep merge
-  const newPackage = _mergePackages(currentPackage, newPackageJson)
+  const newPackage = _mergePackages(currentPackage || {}, newPackageJson)
 
   // write this out
   ignite.log("writing newly merged package.json")
