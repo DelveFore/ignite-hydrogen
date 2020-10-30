@@ -59,25 +59,26 @@ describe('Generate Screen', () => {
       expect(dirs).toContain('app')
       dirs = filesystem.subdirectories('./app')
       expect(dirs).toContain('app/screens')
-      expect(filesystem.list('app/screens')).toContain('ExampleScreen')
+      expect(filesystem.list('app/screens')).toContain('Example')
     })
     it('writes content into index.tsx that uses createScreen()', async () => {
       toolbox.parameters.first = 'Example'
       await run(toolbox)
       // assertions
       const { filesystem } = toolbox
-      expect(filesystem.exists('./app/screens/ExampleScreen/index.tsx')).toBeTruthy()
-      const content = filesystem.read('app/screens/ExampleScreen/index.tsx')
-      expect(content).toContain('export default createScreen(\'ExampleScreen\'')
+      expect(filesystem.exists('./app/screens/Example/index.tsx')).toBeTruthy()
+      const content = filesystem.read('app/screens/Example/index.tsx')
+      expect(content).toContain('export default createScreen(\'Example\'')
     })
     it('index.tsx does not contain ViewStyle (we are using using NativeBase)', async () => {
       toolbox.parameters.first = 'Example'
       await run(toolbox)
       // assertions
       const { filesystem } = toolbox
-      const content = filesystem.read('app/screens/ExampleScreen/index.tsx')
+      const content = filesystem.read('app/screens/Example/index.tsx')
       expect(content).not.toContain('ViewStyle')
       expect(content).not.toContain('import { ViewStyle } from \'react-native\'')
+      expect(content).not.toContain('import { color } from \'../../theme\'')
     })
   })
   describe('run() State Machine selection', () => {
@@ -104,12 +105,13 @@ describe('Generate Screen', () => {
       await run(toolbox)
       // assertions
       const { filesystem } = toolbox
-      const content = filesystem.read('app/screens/ExampleScreen/index.tsx')
+      const content = filesystem.read('app/screens/Example/index.tsx')
       // Does not MST
       expect(content).not.toContain('import { useStores } from \'../../models\'')
       expect(content).not.toContain('const rootStore, { someStore, anotherStore } = useStores()')
+      expect(content).not.toContain('mobx')
       // Does have connectors for Redux
-      expect(content).toContain('createScreen(\'ExampleScreen\', (props) => {')
+      expect(content).toContain('createScreen(\'Example\', (props) => {')
       expect(content).toContain('// const { usersList } = props')
     })
     it('index.tsx has MST state but not Redux state', async () => {
@@ -131,13 +133,36 @@ describe('Generate Screen', () => {
       await run(toolbox)
       // assertions
       const { filesystem } = toolbox
-      const content = filesystem.read('app/screens/ExampleScreen/index.tsx')
+      const content = filesystem.read('app/screens/Example/index.tsx')
       // Does have connectors for MST
       expect(content).toContain('import { useStores } from \'../../models\'')
       expect(content).toContain('const rootStore, { someStore, anotherStore } = useStores()')
+      expect(content).toContain('mobx')
       // Does not have connections to Redux
-      expect(content).not.toContain('createScreen(\'ExampleScreen\', (props) => {')
+      expect(content).not.toContain('createScreen(\'Example\', (props) => {')
       expect(content).not.toContain('// const { usersList } = props')
+    })
+    it('does not contain TODO note about Redux', async () => {
+      const templateProps: BoilerplateProps = {
+        name: toolbox.name,
+        igniteVersion: '',
+        reactNativeVersion: '',
+        reactNativeGestureHandlerVersion: '',
+        vectorIcons: false,
+        animatable: false,
+        i18n: false,
+        includeDetox: false,
+        useExpo: false,
+        useStateMachineMST: false,
+        useNativeBase: true
+      }
+      await generateProject(toolbox, templateProps, originalDir)
+      // generate screen
+      await run(toolbox)
+      // assertions
+      const { filesystem } = toolbox
+      const content = filesystem.read('app/screens/Example/index.tsx')
+      expect(content).not.toContain('// TODO Support Redux React Hooks')
     })
   })
 })

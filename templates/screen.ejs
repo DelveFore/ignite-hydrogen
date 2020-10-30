@@ -1,21 +1,20 @@
 import React from 'react'
-import { observer } from 'mobx-react-lite'
 import { Screen, Text } from '../../components'
-import { useNavigation } from '@react-navigation/native'
+// import { useNavigation } from '@react-navigation/native'
 <% if (props.useStateMachineMST) { %>
+import { observer } from 'mobx-react-lite'
 // import { useStores } from '../../models'
 <% } -%>
-import { color } from '../../theme'
 import createScreen from '../createScreen'
 
 export default createScreen('<%= props.pascalName %>', (<% if (!props.useStateMachineMST) { %>props<% } -%>) => {
 // Pull in navigation via hook
 // const navigation = useNavigation()
-<% if (props.useStateMachineMST) { %>
+<% if (props.useStateMachineMST) { -%>
 // Pull in one or all of our MST stores
 // const rootStore, { someStore, anotherStore } = useStores()
-<% } else { %>
- // TODO Support Redux React Hooks (https://thoughtbot.com/blog/using-redux-with-react-hooks)
+<% } else { -%>
+<% // TODO Support Redux React Hooks (https://thoughtbot.com/blog/using-redux-with-react-hooks) -%>
 // const { usersList } = props
 <% } -%>
   return (

@@ -31,8 +31,8 @@ export const run = async function(toolbox: GluegunToolbox) {
   }
 
   // get permutations of the given name, suffixed
-  const pascalName = pascalCase(name) + "Screen"
-  const camelName = camelCase(name) + "Screen"
+  const pascalName = pascalCase(name)
+  const camelName = camelCase(name)
 
   const props: ScreenTemplateProps = {
     pascalName,
