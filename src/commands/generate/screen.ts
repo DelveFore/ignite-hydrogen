@@ -1,4 +1,12 @@
 import { GluegunToolbox } from "gluegun"
+import ProjectInfo from "../../lib/ProjectInfo"
+
+export interface ScreenTemplateProps {
+  pascalName: string
+  camelName: string
+  name: string
+  useStateMachineMST: boolean
+}
 
 export const description = "Generates a React Native screen."
 export const run = async function(toolbox: GluegunToolbox) {
@@ -26,7 +34,12 @@ export const run = async function(toolbox: GluegunToolbox) {
   const pascalName = pascalCase(name) + "Screen"
   const camelName = camelCase(name) + "Screen"
 
-  const props = { pascalName, camelName, name }
+  const props: ScreenTemplateProps = {
+    pascalName,
+    camelName,
+    name,
+    useStateMachineMST: ProjectInfo.hasMST()
+  }
   const jobs = [
     {
       template: `screen.ejs`,

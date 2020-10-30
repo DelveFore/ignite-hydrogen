@@ -1,18 +1,15 @@
-import { read, write } from 'fs-jetpack'
 import { run } from "../../../src/commands/generate/screen"
-import { createBoilerplateToolbox, getTemplateProps, Plugins } from "../../testUtils"
+import { createBoilerplateToolbox, generateProject } from "../../testUtils"
 import Console, { ConsoleMethod } from "../../testUtils/Console"
-import { generateBoilerplate } from "../../../src/lib/boilerplate"
+import { BoilerplateProps } from "../../../src/types"
 import temp = require('temp')
 import mockProcess = require('jest-mock-process')
 
 const originalDir = process.cwd()
-const projectPackage = read(originalDir + '/package.json')
 describe('Generate Screen', () => {
   const consoleSpies = new Console(console)
   let mockExit = null
   let toolbox = null
-  let templateProps = null
   beforeAll(() => {
     temp.track()
   })
@@ -21,10 +18,6 @@ describe('Generate Screen', () => {
     mockExit = mockProcess.mockProcessExit()
     const tempDir = temp.mkdirSync('temp')
     process.chdir(tempDir)
-    write(process.cwd() + '/package.json', projectPackage)
-    toolbox = createBoilerplateToolbox({ cwd: originalDir })
-    templateProps = getTemplateProps(toolbox, JSON.parse(projectPackage))
-    await generateBoilerplate(toolbox, templateProps, originalDir, new Plugins(toolbox))
   })
   afterEach(() => {
     consoleSpies.restore()
@@ -32,7 +25,24 @@ describe('Generate Screen', () => {
     process.chdir(originalDir)
     mockExit.mockRestore()
   })
-  describe('run()', () => {
+  describe('run() not impacted by selections', () => {
+    beforeEach(async () => {
+      toolbox = createBoilerplateToolbox({ cwd: originalDir })
+      const templateProps: BoilerplateProps = {
+        name: toolbox.name,
+        igniteVersion: '',
+        reactNativeVersion: '',
+        reactNativeGestureHandlerVersion: '',
+        vectorIcons: false,
+        animatable: false,
+        i18n: false,
+        includeDetox: false,
+        useExpo: false,
+        useStateMachineMST: false,
+        useNativeBase: true
+      }
+      await generateProject(toolbox, templateProps, originalDir)
+    })
     it('notifies user that name is required and stops', async () => {
       await run(toolbox)
       expect(console.log).toHaveBeenCalledTimes(2)
@@ -41,8 +51,9 @@ describe('Generate Screen', () => {
     })
     it('writes CamelCased Screen', async () => {
       toolbox.parameters.first = 'Example'
-      const { filesystem } = toolbox
       await run(toolbox)
+      // assertions
+      const { filesystem } = toolbox
       expect(consoleSpies.log.mock.calls[0][0]).not.toContain('A name is required.')
       let dirs = filesystem.subdirectories('.')
       expect(dirs).toContain('app')
@@ -52,11 +63,81 @@ describe('Generate Screen', () => {
     })
     it('writes content into index.tsx that uses createScreen()', async () => {
       toolbox.parameters.first = 'Example'
-      const { filesystem } = toolbox
       await run(toolbox)
+      // assertions
+      const { filesystem } = toolbox
       expect(filesystem.exists('./app/screens/ExampleScreen/index.tsx')).toBeTruthy()
       const content = filesystem.read('app/screens/ExampleScreen/index.tsx')
       expect(content).toContain('export default createScreen(\'ExampleScreen\'')
+    })
+    it('index.tsx does not contain ViewStyle (we are using using NativeBase)', async () => {
+      toolbox.parameters.first = 'Example'
+      await run(toolbox)
+      // assertions
+      const { filesystem } = toolbox
+      const content = filesystem.read('app/screens/ExampleScreen/index.tsx')
+      expect(content).not.toContain('ViewStyle')
+      expect(content).not.toContain('import { ViewStyle } from \'react-native\'')
+    })
+  })
+  describe('run() State Machine selection', () => {
+    beforeEach(async () => {
+      toolbox = createBoilerplateToolbox({ cwd: originalDir })
+      toolbox.parameters.first = 'Example'
+    })
+    it('index.tsx has Redux state but not MST state', async () => {
+      const templateProps: BoilerplateProps = {
+        name: toolbox.name,
+        igniteVersion: '',
+        reactNativeVersion: '',
+        reactNativeGestureHandlerVersion: '',
+        vectorIcons: false,
+        animatable: false,
+        i18n: false,
+        includeDetox: false,
+        useExpo: false,
+        useStateMachineMST: false,
+        useNativeBase: true
+      }
+      await generateProject(toolbox, templateProps, originalDir)
+      // generate screen
+      await run(toolbox)
+      // assertions
+      const { filesystem } = toolbox
+      const content = filesystem.read('app/screens/ExampleScreen/index.tsx')
+      // Does not MST
+      expect(content).not.toContain('import { useStores } from \'../../models\'')
+      expect(content).not.toContain('const rootStore, { someStore, anotherStore } = useStores()')
+      // Does have connectors for Redux
+      expect(content).toContain('createScreen(\'ExampleScreen\', (props) => {')
+      expect(content).toContain('// const { usersList } = props')
+    })
+    it('index.tsx has MST state but not Redux state', async () => {
+      const templateProps: BoilerplateProps = {
+        name: toolbox.name,
+        igniteVersion: '',
+        reactNativeVersion: '',
+        reactNativeGestureHandlerVersion: '',
+        vectorIcons: false,
+        animatable: false,
+        i18n: false,
+        includeDetox: false,
+        useExpo: false,
+        useStateMachineMST: true,
+        useNativeBase: true
+      }
+      await generateProject(toolbox, templateProps, originalDir)
+      // generate screen
+      await run(toolbox)
+      // assertions
+      const { filesystem } = toolbox
+      const content = filesystem.read('app/screens/ExampleScreen/index.tsx')
+      // Does have connectors for MST
+      expect(content).toContain('import { useStores } from \'../../models\'')
+      expect(content).toContain('const rootStore, { someStore, anotherStore } = useStores()')
+      // Does not have connections to Redux
+      expect(content).not.toContain('createScreen(\'ExampleScreen\', (props) => {')
+      expect(content).not.toContain('// const { usersList } = props')
     })
   })
 })

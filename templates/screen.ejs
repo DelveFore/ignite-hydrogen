@@ -1,27 +1,25 @@
 import React from 'react'
 import { observer } from 'mobx-react-lite'
-import { ViewStyle } from 'react-native'
 import { Screen, Text } from '../../components'
 import { useNavigation } from '@react-navigation/native'
+<% if (props.useStateMachineMST) { %>
 // import { useStores } from '../../models'
+<% } -%>
 import { color } from '../../theme'
 import createScreen from '../createScreen'
 
-const ROOT: ViewStyle = {
-  backgroundColor: color.palette.black,
-  flex: 1,
-}
-
-export default createScreen('<%= props.pascalName %>', () => {
+export default createScreen('<%= props.pascalName %>', (<% if (!props.useStateMachineMST) { %>props<% } -%>) => {
 // Pull in navigation via hook
-const navigation = useNavigation()
-// Pull in one of our MST stores
-// const { someStore, anotherStore } = useStores()
-// OR
-// const rootStore = useStores()
-
+// const navigation = useNavigation()
+<% if (props.useStateMachineMST) { %>
+// Pull in one or all of our MST stores
+// const rootStore, { someStore, anotherStore } = useStores()
+<% } else { %>
+ // TODO Support Redux React Hooks (https://thoughtbot.com/blog/using-redux-with-react-hooks)
+// const { usersList } = props
+<% } -%>
   return (
-    <Screen style={ROOT} preset="scroll">
+    <Screen preset="scroll">
       <Text preset="header" text="<%= props.camelName %>" />
     </Screen>
   )

@@ -1,23 +1,10 @@
 import { BoilerplateProps, BoilerplateToolbox } from "../../src/types"
-import { PackageJSON } from "gluegun/build/types/toolbox/meta-types"
 import { BoilerplatePlugin } from "../../src/plugins/IBoilerplatePlugin"
+import ProjectInfo from "../../src/lib/ProjectInfo"
+import { generateBoilerplate } from "../../src/lib/boilerplate"
+import mergePackageJsons from "../../src/lib/mergePackageJsons"
 
 export { createBoilerplateToolbox } from './toolbox'
-export const getTemplateProps = (toolbox: BoilerplateToolbox, packageJson: PackageJSON): BoilerplateProps => {
-  return {
-    name: toolbox.name,
-    igniteVersion: '',
-    reactNativeVersion: '',
-    reactNativeGestureHandlerVersion: '',
-    vectorIcons: false,
-    animatable: false,
-    i18n: false,
-    includeDetox: !!packageJson.dependencies.detox,
-    useExpo: !!packageJson.dependencies.expo,
-    useStateMachineMST: true,
-    useNativeBase: true
-  }
-}
 
 export class Plugins implements BoilerplatePlugin {
   OPTIONS: never
@@ -27,6 +14,7 @@ export class Plugins implements BoilerplatePlugin {
 
   constructor (toolbox: BoilerplateToolbox) {
     this.plugins = {}
+    this.toolbox = toolbox
   }
 
   _iteratePlugins = async (iteratee: Function) => {
@@ -58,14 +46,19 @@ export class Plugins implements BoilerplatePlugin {
   }
 
   isNativeBaseSelected = () => {
-    return true
+    return ProjectInfo.hasNativeBase()
   }
 
   isMSTSelected = () => {
-    return false
+    return ProjectInfo.hasMST()
   }
 
   isDetoxSelected = () => {
     return true
   }
+}
+
+export const generateProject = async (toolbox: BoilerplateToolbox, props: BoilerplateProps, originalDir: string) => {
+  await generateBoilerplate(toolbox, props, originalDir, new Plugins(toolbox))
+  await mergePackageJsons(toolbox, props, originalDir)
 }
