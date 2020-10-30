@@ -1,13 +1,13 @@
-import { all, takeLatest, fork } from 'redux-saga/effects'
+import { all, takeLatest, fork } from "redux-saga/effects"
 
 /** ------------ Modules ----------- */
-import { makeSagas } from '../modules'
+import { makeSagas } from "../modules"
 
 /* ------------- Types ------------- */
-import { Types as StartupTypes } from '../modules/Startup'
+import { Types as StartupTypes } from "../modules/Startup"
 
 /* ------------- Sagas ------------- */
-import { startup } from './Startup'
+import { startup } from "./Startup"
 
 /* ------------- API ------------- */
 
@@ -16,13 +16,13 @@ import { startup } from './Startup'
 
 /* ------------- Connect Types To Sagas ------------- */
 export const createRoot = ({ api }) => {
-  return function * root() {
+  return function* root() {
     yield all(
       [
         fork(startup),
         // some sagas only receive an action
-        takeLatest(StartupTypes.STARTUP, startup)
-      ].concat(makeSagas(api))
+        takeLatest(StartupTypes.STARTUP, startup),
+      ].concat(makeSagas(api)),
     )
   }
 }

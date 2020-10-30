@@ -1,4 +1,5 @@
 # Ignite Hydrogen
+
 > This project is still in early development. We do encourage participation and feel free to open Github Issues.
 
 Extending from fantastic and hotest React Native boilerplate [Ignite Red's Bower](https://github.com/infinitered/ignit-bower), the Ignite Hydrogen project is aimed at easily implementing principles and concepts from DelveFore to a specific purpose (more to come soon!).
@@ -6,7 +7,8 @@ Extending from fantastic and hotest React Native boilerplate [Ignite Red's Bower
 > In everyway those contributing `Hydrogen` want to promote the people and along with efforts of Ignite Red for these open source projects. Please check out ways to support their efforts and the open source community!
 
 ## Concepts
-There is a whole project soon to be released for everyone! In the meantime, some quick highlights we'll leverage in version 1 (see roadmap for details including GraphQL support and potentially support for Mobx-State-Tree)
+
+(see roadmap for details including GraphQL and Mobx-State-Tree support)
 
 - Finite State Machine with asynchornous state management (via Saga and Redux)
 - Atomic Design UI Library implementing BEM and View Styling separation
@@ -16,14 +18,18 @@ Includes:
 
 - React Native
 - React Navigation 5
-- Redux (optional - if not Mobx State Tree)
-  - Redux Sauce
-  - Saga Sauce
-- Mobx State Tree (optional - if not Redux)
 - Reactotron (requires 2.x)
-- NativeBase (alternatives coming soon)
+- State Machine
+  - Redux (optional)
+    - Redux Sauce
+    - Saga Sauce
+  - Mobx State Tree (optional)
+- UI
+  - NativeBase (alternatives coming soon)
+- API
+  - jsonapi.org
+  - GraphQL (coming soon)
 - And more!
-
 
 ## Quick Start
 
@@ -59,6 +65,7 @@ You should see an app that looks like the screenshot above!
 Next step -- follow this tutorial to learn how to create a trivia app with Ignite Bowser: https://shift.infinite.red/creating-a-trivia-app-with-ignite-bowser-part-1-1987cc6e93a1
 
 ## Code Styles
+
 One major departure from Ignite Red's Bowser is the code style choices, the team managing the Hydrogen project(s) chose to use StandardJS styling which brought `'` vs `"` usage among a few other differences.
 
 ## Generators
@@ -319,6 +326,7 @@ If you are new to TypeScript, here are some of our favorite resources:
 - [Official Docs](https://www.typescriptlang.org/docs/home.html)
 
 ## Contribute
+
 When contributing back to the project the recommended way is to integrate it with an example project. The follow are steps to making that happen.
 
 Clone this project to a directory similar to ~/Development or where ever you put your development projects, then...
@@ -335,11 +343,10 @@ yarn link "ignite-hydrogen"
 
 Now you're able to make changes in the `ignite-hydrogen/boilerplate` and then in your example project do `ignite generate boilerplate`. Keep in mind, this will overrite the existing files of the path in your `HydrogenExample` project.
 
-
 ## Premium Support
 
 While Hydrogen is an open sourcep project and Github issues can provide most of the support, please contact DelveFore for premimum support, **coaching**, and general design/development services (see www.delvefore.com and www.delvefore.com/#Get-Started)
-*ALSO* **[Infinite Red](https://infinite.red/)** offers premimum support for Ignite CLI and **general mobile app design/development services.**
+_ALSO_ **[Infinite Red](https://infinite.red/)** offers premimum support for Ignite CLI and **general mobile app design/development services.**
 
 [Ignite CLI](https://infinite.red/ignite) as open source projects, are free to use and always will be.
 Email us at [hello@infinite.red](mailto:hello@infinite.red) to get in touch with us for more details.

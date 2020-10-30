@@ -11,14 +11,14 @@ export const getDepVersion = (info: PackageJSON, dependencyKey: string) => {
  */
 export default {
   getDepVersion,
-  hasMST () {
-    const info = JSON.parse(read(process.cwd() + '/package.json'))
-    const version = getDepVersion(info, 'mobx')
+  hasMST() {
+    const info = JSON.parse(read(process.cwd() + "/package.json"))
+    const version = getDepVersion(info, "mobx")
     return !isNil(version) && !isEmpty(version)
   },
-  hasNativeBase () {
-    const info = JSON.parse(read(process.cwd() + '/package.json'))
-    const version = getDepVersion(info, 'native-base')
+  hasNativeBase() {
+    const info = JSON.parse(read(process.cwd() + "/package.json"))
+    const version = getDepVersion(info, "native-base")
     return !isNil(version) && !isEmpty(version)
-  }
+  },
 }

@@ -1,6 +1,7 @@
 // Copied from ignite-cli ./src/types.ts
 // https://github.com/infinitered/ignite/blob/master/src/types.ts
 import { GluegunToolbox, GluegunCommand } from "gluegun"
+import ora = require("ora")
 
 export type IgniteTools = {
   ignitePluginPath: Function
@@ -48,6 +49,12 @@ export type ReactNativeTools = {
 export interface IgniteToolbox extends GluegunToolbox {
   ignite: IgniteTools
   reactNative: ReactNativeTools
+}
+
+export interface BoilerplateToolbox extends IgniteToolbox {
+  name: string
+  spinner: ora.Ora
+  useExpo: boolean
 }
 
 export interface IgnitePlugin {

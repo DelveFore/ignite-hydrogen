@@ -1,21 +1,20 @@
-import { BoilerplateToolbox } from "../types"
-import { BoilerplatePlugin } from "./IBoilerplatePlugin"
-import StateMachinePlugin, { OPTIONS as StateMachineOptions } from "./stateMachine"
-import UIPlugin, { OPTIONS as UIOptions } from "./ui"
-import DetoxPlugin from "./detox"
+import { BoilerplateProps, BoilerplateToolbox } from "../../src/types"
+import { BoilerplatePlugin } from "../../src/plugins/IBoilerplatePlugin"
+import ProjectInfo from "../../src/lib/ProjectInfo"
+import { generateBoilerplate } from "../../src/lib/boilerplate"
+import mergePackageJsons from "../../src/lib/mergePackageJsons"
 
-export default class Plugins implements BoilerplatePlugin {
+export { createBoilerplateToolbox } from "./toolbox"
+
+export class Plugins implements BoilerplatePlugin {
   OPTIONS: never
   toolbox: BoilerplateToolbox
   selected: never
   plugins: any
 
   constructor(toolbox: BoilerplateToolbox) {
-    this.plugins = {
-      DetoxPlugin: new DetoxPlugin(toolbox),
-      StateMachinePlugin: new StateMachinePlugin(toolbox),
-      UIPlugin: new UIPlugin(toolbox),
-    }
+    this.plugins = {}
+    this.toolbox = toolbox
   }
 
   _iteratePlugins = async (iteratee: Function) => {
@@ -47,14 +46,23 @@ export default class Plugins implements BoilerplatePlugin {
   }
 
   isNativeBaseSelected = () => {
-    return this.plugins.UIPlugin.selected === UIOptions.NativeBase
+    return ProjectInfo.hasNativeBase()
   }
 
   isMSTSelected = () => {
-    return this.plugins.StateMachinePlugin.selected === StateMachineOptions.MST
+    return ProjectInfo.hasMST()
   }
 
   isDetoxSelected = () => {
-    return this.plugins.DetoxPlugin.selected
+    return true
   }
+}
+
+export const generateProject = async (
+  toolbox: BoilerplateToolbox,
+  props: BoilerplateProps,
+  originalDir: string,
+) => {
+  await generateBoilerplate(toolbox, props, originalDir, new Plugins(toolbox))
+  await mergePackageJsons(toolbox, props, originalDir)
 }

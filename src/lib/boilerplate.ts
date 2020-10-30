@@ -1,11 +1,8 @@
-import { BoilerplateProps, IgniteToolbox } from "../types"
+import { BoilerplateProps, BoilerplateToolbox } from "../types"
 import { BoilerplatePlugin } from "../plugins/IBoilerplatePlugin"
 
-export const codeStyleCleanUp = async (toolbox: IgniteToolbox, spinner) => {
-  const {
-    system,
-    ignite,
-  } = toolbox
+export const codeStyleCleanUp = async (toolbox: BoilerplateToolbox) => {
+  const { system, ignite, spinner } = toolbox
   ignite.log("linting")
   spinner.text = "linting"
   await system.spawn(`${ignite.useYarn ? "yarn" : "npm run"} lint`)
@@ -16,20 +13,13 @@ export const codeStyleCleanUp = async (toolbox: IgniteToolbox, spinner) => {
 }
 
 export const generateBoilerplate = async (
-  toolbox: IgniteToolbox,
+  toolbox: BoilerplateToolbox,
   templateProps: BoilerplateProps,
-  spinner,
   pluginPath: string,
-  boilerPlatePlugins: BoilerplatePlugin
+  boilerPlatePlugins: BoilerplatePlugin,
 ) => {
-  const {
-    filesystem,
-    ignite,
-  } = toolbox
-  const {
-    includeDetox,
-    useExpo
-  } = templateProps
+  const { filesystem, ignite, spinner } = toolbox
+  const { includeDetox, useExpo } = templateProps
 
   // copy our App, Tests & storybook directories
   spinner.text = "▸ copying files"
@@ -62,13 +52,13 @@ export const generateBoilerplate = async (
   spinner.start()
   const EXAMPLE_SCREENS = [
     {
-      template: "app/screens/welcome-screen/index.tsx.ejs",
-      target: "app/screens/welcome-screen/index.tsx",
+      template: "app/screens/Welcome/index.tsx.ejs",
+      target: "app/screens/Welcome/index.tsx",
     },
     {
-      template: "app/screens/demo-screen/index.tsx.ejs",
-      target: "app/screens/demo-screen/index.tsx",
-    }
+      template: "app/screens/Demo/index.tsx.ejs",
+      target: "app/screens/Demo/index.tsx",
+    },
   ]
   const templates = [
     { template: "index.js.ejs", target: useExpo ? "App.js" : "index.js" },
@@ -88,7 +78,7 @@ export const generateBoilerplate = async (
     },
     {
       template: "app/utils/storage/storage.ts.ejs",
-      target: "app/utils/storage/storage.ts"
+      target: "app/utils/storage/storage.ts",
     },
     {
       template: "app/utils/storage/storage.test.ts.ejs",
@@ -113,5 +103,5 @@ export const generateBoilerplate = async (
     directory: boilerplatePath,
   })
 
-  spinner.succeed('Copied boilerplate files')
+  spinner.succeed("Copied boilerplate files")
 }

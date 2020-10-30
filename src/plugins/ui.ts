@@ -1,19 +1,19 @@
-import { IgniteToolbox } from "../types"
+import { BoilerplateToolbox } from "../types"
 import { BoilerplatePlugin } from "./IBoilerplatePlugin"
 import ProjectInfo from "../lib/ProjectInfo"
 
 export const enum OPTIONS {
-  NativeBase= 'NativeBase',
-  Paper = 'Paper'
+  NativeBase = "NativeBase",
+  Paper = "Paper",
 }
 
 export default class Plugin implements BoilerplatePlugin {
   OPTIONS
-  toolbox: IgniteToolbox
+  toolbox: BoilerplateToolbox
   willEjectNativeBaseTheme: boolean
   selected: OPTIONS
 
-  constructor (toolbox: IgniteToolbox) {
+  constructor(toolbox: BoilerplateToolbox) {
     this.toolbox = toolbox
   }
 
@@ -28,8 +28,14 @@ export default class Plugin implements BoilerplatePlugin {
     const { filesystem } = this.toolbox
     if (this.selected === OPTIONS.NativeBase) {
       if (filesystem.exists(`${process.cwd()}/native-base-theme`)) {
-        filesystem.move(`${process.cwd()}/native-base-theme/components`, `${process.cwd()}/app/theme/components`)
-        filesystem.move(`${process.cwd()}/native-base-theme/variables`, `${process.cwd()}/app/theme/variables`)
+        filesystem.move(
+          `${process.cwd()}/native-base-theme/components`,
+          `${process.cwd()}/app/theme/components`,
+        )
+        filesystem.move(
+          `${process.cwd()}/native-base-theme/variables`,
+          `${process.cwd()}/app/theme/variables`,
+        )
         filesystem.remove(`${process.cwd()}/native-base-theme`)
       }
     }
@@ -49,27 +55,31 @@ export default class Plugin implements BoilerplatePlugin {
     const { prompt } = this.toolbox
     const { selected } = await prompt.ask([
       {
-        type: 'select',
-        name: 'selected',
-        message: 'What UI Component Library do you want to use',
+        type: "select",
+        name: "selected",
+        message: "What UI Component Library do you want to use",
         choices: [
           {
-            message: 'NativeBase (https://nativebase.io/)',
-            name: OPTIONS.NativeBase
+            message: "NativeBase (https://nativebase.io/)",
+            name: OPTIONS.NativeBase,
           },
           {
-            message: '[COMING SOON] React Native Paper (https://callstack.github.io/react-native-paper/)',
+            message:
+              "[COMING SOON] React Native Paper (https://callstack.github.io/react-native-paper/)",
             name: OPTIONS.Paper,
-            disabled: true
-          }
+            disabled: true,
+          },
         ],
-      }
+      },
     ])
     this.selected = selected
-    this.willEjectNativeBaseTheme = selected === OPTIONS.NativeBase ? await prompt.confirm('Would you like to eject NativeBase Theme?') : false
+    this.willEjectNativeBaseTheme =
+      selected === OPTIONS.NativeBase
+        ? await prompt.confirm("Would you like to eject NativeBase Theme?")
+        : false
     return {
       selected,
-      willEjectNativeBaseTheme: this.willEjectNativeBaseTheme
+      willEjectNativeBaseTheme: this.willEjectNativeBaseTheme,
     }
   }
 
@@ -78,12 +88,12 @@ export default class Plugin implements BoilerplatePlugin {
     this.willEjectNativeBaseTheme = false
     return {
       selected: this.selected,
-      willEjectNativeBaseTheme: this.willEjectNativeBaseTheme
+      willEjectNativeBaseTheme: this.willEjectNativeBaseTheme,
     }
   }
 
   _ejectNativeBaseTheme = async () => {
     const { system } = this.toolbox
-    await system.run('node node_modules/native-base/ejectTheme.js')
+    await system.run("node node_modules/native-base/ejectTheme.js")
   }
 }

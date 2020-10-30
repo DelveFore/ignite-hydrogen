@@ -1,5 +1,5 @@
 import { getReactNativeVersion } from "./lib/react-native-version"
-import { IgniteToolbox, IgniteRNInstallResult, BoilerplateProps } from "./types"
+import { IgniteToolbox, IgniteRNInstallResult, BoilerplateProps, BoilerplateToolbox } from "./types"
 import { expo } from "./lib/expo"
 import { codeStyleCleanUp, generateBoilerplate } from "./lib/boilerplate"
 import mergePackageJsons from "./lib/mergePackageJsons"
@@ -37,9 +37,8 @@ export const install = async (toolbox: IgniteToolbox) => {
     meta,
   } = toolbox
   const { colors } = print
-  const { red, yellow, bold, gray, cyan, blue } = colors
+  const { red, yellow, bold, gray, blue } = colors
   const isWindows = process.platform === "win32"
-  const isMac = process.platform === "darwin"
   const reactNativeVersion = getReactNativeVersion(toolbox)
 
   if (parameters.options["dry-run"]) return
@@ -59,7 +58,13 @@ export const install = async (toolbox: IgniteToolbox) => {
     )
 
   const name = parameters.first
-  const spinner = print.spin(`using the ${blue("DelveFore")} ${bold("Hydrogen")} boilerplate started from ${red("Infinite Red")} Bowser v5.x.x boilerplate`).succeed()
+  const spinner = print
+    .spin(
+      `using the ${blue("DelveFore")} ${bold("Hydrogen")} boilerplate started from ${red(
+        "Infinite Red",
+      )} Bowser v5.x.x boilerplate`,
+    )
+    .succeed()
 
   // Are we going to use Expo
   let useExpo = parameters.options.expo
@@ -84,51 +89,15 @@ export const install = async (toolbox: IgniteToolbox) => {
     }
   }
 
-  // Are we going to use Detox
-  let includeDetox = false
-  if (isMac && !useExpo) {
-    const isCocoapodsInstalled = await system.which(`pod`)
-    if (!isCocoapodsInstalled && reactNativeVersion >= "0.60") {
-      print.error(`
-Error: Cocoapods is not installed, but is required for React Native
-0.60 or later, when not using Expo.
-
-More info here: https://reactnative.dev/docs/environment-setup
-And here: https://guides.cocoapods.org/using/getting-started.html
-      `)
-      process.exit(1)
-    }
-
-    const askAboutDetox = parameters.options.detox === undefined
-    includeDetox = askAboutDetox
-      ? await prompt.confirm("Would you like to include Detox end-to-end tests?")
-      : parameters.options.detox === true
-
-    if (includeDetox) {
-      // prettier-ignore
-      printInfo(`
-          You'll love Detox for testing your app! There are some additional requirements to
-          install, so make sure to check out ${cyan('e2e/README.md')} in your generated app!
-        `)
-    }
-  } else {
-    if (parameters.options.detox === true) {
-      if (useExpo) {
-        printInfo(`
-          We don't yet support adding Detox to an Expo app automatically.
-          Want to help? Please submit a PR!
-
-          Also, check out this article for how to add Detox manually:
-          https://blog.expo.io/testing-expo-apps-with-detox-and-react-native-testing-library-7fbdbb82ac87
-        `)
-      } else {
-        printInfo("Skipping Detox because it is only supported on macOS")
-      }
-    }
+  const boilerplateToolbox: BoilerplateToolbox = {
+    spinner,
+    useExpo,
+    name,
+    ...toolbox,
   }
 
   // Plugins creation
-  const plugins = new Plugins(toolbox)
+  const plugins: Plugins = new Plugins(boilerplateToolbox)
 
   // Plugins selections (Ask everything first)
   await plugins.select()
@@ -162,36 +131,21 @@ And here: https://guides.cocoapods.org/using/getting-started.html
 
   const templateProps: BoilerplateProps = {
     name,
+    useExpo,
     igniteVersion: meta.version(),
     reactNativeVersion: rnInstall.version,
     reactNativeGestureHandlerVersion: REACT_NATIVE_GESTURE_HANDLER_VERSION,
     vectorIcons: false,
     animatable: false,
     i18n: false,
-    includeDetox,
-    useExpo,
+    includeDetox: plugins.isDetoxSelected(),
     useStateMachineMST: plugins.isMSTSelected(),
-    useNativeBase: plugins.isNativeBaseSelected()
+    useNativeBase: plugins.isNativeBaseSelected(),
   }
 
-  await generateBoilerplate(toolbox, templateProps, spinner, ignite.ignitePluginPath(), plugins)
+  await generateBoilerplate(boilerplateToolbox, templateProps, ignite.ignitePluginPath(), plugins)
 
   await ignite.setIgniteConfig("navigation", "react-navigation")
-
-  /**
-   * Because of https://github.com/react-native-community/cli/issues/462,
-   * we can't detox-test the release configuration. Turn on dead-code stripping
-   * to fix this.
-   */
-  if (!useExpo && includeDetox) {
-    spinner.stop()
-    spinner.text = 'Fix Detox Testing (https://github.com/react-native-community/cli/issues/462)'
-    await ignite.patchInFile(`ios/${name}.xcodeproj/xcshareddata/xcschemes/${name}.xcscheme`, {
-      replace: 'buildForRunning = "YES"\n            buildForProfiling = "NO"',
-      insert: 'buildForRunning = "NO"\n            buildForProfiling = "NO"',
-    })
-    spinner.succeed('Fixed Detox Testing')
-  }
 
   /**
    * Append to files
@@ -199,7 +153,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
   // https://github.com/facebook/react-native/issues/12724
   await filesystem.appendAsync(".gitattributes", "*.bat text eol=crlf")
 
-  await mergePackageJsons(toolbox, templateProps, spinner, ignite.ignitePluginPath())
+  await mergePackageJsons(boilerplateToolbox, templateProps, ignite.ignitePluginPath())
 
   // pass long the debug flag if we're running in that mode
   const debugFlag = parameters.options.debug ? "--debug" : ""
@@ -290,10 +244,10 @@ And here: https://guides.cocoapods.org/using/getting-started.html
   }
   spinner.succeed(`Installed dependencies`)
 
-  spinner.text = 'Plugins: Running Post Package-Install'
+  spinner.text = "Plugins: Running Post Package-Install"
   spinner.start()
   await plugins.postPackageInstall()
-  spinner.succeed('Plugins: completed Post Package-Install')
+  spinner.succeed("Plugins: completed Post Package-Install")
 
   // run react-native link to link assets
   if (!useExpo) {
@@ -311,13 +265,13 @@ And here: https://guides.cocoapods.org/using/getting-started.html
       return contents.split("\\").join("/")
     })
   }
-  spinner.text = 'Plugins: Cleaning up'
+  spinner.text = "Plugins: Cleaning up"
   spinner.start()
   await plugins.cleanUp()
-  spinner.succeed('Plugins: cleaned')
+  spinner.succeed("Plugins: cleaned")
 
   // let eslint and prettier clean things up
-  await codeStyleCleanUp(toolbox, spinner)
+  await codeStyleCleanUp(boilerplateToolbox)
 
   const perfDuration = (new Date().getTime() - perfStart) / 10 / 100
   spinner.succeed(`ignited ${yellow(name)} in ${perfDuration}s`)
@@ -342,7 +296,7 @@ And here: https://guides.cocoapods.org/using/getting-started.html
       npx ignite-cli --help
       npx ignite-cli doctor
 
-    ${bold('🔥 Boom!')}
+    ${bold("🔥 Boom!")}
 
     ${gray(
       "(Running yarn install one last time to make sure everything is installed -- please be patient!)",
