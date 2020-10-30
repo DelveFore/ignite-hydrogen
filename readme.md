@@ -370,33 +370,10 @@ export const typeDefs = `
 `
 ```
 #### Server Side 
-- Server.js
-```
-import express from 'express'
-import bodyParser from 'body-parser'
-import { graphqlExpress, graphiqlExpress } from 'apollo-server-express' (DOES NOT WORK SINCE appolo-server-express 1.0.0)
-import { schema } from './src/schema'
-```
-- Schema
-```
-import { makeExecutableSchema } from 'graphql-tools'
-
-const typeDefs = `
-  type Contact {
-    id:ID!
-    firstName: String
-    lastName: String
-  }
-  
-  type Query {
-    contacts: [Contact]
-  }
- `
-
-const schema = makeExecutableSchema({ typeDefs })
-
-export { schema }
-```
+- types.js - defines the types of queries
+- resolvers.js - resolves the query request
+- Schema.js - Wraps types and resolvers in ApolloServer 
+- Server.js - Defines server related info
 
 ## Resources
 
