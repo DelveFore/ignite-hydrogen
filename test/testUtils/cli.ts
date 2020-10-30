@@ -3,12 +3,12 @@
  * @param ms
  */
 export const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-export const sendKeystrokes = (keysFuncAsync) => {
+export const sendKeystrokes = keysFuncAsync => {
   return setTimeout(() => keysFuncAsync().then(), 5)
 }
 export const KEYS = {
-  Up: '\x1B\x5B\x41',
-  Down: '\x1B\x5B\x42',
-  Enter: '\x0D',
-  Space: '\x20'
+  Up: "\x1B\x5B\x41",
+  Down: "\x1B\x5B\x42",
+  Enter: "\x0D",
+  Space: "\x20",
 }

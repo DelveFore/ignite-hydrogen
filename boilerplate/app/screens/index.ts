@@ -1,4 +1,4 @@
-import WelcomeScreen from './welcome-screen'
-import DemoScreen from './demo-screen'
+import WelcomeScreen from "./Welcome"
+import DemoScreen from "./Demo"
 
 export { DemoScreen, WelcomeScreen }

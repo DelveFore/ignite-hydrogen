@@ -1,5 +1,5 @@
-const { version } = require('./package.json')
-const NPM_MODULE_NAME = 'hydrogen'
+const { version } = require("./package.json")
+const NPM_MODULE_NAME = "hydrogen"
 const NPM_MODULE_VERSION = version
 
 /**
