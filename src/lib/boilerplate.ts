@@ -63,12 +63,12 @@ export const generateBoilerplate = async (
   spinner.start()
   const EXAMPLE_SCREENS = [
     {
-      template: "app/screens/welcome-screen/index.tsx.ejs",
-      target: "app/screens/welcome-screen/index.tsx",
+      template: "app/screens/Welcome/index.tsx.ejs",
+      target: "app/screens/Welcome/index.tsx",
     },
     {
-      template: "app/screens/demo-screen/index.tsx.ejs",
-      target: "app/screens/demo-screen/index.tsx",
+      template: "app/screens/Demo/index.tsx.ejs",
+      target: "app/screens/Demo/index.tsx",
     }
   ]
   const templates = [
