@@ -38,7 +38,7 @@ export const run = async function(toolbox: GluegunToolbox) {
     pascalName,
     camelName,
     name,
-    useStateMachineMST: ProjectInfo.hasMST()
+    useStateMachineMST: ProjectInfo.hasMST(),
   }
   const jobs = [
     {
@@ -89,13 +89,14 @@ export const run = async function(toolbox: GluegunToolbox) {
     process.exit(1)
   }
   await patching.replace(navigationExportPath, importReplaceOf, importReplaceWith)
-  await patching.patch(
-    navigationExportPath,
-    { insert: primaryParamListPatchWith, after: primaryParamListPatchAfter }
-  )
-  await patching.patch(navigationExportPath,
-    { insert: stackNavigatorPatchWith, before: stackNavigatorPatchBefore }
-  )
+  await patching.patch(navigationExportPath, {
+    insert: primaryParamListPatchWith,
+    after: primaryParamListPatchAfter,
+  })
+  await patching.patch(navigationExportPath, {
+    insert: stackNavigatorPatchWith,
+    before: stackNavigatorPatchBefore,
+  })
 
   print.info(`Screen ${pascalName} created`)
 }

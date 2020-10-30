@@ -1,8 +1,8 @@
 import { BoilerplateToolbox } from "../types"
 import { BoilerplatePlugin } from "./IBoilerplatePlugin"
-import StateMachinePlugin, { OPTIONS as StateMachineOptions } from './stateMachine'
-import UIPlugin, { OPTIONS as UIOptions } from './ui'
-import DetoxPlugin from './detox'
+import StateMachinePlugin, { OPTIONS as StateMachineOptions } from "./stateMachine"
+import UIPlugin, { OPTIONS as UIOptions } from "./ui"
+import DetoxPlugin from "./detox"
 
 export default class Plugins implements BoilerplatePlugin {
   OPTIONS: never
@@ -10,11 +10,11 @@ export default class Plugins implements BoilerplatePlugin {
   selected: never
   plugins: any
 
-  constructor (toolbox: BoilerplateToolbox) {
+  constructor(toolbox: BoilerplateToolbox) {
     this.plugins = {
       DetoxPlugin: new DetoxPlugin(toolbox),
       StateMachinePlugin: new StateMachinePlugin(toolbox),
-      UIPlugin: new UIPlugin(toolbox)
+      UIPlugin: new UIPlugin(toolbox),
     }
   }
 
@@ -26,15 +26,15 @@ export default class Plugins implements BoilerplatePlugin {
   }
 
   cleanUp = async () => {
-    return this._iteratePlugins(async (plugin) => await plugin.cleanUp())
+    return this._iteratePlugins(async plugin => await plugin.cleanUp())
   }
 
   select = async (useProjectInfo = false) => {
-    return this._iteratePlugins(async (plugin) => await plugin.select(useProjectInfo))
+    return this._iteratePlugins(async plugin => await plugin.select(useProjectInfo))
   }
 
   postPackageInstall = async () => {
-    return this._iteratePlugins(async (plugin) => await plugin.postPackageInstall())
+    return this._iteratePlugins(async plugin => await plugin.postPackageInstall())
   }
 
   getTemplates = () => {

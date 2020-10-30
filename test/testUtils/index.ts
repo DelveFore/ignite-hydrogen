@@ -4,7 +4,7 @@ import ProjectInfo from "../../src/lib/ProjectInfo"
 import { generateBoilerplate } from "../../src/lib/boilerplate"
 import mergePackageJsons from "../../src/lib/mergePackageJsons"
 
-export { createBoilerplateToolbox } from './toolbox'
+export { createBoilerplateToolbox } from "./toolbox"
 
 export class Plugins implements BoilerplatePlugin {
   OPTIONS: never
@@ -12,7 +12,7 @@ export class Plugins implements BoilerplatePlugin {
   selected: never
   plugins: any
 
-  constructor (toolbox: BoilerplateToolbox) {
+  constructor(toolbox: BoilerplateToolbox) {
     this.plugins = {}
     this.toolbox = toolbox
   }
@@ -25,15 +25,15 @@ export class Plugins implements BoilerplatePlugin {
   }
 
   cleanUp = async () => {
-    return this._iteratePlugins(async (plugin) => await plugin.cleanUp())
+    return this._iteratePlugins(async plugin => await plugin.cleanUp())
   }
 
   select = async (useProjectInfo = false) => {
-    return this._iteratePlugins(async (plugin) => await plugin.select(useProjectInfo))
+    return this._iteratePlugins(async plugin => await plugin.select(useProjectInfo))
   }
 
   postPackageInstall = async () => {
-    return this._iteratePlugins(async (plugin) => await plugin.postPackageInstall())
+    return this._iteratePlugins(async plugin => await plugin.postPackageInstall())
   }
 
   getTemplates = () => {
@@ -58,7 +58,11 @@ export class Plugins implements BoilerplatePlugin {
   }
 }
 
-export const generateProject = async (toolbox: BoilerplateToolbox, props: BoilerplateProps, originalDir: string) => {
+export const generateProject = async (
+  toolbox: BoilerplateToolbox,
+  props: BoilerplateProps,
+  originalDir: string,
+) => {
   await generateBoilerplate(toolbox, props, originalDir, new Plugins(toolbox))
   await mergePackageJsons(toolbox, props, originalDir)
 }

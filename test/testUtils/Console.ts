@@ -1,12 +1,16 @@
 import MockedFunction = jest.MockedFunction
 
 export enum ConsoleMethod {
-  error = 'error',
-  log = 'log',
-  warn = 'warn'
+  error = "error",
+  log = "log",
+  warn = "warn",
 }
 export const ConsoleMethodsDefault = [ConsoleMethod.error, ConsoleMethod.log, ConsoleMethod.warn]
-export const mockConsole = (consoleRef, spiesContext, methods: ConsoleMethod[] = ConsoleMethodsDefault) => {
+export const mockConsole = (
+  consoleRef,
+  spiesContext,
+  methods: ConsoleMethod[] = ConsoleMethodsDefault,
+) => {
   methods.forEach(value => {
     spiesContext[value] = jest.spyOn(consoleRef, value).mockImplementation(() => undefined)
   })
@@ -19,7 +23,7 @@ export default class Console {
   methods: ConsoleMethod[]
   consoleRef: any
 
-  constructor (consoleRef) {
+  constructor(consoleRef) {
     this.consoleRef = consoleRef
   }
 

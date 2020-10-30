@@ -1,9 +1,9 @@
-import { createActions } from 'reduxsauce'
+import { createActions } from "reduxsauce"
 
 /* ------------- Types and Action Creators ------------- */
 
 const { Types: StartupTypes, Creators } = createActions({
-  startup: null
+  startup: null,
 })
 
 export const Types = StartupTypes

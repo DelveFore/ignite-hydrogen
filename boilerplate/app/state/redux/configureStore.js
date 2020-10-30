@@ -1,5 +1,5 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import createSagaMiddleware from 'redux-saga'
+import { createStore, applyMiddleware, compose } from "redux"
+import createSagaMiddleware from "redux-saga"
 
 // creates the store
 export default (rootReducer, rootSaga, options = { useReactotron: false }) => {
@@ -14,9 +14,7 @@ export default (rootReducer, rootSaga, options = { useReactotron: false }) => {
 
   /* ------------- Saga Middleware ------------- */
 
-  const sagaMonitor = useReactotron
-    ? console.tron.createSagaMonitor()
-    : null
+  const sagaMonitor = useReactotron ? console.tron.createSagaMonitor() : null
   const sagaMiddleware = createSagaMiddleware({ sagaMonitor })
   middleware.push(sagaMiddleware)
 
@@ -37,6 +35,6 @@ export default (rootReducer, rootSaga, options = { useReactotron: false }) => {
   return {
     store,
     sagasManager,
-    sagaMiddleware
+    sagaMiddleware,
   }
 }

@@ -1,7 +1,7 @@
-import { makeDispatchers } from '../modules'
+import { makeDispatchers } from "../modules"
 
-export const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = dispatch => {
   return {
-    ...makeDispatchers({ dispatch })
+    ...makeDispatchers({ dispatch }),
   }
 }

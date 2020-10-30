@@ -1,10 +1,10 @@
-import { stdin } from 'mock-stdin'
-import * as stdMocks from 'std-mocks'
+import { stdin } from "mock-stdin"
+import * as stdMocks from "std-mocks"
 import StateMachinePlugin, { OPTIONS } from "../../../src/plugins/stateMachine"
 import { KEYS, sendKeystrokes, delay } from "../../testUtils/cli"
 import { createBoilerplateToolbox } from "../../testUtils"
 
-describe('Boilerplate Plugin StateMachine', () => {
+describe("Boilerplate Plugin StateMachine", () => {
   // Mock stdin so we can send messages to the CLI
   let io = null
   beforeAll(() => {
@@ -15,8 +15,8 @@ describe('Boilerplate Plugin StateMachine', () => {
     stdMocks.restore()
     io.restore()
   })
-  describe('select()', () => {
-    it('prompts and returns selected for Redux (SagaSauce)', async () => {
+  describe("select()", () => {
+    it("prompts and returns selected for Redux (SagaSauce)", async () => {
       const toolbox = createBoilerplateToolbox()
       sendKeystrokes(async () => {
         io.send(KEYS.Enter)
@@ -25,9 +25,9 @@ describe('Boilerplate Plugin StateMachine', () => {
       const plugin = new StateMachinePlugin(toolbox)
       const result = await plugin.select()
       const stdoutResult = stdMocks.flush().stdout
-      expect(stdoutResult[1]).toContain('What State Machine do you want to use')
-      expect(stdoutResult[1]).toContain('Redux + SagaSauce')
-      expect(result).toHaveProperty('selected', OPTIONS.SAGA_SAUCE)
+      expect(stdoutResult[1]).toContain("What State Machine do you want to use")
+      expect(stdoutResult[1]).toContain("Redux + SagaSauce")
+      expect(result).toHaveProperty("selected", OPTIONS.SAGA_SAUCE)
       expect(plugin.selected).toEqual(OPTIONS.SAGA_SAUCE)
     })
   })
