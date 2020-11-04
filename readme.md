@@ -311,23 +311,16 @@ In Bowser, TypeScript is fully set up, so if you know TS, all you need to do is 
 ## GraphQL comparing to RESTful
 
 ### Design/Architecture
-GraphQL uses the HTTPS Post to send either Queries and Mutations to interact with a database. The client could send POST/graphql with a query about "item", and depending on how the server is instructed to respond, it will return just that "item". 
+RESTful API uses HTTP verbs (Post, Get, Patch, etc...) in order to manipulate data. 
+Because of this, designing a RESTful system requires creating endpoints for each request such as: POST/user, GET/user, DELETE/user etc... 
 
-RESTful API uses HTTP verbs (Post, Get, Patch, etc...) in order to manipulate data. Because of this, designing a RESTful system requires creating multiple endpoints to POST/item, GET/item, or whichever.
+GraphQL uses the HTTPS Post to send either Queries and Mutations to interact with a database. 
+When a client sends POST/graphql Query with a /user structure, the server queries the database and replies with only that structure. An advantage with this is that there is more control with the requests of GraphQL queries. 
 
-#### Client Side
-- Screen. Apollo is used to wrap the screen
-Wrap the `return ()` inside of `ApolloProvider` and pass `client` to ApolloProvider 
-- Component. The structure of the query is stated and then exported with the component
-- Schema. _I do not know how this is used yet_
+A common problem with RESTful API is overfetching data. This is where a GET/user request may give more data than needed such as /user/address, user/birthday, user/age.
+With GraphQL, the client can send a POST/graphlq Query that can be structured to request only the data needed.
 
 
-#### Server Side 
-- types.js - defines the types of queries
-- resolvers.js - resolves the query request
-- Schema.js - Wraps types and resolvers in ApolloServer 
-- Server.js - Defines server related info (such as port number)
- 
 ## Resources
 
 If you are new to TypeScript, here are some of our favorite resources:
