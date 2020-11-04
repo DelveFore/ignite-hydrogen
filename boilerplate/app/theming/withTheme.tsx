@@ -1,6 +1,6 @@
-import React from 'react'
-import { Root } from 'native-base'
-import StyleProvider from './StyleProvider'
+import React from "react"
+import { Root } from "native-base"
+import StyleProvider from "./StyleProvider"
 
 /**
  * Currently this only supports NativeBase
@@ -9,9 +9,9 @@ import StyleProvider from './StyleProvider'
  *
  * @param Component
  */
-export default (Component) => {
+export default Component => {
   // eslint-disable-next-line react/display-name
-  return (props) => (
+  return props => (
     <StyleProvider>
       <Root>
         <Component {...props} />

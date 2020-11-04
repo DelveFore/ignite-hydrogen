@@ -71,5 +71,5 @@ export default {
   TAGLINE,
   BOLD,
   TITLE,
-  CONTAINER
+  CONTAINER,
 }

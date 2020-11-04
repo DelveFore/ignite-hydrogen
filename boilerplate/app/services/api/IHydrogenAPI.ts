@@ -28,6 +28,6 @@ export interface SagaSauceAPI {
 
 export interface HydrogenAPI {
   apisauce: ApisauceInstance
-  config: ApiConfig,
+  config: ApiConfig
   setup: any
 }

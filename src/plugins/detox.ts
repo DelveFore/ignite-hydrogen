@@ -4,7 +4,7 @@ import { getReactNativeVersion } from "../lib/react-native-version"
 
 export const enum OPTIONS {
   NO,
-  YES
+  YES,
 }
 
 export default class Plugin implements BoilerplatePlugin {
@@ -16,7 +16,7 @@ export default class Plugin implements BoilerplatePlugin {
 
   useExpo: boolean
 
-  constructor (toolbox: BoilerplateToolbox) {
+  constructor(toolbox: BoilerplateToolbox) {
     this.toolbox = toolbox
     this.useExpo = toolbox.useExpo
   }
@@ -31,10 +31,10 @@ export default class Plugin implements BoilerplatePlugin {
       print.info(
         gray(
           "  " +
-          info
-            .split("\n")
-            .map(s => s.trim())
-            .join("\n  "),
+            info
+              .split("\n")
+              .map(s => s.trim())
+              .join("\n  "),
         ),
       )
     let selected = false
@@ -92,17 +92,16 @@ And here: https://guides.cocoapods.org/using/getting-started.html
      */
     if (!useExpo && this.selected) {
       spinner.stop()
-      spinner.text = 'Fix Detox Testing (https://github.com/react-native-community/cli/issues/462)'
+      spinner.text = "Fix Detox Testing (https://github.com/react-native-community/cli/issues/462)"
       await ignite.patchInFile(`ios/${name}.xcodeproj/xcshareddata/xcschemes/${name}.xcscheme`, {
         replace: 'buildForRunning = "YES"\n            buildForProfiling = "NO"',
         insert: 'buildForRunning = "NO"\n            buildForProfiling = "NO"',
       })
-      spinner.succeed('Fixed Detox Testing')
+      spinner.succeed("Fixed Detox Testing")
     }
   }
 
   getTemplates = () => {
-    return [
-    ]
+    return []
   }
 }

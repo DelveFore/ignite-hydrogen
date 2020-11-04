@@ -1,9 +1,9 @@
-import configureStore from './configureStore'
-import reducers from './reducers'
-import creatRootSagas from './sagas'
-import { useReactotron } from '../config/env'
-import { combineReducers } from 'redux'
-import { createEnvironment } from './environment'
+import configureStore from "./configureStore"
+import reducers from "./reducers"
+import creatRootSagas from "./sagas"
+import { useReactotron } from "../config/env"
+import { combineReducers } from "redux"
+import { createEnvironment } from "./environment"
 
 /* ------------- Assemble The Reducers ------------- */
 export const rootReducer = combineReducers(reducers)
@@ -20,8 +20,8 @@ export default async () => {
 
   if (module.hot) {
     module.hot.accept(() => {
-      store.replaceReducer(require('./reducers').default)
-      const rootSaga = require('./sagas').default({ api: env.api })
+      store.replaceReducer(require("./reducers").default)
+      const rootSaga = require("./sagas").default({ api: env.api })
       sagasManager.cancel()
       sagasManager.done.then(() => {
         sagasManager = sagaMiddleware(rootSaga)

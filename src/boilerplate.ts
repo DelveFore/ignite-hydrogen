@@ -58,7 +58,13 @@ export const install = async (toolbox: IgniteToolbox) => {
     )
 
   const name = parameters.first
-  const spinner = print.spin(`using the ${blue("DelveFore")} ${bold("Hydrogen")} boilerplate started from ${red("Infinite Red")} Bowser v5.x.x boilerplate`).succeed()
+  const spinner = print
+    .spin(
+      `using the ${blue("DelveFore")} ${bold("Hydrogen")} boilerplate started from ${red(
+        "Infinite Red",
+      )} Bowser v5.x.x boilerplate`,
+    )
+    .succeed()
 
   // Are we going to use Expo
   let useExpo = parameters.options.expo
@@ -87,7 +93,7 @@ export const install = async (toolbox: IgniteToolbox) => {
     spinner,
     useExpo,
     name,
-    ...toolbox
+    ...toolbox,
   }
 
   // Plugins creation
@@ -134,7 +140,7 @@ export const install = async (toolbox: IgniteToolbox) => {
     i18n: false,
     includeDetox: plugins.isDetoxSelected(),
     useStateMachineMST: plugins.isMSTSelected(),
-    useNativeBase: plugins.isNativeBaseSelected()
+    useNativeBase: plugins.isNativeBaseSelected(),
   }
 
   await generateBoilerplate(boilerplateToolbox, templateProps, ignite.ignitePluginPath(), plugins)
@@ -238,10 +244,10 @@ export const install = async (toolbox: IgniteToolbox) => {
   }
   spinner.succeed(`Installed dependencies`)
 
-  spinner.text = 'Plugins: Running Post Package-Install'
+  spinner.text = "Plugins: Running Post Package-Install"
   spinner.start()
   await plugins.postPackageInstall()
-  spinner.succeed('Plugins: completed Post Package-Install')
+  spinner.succeed("Plugins: completed Post Package-Install")
 
   // run react-native link to link assets
   if (!useExpo) {
@@ -259,10 +265,10 @@ export const install = async (toolbox: IgniteToolbox) => {
       return contents.split("\\").join("/")
     })
   }
-  spinner.text = 'Plugins: Cleaning up'
+  spinner.text = "Plugins: Cleaning up"
   spinner.start()
   await plugins.cleanUp()
-  spinner.succeed('Plugins: cleaned')
+  spinner.succeed("Plugins: cleaned")
 
   // let eslint and prettier clean things up
   await codeStyleCleanUp(boilerplateToolbox)
@@ -290,7 +296,7 @@ export const install = async (toolbox: IgniteToolbox) => {
       npx ignite-cli --help
       npx ignite-cli doctor
 
-    ${bold('🔥 Boom!')}
+    ${bold("🔥 Boom!")}
 
     ${gray(
       "(Running yarn install one last time to make sure everything is installed -- please be patient!)",
