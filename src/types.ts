@@ -1,7 +1,7 @@
 // Copied from ignite-cli ./src/types.ts
 // https://github.com/infinitered/ignite/blob/master/src/types.ts
 import { GluegunToolbox, GluegunCommand } from "gluegun"
-import ora = require('ora')
+import ora = require("ora")
 
 export type IgniteTools = {
   ignitePluginPath: Function

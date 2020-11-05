@@ -1,19 +1,19 @@
-import { ApisauceInstance, create, ApiResponse } from 'apisauce'
-import { getGeneralApiProblem } from '../api-problem'
-import { DEFAULT_API_CONFIG } from './api-config'
-import * as Types from './api.types'
-import { ApiConfig, HydrogenAPI, SagaSauceAPI } from '../IHydrogenAPI'
+import { ApisauceInstance, create, ApiResponse } from "apisauce"
+import { getGeneralApiProblem } from "../api-problem"
+import { DEFAULT_API_CONFIG } from "./api-config"
+import * as Types from "./api.types"
+import { ApiConfig, HydrogenAPI, SagaSauceAPI } from "../IHydrogenAPI"
 
-const DATA_KEY = 'results'
+const DATA_KEY = "results"
 
 /**
  * TODO Return using User type
  * @param value
  */
-export const _mutateUser = (value) => {
+export const _mutateUser = value => {
   return {
     ...value,
-    id: value.id.value || '123434-234235453-ert342',
+    id: value.id.value || "123434-234235453-ert342",
   }
 }
 
@@ -54,13 +54,13 @@ export class Api implements SagaSauceAPI, HydrogenAPI {
       baseURL: this.config.url,
       timeout: this.config.timeout,
       headers: {
-        Accept: 'application/json',
+        Accept: "application/json",
       },
     })
   }
 
   /* ----- Existing SagaSauce API Structure. There is much to improve though so make it your own. Very much a work in-progress ---- */
-  getData = async (data) => {
+  getData = async data => {
     const response: ApiResponse<any> = await this.apisauce.get(`/`, data && { ...data.query })
 
     // the typical ways to die when calling an api
@@ -73,21 +73,21 @@ export class Api implements SagaSauceAPI, HydrogenAPI {
     try {
       const rawUsers = response.data[DATA_KEY]
       const resultUsers: Types.User[] = rawUsers.map(_mutateUser)
-      return { ok: true, kind: 'ok', data: { data: resultUsers } }
+      return { ok: true, kind: "ok", data: { data: resultUsers } }
     } catch {
-      return { ok: false, kind: 'bad-data' }
+      return { ok: false, kind: "bad-data" }
     }
   }
 
-  createData = async (data) => {
+  createData = async data => {
     return await this.apisauce.post(`/`, data)
   }
 
-  updateData = async (data) => {
+  updateData = async data => {
     return await this.apisauce.patch(`/`, data)
   }
 
-  deleteData = async (data) => {
+  deleteData = async data => {
     return await this.apisauce.delete(`/${data.id}`, data)
   }
 
@@ -112,9 +112,9 @@ export class Api implements SagaSauceAPI, HydrogenAPI {
         id: response.data.id,
         name: response.data.name,
       }
-      return { kind: 'ok', data: resultUser }
+      return { kind: "ok", data: resultUser }
     } catch {
-      return { kind: 'bad-data' }
+      return { kind: "bad-data" }
     }
   }
 }

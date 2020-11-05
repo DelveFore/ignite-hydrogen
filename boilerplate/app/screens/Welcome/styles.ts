@@ -85,5 +85,5 @@ export default {
   TEXT,
   TITLE,
   TITLE_WRAPPER,
-  FULL
+  FULL,
 }

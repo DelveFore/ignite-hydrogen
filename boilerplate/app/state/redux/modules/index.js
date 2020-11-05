@@ -1,5 +1,5 @@
-import camelCase from 'lodash/camelCase'
-import reduce from 'lodash/reduce'
+import camelCase from "lodash/camelCase"
+import reduce from "lodash/reduce"
 /**
  * To Register a SagaSauce powered Redux Module
  * 1. import the module
@@ -7,7 +7,7 @@ import reduce from 'lodash/reduce'
  */
 // -------------------- REGISTER MODULES -------------------------------- //
 // 1. Import Modules
-import Users from './users'
+import Users from "./users"
 
 // 2. Register Modules
 const RegisteredModules = { Users }
@@ -21,10 +21,10 @@ export const makeDispatchers = ({ dispatch }) => {
     (acc, value) => {
       return {
         ...acc,
-        ...value.createDispatchers(dispatch)
+        ...value.createDispatchers(dispatch),
       }
     },
-    {}
+    {},
   )
 }
 export const makeReducers = ({ resettable }) => {
@@ -33,17 +33,17 @@ export const makeReducers = ({ resettable }) => {
     (acc, value, key) => {
       return {
         ...acc,
-        [camelCase(key)]: resettable(value.Reducers)
+        [camelCase(key)]: resettable(value.Reducers),
       }
     },
-    {}
+    {},
   )
 }
-export const makeSagas = (api) =>
+export const makeSagas = api =>
   reduce(
     RegisteredModules,
     (acc, value) => {
       return acc.concat(value.createSagas(api))
     },
-    []
+    [],
   )
