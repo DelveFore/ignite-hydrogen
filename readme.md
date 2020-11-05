@@ -312,13 +312,15 @@ In Bowser, TypeScript is fully set up, so if you know TS, all you need to do is 
 
 ### Design/Architecture
 RESTful API uses HTTP verbs (Post, Get, Patch, etc...) in order to manipulate data. 
-Because of this, designing a RESTful system requires creating endpoints for each request such as: POST/user, GET/user, DELETE/user etc... 
+Because of this, designing a RESTful system requires creating endpoints for each action to the database such as: /user [POST], /user/address [GET], /user/age [PATCH] etc... 
 
-GraphQL uses the HTTPS Post to send either Queries and Mutations to interact with a database. 
-When a client sends POST/graphql Query with a /user structure, the server queries the database and replies with only that structure. An advantage with this is that there is more control with the requests of GraphQL queries. 
+In the case of GraphQL, HTTP Get is used to send Queries to a database. For making modifications, HTTP Post requests seem most appropriate since it is not recommended to use HTTP Get for Mutations. See documentation on Mutations at this [link](https://graphql.org/learn/queries/#mutations). 
+When a client queries a GraphQL system, using HTTP Get with a /user structure, the server queries the database and replies with only a structure that is predefined. An advantage with this is that there is more control with the requests of GraphQL queries. 
 
-A common problem with RESTful API is overfetching data. This is where a GET/user request may give more data than needed such as /user/address, user/birthday, user/age.
-With GraphQL, the client can send a POST/graphlq Query that can be structured to request only the data needed.
+![Alt text](docs/graphql-vs-restful.png?raw=true)
+
+The conclusion is a RESTful system can fetch a lot of data with a single request. With GraphQL, more specific requests can be defined to fetch only the data you need.
+The disadvantage with a RESTful single request is that it could lead to overfetching data and thus waiting bandwidth. With GraphQL, you need to define your data retrieval specifically to what you need. This requires a well defined structure. 
 
 
 ## Resources
