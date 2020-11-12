@@ -2,27 +2,31 @@
 ## Helping out RESTful with JSON API or GraphQL
 
 ### Design
-**State why you need JSON API or GraphQL**
-RESTful API is designed with the simplest intention to return recouses with a Univerisal Resource Identifier. Requests such as `GET https//example.com/book/Hobbit` work in the simplest way to return all data from that resource even if all the fields aren't needed. 
+The design of RESTful API is to return resources using a Univerisal Resource Identifier. A client could make a requests such as `GET https//example.com/book/Hobbit`. This works in the simplest way to return all data from that resource even if all the fields aren't needed. If you needed specific information like `author` and `title`, you'd need to send multiple request: `GET /Hobbit/author`, `GET /Hobbit/title` This causes a lot of bandwidth between the client and server.
 
-JSON API and GraphQL both solve the problem of reducing the fields that return in an API data query. The goal here is to reduce the number of API requests and the size of the packages going between the client and server.
+This is where JSON API and GraphQL both solve the problem of reducing the fields that return in an API data query. The goal here is to reduce the size and number of the API requests going between the client and server.
 
 ### JSON API
-**JSON API** has features such as Compound Documents (requesting related resources with the request), Sparse Fields (specify only the fields to return), pagination, and caching.
+**JSON API** has features such as **Sparse Fields**, **Compound Documents**, **pagination**, and **caching**.
 
-#### Compound Documents
-```
-GET /books?include=author 
-```
 #### Sparse Fieldset
+This is the bread and butter that allows the request to specify the fields needed 
 ```
 GET /books?fields[books]=author,themes 
 ```
+
+#### Compound Documents
+This feature allows for including related resources with the initial request
+```
+GET /books?fields[books]=author,themes,&include=chapter1/title 
+```
+
 #### Caching
 JSON API takes advantage of the caching ability that HTTP has built in. This reduces the need to return data that has not changed, saving bandwidth.
 
 #### Pagination
-Pagination is handled by JSON API by sending the requested data in subnets with `first`, `last`, `next`, and `previous` links to sort through the subsets.
+JSON API handles Pagination with a standard that `links` such as: `first`, `last`, `next`, and `previous` will return subnets of sort information.
+https://jsonapi.org/format/#fetching-pagination
 
 ### GraphQL
 **GraphQL** can also reduce the fields returned by specifying the them in the GraphQL Query. Keep in mind, as its name implies GraphQL is predominantly a Query Language
@@ -42,7 +46,14 @@ response
 }
 ```
 
-GraphQL does not utilize HTTP **caching**. This means there is not a suggested solutions, and so implementation can vary.
+#### Caching
+GraphQl utilizes HTTP Caching and identifies when objects with globally uniquie identifiers are called again.
+https://graphql.org/learn/caching/#gatsby-focus-wrapper
+
+#### Pagination
+GraphQL suggests various way to paginate information by requesting a set such as `first:10 offset:20` which is the equivalent of saying "second page of 10 items". Or `first:5 offset:$itemId` which means first 5 items after the ID of this item.
+https://graphql.org/learn/pagination/
+
 
 ## Architecture
 RESTful API uses HTTP verbs (Post, Get, Patch, etc...) in order to manipulate data. 
