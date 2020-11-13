@@ -8,6 +8,7 @@ This is where JSON API and GraphQL both solve the problem of reducing the fields
 
 ### JSON API
 **JSON API** has features such as **Sparse Fields**, **Compound Documents**, **pagination**, and **caching**.
+https://jsonapi.org/
 
 #### Sparse Fieldset
 This is the bread and butter that allows the request to specify the fields needed 
