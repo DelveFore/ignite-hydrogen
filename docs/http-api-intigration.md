@@ -2,13 +2,15 @@
 ## Helping out RESTful with JSON API or GraphQL
 
 ### Design
-The design of RESTful API is to return resources using a Univerisal Resource Identifier. A client could make a requests such as `GET https//example.com/book/Hobbit`. This works in the simplest way to return all data from that resource even if all the fields aren't needed. If you needed specific information like `author` and `title`, you'd need to send multiple request: `GET /Hobbit/author`, `GET /Hobbit/title` This causes a lot of bandwidth between the client and server.
+The constraints that RESTful API provides a system can be described well by Roy Fielding:
+"This chapter introduced the Representational State Transfer (REST) architectural style for distributed hypermedia systems. REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, the generality of interfaces, independent deployment of components, and intermediary components to reduce interaction latency, enforce security, and encapsulate legacy systems"
 
-This is where JSON API and GraphQL both solve the problem of reducing the fields that return in an API data query. The goal here is to reduce the size and number of the API requests going between the client and server.
+However useful these constraints that RESTful API provide, it does not provide featrues that limit or include additional fields in a resource response (e.g. techniques "Sparse Fields" and "Compound Documents" and "Pagination"). This leaves it up to the implementors to decide how or even if to implement these features.
+
+This is where [JSON](https://jsonapi.org/format/) API and [GraphQL](https://graphql.org/learn/) (among a few others) provide constraints and features that address the previously listed "techniques" that RESTful API does not address. There are many features that JSON API and GraphQl are capable of, but we are only focusing on the ones that acheive the goal of reducing the size and number of API requests that go between the client and server.
 
 ### JSON API
 **JSON API** has features such as **Sparse Fields**, **Compound Documents**, **pagination**, and **caching**.
-https://jsonapi.org/
 
 #### Sparse Fieldset
 This is the bread and butter that allows the request to specify the fields needed 
@@ -64,3 +66,8 @@ In the case of GraphQL, HTTP Get is used to send Queries to a database. For maki
 When a client queries a GraphQL system, using HTTP Get with a /user structure, the server queries the database and replies with only a structure that is predefined. An advantage with this is that there is more control with the requests of GraphQL queries. 
 
 ![Alt text](images/graphql-vs-restful.png?raw=true)
+
+
+### References
+Fielding, Roy Thomas (2000). "Chapter 5: Representational State Transfer (REST)". Architectural Styles and the Design of Network-based Software Architectures (Ph.D.). University of California, Irvine. 
+
