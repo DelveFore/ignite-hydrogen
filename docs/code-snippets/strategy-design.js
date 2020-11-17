@@ -1,35 +1,45 @@
 // I had used this example to build my Strategy Snippet: https://gist.github.com/Integralist/5736427
-//
-// This is LegoMan constructor
-let LegoMan = (strategy) => {
-    this.strategy = strategy
-}
 
-//
-LegoMan.prototype.myHair = () => {
-    return this.strategy()
+class LegoMan {
+    // This is the constructor
+    constructor(hair) {
+        this.style = hair.style
+    }
+    // Function that assigns the hair
+    assignHair = () => {
+        return this.style()
+    }
+    // Function that says who they are with their hair style
+    identifyYourself = () => {
+        console.log(`I am a Lego man with ${ this.assignHair() }`)
+    }
 }
 
 // Here are the different hair style strategies
-let HairStyleMohawk = () => {
-    console.log("I have a mohawk")
+Mohawk = () => {
+    return "a mohawk"
 }
 
-let HairStyleBald = () => {
-    console.log("I have no hair")
+Bald = () => {
+    return "no hair"
 }
 
-let PonytailStyleBald = () => {
-    console.log("I have ponytail")
+Ponytail = () => {
+    return "a ponytail"
 }
+
 
 // Here are where the lego men are given their hair styles
-let MohawkLegoMan = new LegoMan(HairStyleMohawk)
-let baldLegoMan = new LegoMan(HairStyleBald)
-let PonytailLegoMan = new LegoMan(PonytailStyleBald)
+let MohawkLegoMan = new LegoMan({ style: Mohawk })
+let BaldLegoMan = new LegoMan({ style: Bald })
+let PonyTailLegoMan = new LegoMan({ style: Ponytail })
 
-MohawkLegoMan.myHair()
-baldLegoMan.myHair()
-PonytailLegoMan.myHair()
+
+MohawkLegoMan.identifyYourself()
+BaldLegoMan.identifyYourself()
+PonyTailLegoMan.identifyYourself()
+
+
+
 
 
