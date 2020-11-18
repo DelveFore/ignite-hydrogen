@@ -21,6 +21,7 @@ _"convert the interface of a class into another interface that clients expect.
 It allows classes to work together that couldn't otherwise because of incompatible interfaces"_ (Freeman and Robson #)
 
 ### Code Examples / Code Snippets
+see `docs/code-snippets/adapter-design.js` for example
 
 ### How to Spot them
 You are looking for two classes (most commonly a client class and server class) that are communicating through

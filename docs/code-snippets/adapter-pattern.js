@@ -1,4 +1,4 @@
-// I'm gonna need a Client, Adapter, and Adaptee
+// I had used this example to build my Adapter Snippet: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split
 
 // old interface
 function fullnameLogin() {
@@ -39,3 +39,4 @@ returnMessage = oldLogin.credentials ("Jonno Arcus", "password")
 // new client interface
 let adapter = new adapterLogin()
 returnMessage = adapter.credentials("Jonno Arcus", "password")
+

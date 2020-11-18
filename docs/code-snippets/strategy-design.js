@@ -28,18 +28,12 @@ Ponytail = () => {
     return "a ponytail"
 }
 
-
 // Here are where the lego men are given their hair styles
 let MohawkLegoMan = new LegoMan({ style: Mohawk })
 let BaldLegoMan = new LegoMan({ style: Bald })
 let PonyTailLegoMan = new LegoMan({ style: Ponytail })
 
-
 MohawkLegoMan.identifyYourself()
 BaldLegoMan.identifyYourself()
 PonyTailLegoMan.identifyYourself()
-
-
-
-
 
