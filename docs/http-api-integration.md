@@ -19,17 +19,22 @@ A supplemental specification is neccisary beyond the _six architectural constrai
 There are clear benefits of the **SAC**. According to Roy Fielding
 > "REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, the generality of interfaces, independent deployment of components, and intermediary components to reduce interaction latency, enforce security, and encapsulate legacy systems"
 
-However, there is no _constraint_  on how limit or include additional fields for `resource` response. For example, techniques "Sparse Fields" and "Compound Documents" and "Pagination" are not defined in the **SAC**. This leaves it up to the implementors to decide how, or even if, to implement these features.
+However, there is no _constraint_  on how to limit or include additional fields for `resource` response. 
+For example, techniques "Sparse Fields", "Compound Documents" and "Pagination" are not defined in the **SAC**. 
+This leaves it up to the implementors to decide how, or even if, to implement these features.
 
-This is where [JSON:API](https://jsonapi.org/format/) and [GraphQL](https://graphql.org/learn/) (among a few others) provide the needed additional constraints that address the previously listed "techniques" that RESTful API does not address. There are many features that JSON API and GraphQl are capable of, but we are only focusing on the ones that acheive the goal of reducing the size and number of API requests that go between the client and server.
+This is where [JSON:API](https://jsonapi.org/format/) and [GraphQL](https://graphql.org/learn/) (among a few others) 
+provide the needed additional constraints that address the previously listed "techniques" that RESTful API does not address. 
+There are many features that JSON API and GraphQl are capable of, but we are only focusing on the ones that acheive the goal of reducing the size and number of API requests that go between the client and server.
 
 ## Adding Constraints through Specifications
 
 ### JSON:API
-**JSON:API** has features such as **Sparse Fields**, **Compound Documents**, **pagination**, and **caching**.
+**JSON:API** has features such as **Sparse Fields**, **Compound Documents**, **Pagination**, and **Caching**.
 
 #### Sparse Fieldset
-This is the bread and butter that allows the request to specify the fields needed 
+This is the bread and butter that allows the request to specify the fields needed.
+There are more examples on Sparse Fieldsets at [jsonapi.org](https://jsonapi.org/examples/#sparse-fieldsets)
 ```
 GET /books?fields[books]=author,themes 
 ```
@@ -46,6 +51,8 @@ JSON:API takes advantage of the caching ability that HTTP has built in. This red
 #### Pagination
 JSON:API handles Pagination with a standard that `links` such as: `first`, `last`, `next`, and `previous` will return subnets of sort information.
 https://jsonapi.org/format/#fetching-pagination
+
+---
 
 ### GraphQL
 **GraphQL** can also reduce the fields returned by specifying the them in the GraphQL Query. Keep in mind, as its name implies GraphQL is predominantly a Query Language
@@ -66,22 +73,29 @@ response
 ```
 
 #### Caching
-GraphQl utilizes HTTP Caching and identifies when objects with globally uniquie identifiers are called again.
+GraphQL utilizes HTTP Caching and identifies when objects with globally uniquie identifiers are called again.
 https://graphql.org/learn/caching/#gatsby-focus-wrapper
 
 #### Pagination
-GraphQL suggests various way to paginate information by requesting a set such as `first:10 offset:20` which is the equivalent of saying "second page of 10 items". Or `first:5 offset:$itemId` which means first 5 items after the ID of this item.
+GraphQL suggests various way to paginate returning data by requesting a set such as `first:10 offset:20` which is the equivalent of saying "second page of 10 items". 
+Another example is `first:5 offset:$itemId`, equivalent of saying "first 5 items after the ID of this item".
 https://graphql.org/learn/pagination/
 
-
 ## Architecture
+
+### RESTful
 RESTful API uses HTTP verbs (Post, Get, Patch, etc...) in order to manipulate data. 
-Because of this, designing a RESTful system requires creating controllers that enact actions such as: /user [POST], /user/address [GET], /user/age [PATCH] etc... 
+Because of this, designing a RESTful system requires creating controllers that enact actions (e.g. [POST] /user, [GET] /user/address, [PATCH] /user/age) 
+JSON:API does not deviate from the Controller-Model structure that RESTful uses. 
 
-In the case of GraphQL, HTTP Get is used to send Queries to a database. For making modifications, HTTP Post requests seem most appropriate since it is not recommended to use HTTP Get for Mutations. See documentation on Mutations at this [link](https://graphql.org/learn/queries/#mutations). 
-When a client queries a GraphQL system, using HTTP Get with a /user structure, the server queries the database and replies with only a structure that is predefined. An advantage with this is that there is more control with the requests of GraphQL queries. 
+![Alt text](images/restful-api-diagram.png?raw=true)
 
-![Alt text](images/graphql-vs-restful.png?raw=true)
+
+### GraphQL
+In GraphQL, Queries are sent with HTTP Get to retrieve resources from a database. When modifying data, it is NOT recommended to use HTTP Get. See documentation on Mutations at this [link](https://graphql.org/learn/queries/#mutations). 
+When a client queries a GraphQL system, using HTTP Get with a /user structure, the server queries the database and replies with only a structure that is predefined. 
+
+![Alt text](images/graphql-api-diagram.png?raw=true)
 
 ---
 
