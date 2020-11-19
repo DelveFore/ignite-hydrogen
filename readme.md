@@ -239,8 +239,65 @@ This directory will hold your Jest configs and mocks, as well as your [storyshot
 
 # About The Stack
 
-## Why this stack?
+- API Spec Integrations: [Why GraphQL and JSON:API](docs/http-api-integration.md)
+- State Machines Integration: [Why Redux and Mobx State Tree](docs/state-machine-integration.md)
 
+## Upgrade
+
+To keep your React Native app updated:
+
+- [React Native Upgrade Helper](https://react-native-community.github.io/upgrade-helper/) great web based tool
+- [rn-diff-purge](https://github.com/react-native-community/rn-diff-purge)
+
+To keep your Ignite Bowser based app updated:
+
+- [ignite-bowser-diff-purge](https://github.com/nirre7/ignite-bowser-diff-purge) To help you see the diffs between versions
+
+## TypeScript
+
+In addition to `redux` --> `mobx-state-tree`, we've also transitioned to using `TypeScript` vs plain `JavaScript`. We find that TypeScript streamlines the developer experience by catching errors _before_ you hit refresh on that simulator, and prevents costly bugs by enforcing type safety.
+
+In Bowser, TypeScript is fully set up, so if you know TS, all you need to do is start coding!
+
+### Resources
+
+If you are new to TypeScript, here are some of our favorite resources:
+
+- [TypeScript in 5 minutes](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html) for a quick read
+- [TypeScript in 50 minutes](https://youtu.be/WBPrJSw7yQA) for a longer watch
+- [Execute Program -- TypeScript course](https://www.executeprogram.com/course/typescript) -- free course by Gary Bernhardt
+- [TypeScript and VSCode](https://code.visualstudio.com/docs/typescript/typescript-tutorial) for awesome developer tools
+- [Official Docs](https://www.typescriptlang.org/docs/home.html)
+
+## Contribute
+
+When contributing back to the project the recommended way is to integrate it with an example project. The follow are steps to making that happen.
+
+Clone this project to a directory similar to ~/Development or where ever you put your development projects, then...
+
+```bash
+cd ignite-hydrogen
+yarn link
+cd ..
+ignite new HydrogenExample -b ./ignite-hydrogen
+# answer the prompts
+cd HydrogenExample
+yarn link "ignite-hydrogen"
+```
+
+Now you're able to make changes in the `ignite-hydrogen/boilerplate` and then in your example project do `ignite generate boilerplate`. Keep in mind, this will overrite the existing files of the path in your `HydrogenExample` project.
+
+## Premium Support
+
+While Hydrogen is an open sourcep project and Github issues can provide most of the support, please contact DelveFore for premimum support, **coaching**, and general design/development services (see www.delvefore.com and www.delvefore.com/#Get-Started)
+_ALSO_ **[Infinite Red](https://infinite.red/)** offers premimum support for Ignite CLI and **general mobile app design/development services.**
+
+[Ignite CLI](https://infinite.red/ignite) as open source projects, are free to use and always will be.
+Email us at [hello@infinite.red](mailto:hello@infinite.red) to get in touch with us for more details.
+
+
+
+##### JONNO PLEASE MOVE ME
 If you've used Ignite Andross (the first Ignite stack), you know Ignite Red formerly used Redux for state management, as does much of the community. However, Ignite Red encountered some pain points with Redux so went in search of a different solution to meet our needs and landed on `mobx-state-tree`. We find that it’s a great middle-ground between completely structured (like `redux`) and completely freestyle (like `mobx`). It brings more than just state-management to the table as well (such as dependency injection, serialization, and lifecycle events).
 
 ### Some Highlights of MST
@@ -297,56 +354,3 @@ MobX and MobX State Tree can be a lot to learn if you're coming from Redux, so h
 - https://github.com/jamonholmgren/PlayerPopularity (simple implementation)
 - https://github.com/jamonholmgren/TrailBlazers (simple implementation with hooks)
 - https://github.com/infinitered/ChainReactApp2019 (more in-depth implementation)
-
-## Upgrade
-
-To keep your React Native app updated:
-
-- [React Native Upgrade Helper](https://react-native-community.github.io/upgrade-helper/) great web based tool
-- [rn-diff-purge](https://github.com/react-native-community/rn-diff-purge)
-
-To keep your Ignite Bowser based app updated:
-
-- [ignite-bowser-diff-purge](https://github.com/nirre7/ignite-bowser-diff-purge) To help you see the diffs between versions
-
-## TypeScript
-
-In addition to `redux` --> `mobx-state-tree`, we've also transitioned to using `TypeScript` vs plain `JavaScript`. We find that TypeScript streamlines the developer experience by catching errors _before_ you hit refresh on that simulator, and prevents costly bugs by enforcing type safety.
-
-In Bowser, TypeScript is fully set up, so if you know TS, all you need to do is start coding!
-
-### Resources
-
-If you are new to TypeScript, here are some of our favorite resources:
-
-- [TypeScript in 5 minutes](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html) for a quick read
-- [TypeScript in 50 minutes](https://youtu.be/WBPrJSw7yQA) for a longer watch
-- [Execute Program -- TypeScript course](https://www.executeprogram.com/course/typescript) -- free course by Gary Bernhardt
-- [TypeScript and VSCode](https://code.visualstudio.com/docs/typescript/typescript-tutorial) for awesome developer tools
-- [Official Docs](https://www.typescriptlang.org/docs/home.html)
-
-## Contribute
-
-When contributing back to the project the recommended way is to integrate it with an example project. The follow are steps to making that happen.
-
-Clone this project to a directory similar to ~/Development or where ever you put your development projects, then...
-
-```bash
-cd ignite-hydrogen
-yarn link
-cd ..
-ignite new HydrogenExample -b ./ignite-hydrogen
-# answer the prompts
-cd HydrogenExample
-yarn link "ignite-hydrogen"
-```
-
-Now you're able to make changes in the `ignite-hydrogen/boilerplate` and then in your example project do `ignite generate boilerplate`. Keep in mind, this will overrite the existing files of the path in your `HydrogenExample` project.
-
-## Premium Support
-
-While Hydrogen is an open sourcep project and Github issues can provide most of the support, please contact DelveFore for premimum support, **coaching**, and general design/development services (see www.delvefore.com and www.delvefore.com/#Get-Started)
-_ALSO_ **[Infinite Red](https://infinite.red/)** offers premimum support for Ignite CLI and **general mobile app design/development services.**
-
-[Ignite CLI](https://infinite.red/ignite) as open source projects, are free to use and always will be.
-Email us at [hello@infinite.red](mailto:hello@infinite.red) to get in touch with us for more details.
