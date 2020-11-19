@@ -1,16 +1,30 @@
+# Complementing RESTful with JSON:API or GraphQL
+_**Specifications Beyond the Six Architectural Constraints of RESTful**_
 
-## Helping out RESTful with JSON API or GraphQL
+## Prerequisite Understanding and Terms
+As outlined by [Roy Fielding](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm) (citation), the **Six Architectural Constraints for RESTful API** are as follows:
+1. Client-Server
+2. Stateless
+3. Cache
+4. Uniform Interface
+5. Layered System
+6. Code-On-Demand
 
-### Design
-The constraints that RESTful API provides a system can be described well by Roy Fielding:
-"This chapter introduced the Representational State Transfer (REST) architectural style for distributed hypermedia systems. REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, the generality of interfaces, independent deployment of components, and intermediary components to reduce interaction latency, enforce security, and encapsulate legacy systems"
 
-However useful these constraints that RESTful API provide, it does not provide featrues that limit or include additional fields in a resource response (e.g. techniques "Sparse Fields" and "Compound Documents" and "Pagination"). This leaves it up to the implementors to decide how or even if to implement these features.
+## Limitation of the Constraints
+A supplemental specification is neccisary beyond the _six architectural constraints_ (**SAC**) of RESTful API because they do not constrain the resource response fields. Thereby leaving the implementors frustrating their consuming application engineers and/or have overhead in performance.
 
-This is where [JSON](https://jsonapi.org/format/) API and [GraphQL](https://graphql.org/learn/) (among a few others) provide constraints and features that address the previously listed "techniques" that RESTful API does not address. There are many features that JSON API and GraphQl are capable of, but we are only focusing on the ones that acheive the goal of reducing the size and number of API requests that go between the client and server.
+According to Roy Fielding
+> "REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, the generality of interfaces, independent deployment of components, and intermediary components to reduce interaction latency, enforce security, and encapsulate legacy systems"
 
-### JSON API
-**JSON API** has features such as **Sparse Fields**, **Compound Documents**, **pagination**, and **caching**.
+However, there is no _constraint_  on how limit or include additional fields for `resource` response. For example, techniques "Sparse Fields" and "Compound Documents" and "Pagination" are not defined in the SAC. This leaves it up to the implementors to decide how or even if to implement these features.
+
+This is where [JSON:API](https://jsonapi.org/format/) and [GraphQL](https://graphql.org/learn/) (among a few others) provide the needed additional constraints that address the previously listed "techniques" that RESTful API does not address. There are many features that JSON API and GraphQl are capable of, but we are only focusing on the ones that acheive the goal of reducing the size and number of API requests that go between the client and server.
+
+## Adding Constraints through Specifications
+
+### JSON:API
+**JSON:API** has features such as **Sparse Fields**, **Compound Documents**, **pagination**, and **caching**.
 
 #### Sparse Fieldset
 This is the bread and butter that allows the request to specify the fields needed 
@@ -25,10 +39,10 @@ GET /books?fields[books]=author,themes,&include=chapter1/title
 ```
 
 #### Caching
-JSON API takes advantage of the caching ability that HTTP has built in. This reduces the need to return data that has not changed, saving bandwidth.
+JSON:API takes advantage of the caching ability that HTTP has built in. This reduces the need to return data that has not changed, saving bandwidth.
 
 #### Pagination
-JSON API handles Pagination with a standard that `links` such as: `first`, `last`, `next`, and `previous` will return subnets of sort information.
+JSON:API handles Pagination with a standard that `links` such as: `first`, `last`, `next`, and `previous` will return subnets of sort information.
 https://jsonapi.org/format/#fetching-pagination
 
 ### GraphQL
@@ -67,7 +81,10 @@ When a client queries a GraphQL system, using HTTP Get with a /user structure, t
 
 ![Alt text](images/graphql-vs-restful.png?raw=true)
 
+---
 
-### References
-Fielding, Roy Thomas (2000). "Chapter 5: Representational State Transfer (REST)". Architectural Styles and the Design of Network-based Software Architectures (Ph.D.). University of California, Irvine. 
+## References
+- Fielding, Roy Thomas (2000). "Chapter 5: Representational State Transfer (REST)". Architectural Styles and the Design of Network-based Software Architectures (Ph.D.). University of California, Irvine. 
+
+- https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
 
