@@ -56,8 +56,8 @@ export const generateBoilerplate = async (
       target: "app/screens/Welcome/index.tsx",
     },
     {
-      template: "app/screens/Demo/index.tsx.ejs",
-      target: "app/screens/Demo/index.tsx",
+      template: "app/screens/Dashboard/index.tsx.ejs",
+      target: "app/screens/Dashboard/index.tsx",
     },
   ]
   const templates = [
@@ -89,8 +89,8 @@ export const generateBoilerplate = async (
       target: "app/navigation/root-navigator.tsx",
     },
     {
-      template: "app/navigation/primary-navigator.tsx.ejs",
-      target: "app/navigation/primary-navigator.tsx",
+      template: "app/navigation/Primary.tsx.ejs",
+      target: "app/navigation/Primary.tsx",
     },
     { template: "storybook/storybook.tsx.ejs", target: "storybook/storybook.tsx" },
     { template: "bin/postInstall", target: "bin/postInstall" },
