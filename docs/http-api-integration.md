@@ -55,20 +55,26 @@ https://jsonapi.org/format/#fetching-pagination
 ---
 
 ### GraphQL
-**GraphQL** can also reduce the fields returned by specifying them in the GraphQL Query. Keep in mind, as its name implies GraphQL is predominantly a Query Language
+**GraphQL** has features such as **Sparse Fields**, **Compound Documents**, **Pagination**, and **Caching**.
+
 
 #### Sparse Fieldsets
+GraphQL can also reduce the fields returned by specifying them in the GraphQL Query. Keep in mind, as its name implies GraphQL is predominantly a Query Language
+https://graphql.org/learn/queries/#fields
+
 ```
 GET /graphql
-books(title: Hobbit) {
+books {
   author
   themes
 }
-
+```
+Response
+```
 response
-"books": {
-  author: J.R.R. Tolkien
-  themes: fantasy, fiction
+"Hobbit": {
+  "author": "J.R.R. Tolkien"
+  "themes": "fantasy, fiction"
 }
 ```
 
