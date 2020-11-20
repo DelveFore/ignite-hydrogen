@@ -14,18 +14,18 @@ As outlined by [Roy Fielding](https://www.ics.uci.edu/~fielding/pubs/dissertatio
 
 
 ## Limitations of the Constraints
-A supplemental specification is neccisary beyond the _six architectural constraints_ (**SAC**) of RESTful API because they do not constrain the resource response fields. Thereby leaving the implementors frustrating their consuming application engineers and/or frustrating users of the application due to performance issues.
+A supplemental specification is necessary beyond the _six architectural constraints_ (**SAC**) of RESTful API because they do not constrain the resource response fields. Thereby leaving the implementers frustrating their consuming application engineers and/or frustrating users of the application due to performance issues.
 
 There are clear benefits of the **SAC**. According to Roy Fielding
 > "REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, the generality of interfaces, independent deployment of components, and intermediary components to reduce interaction latency, enforce security, and encapsulate legacy systems"
 
 However, there is no _constraint_  on how to limit or include additional fields for `resource` response. 
 For example, techniques "Sparse Fields", "Compound Documents" and "Pagination" are not defined in the **SAC**. 
-This leaves it up to the implementors to decide how, or even if, to implement these features.
+This leaves it up to the implementers to decide how, or even if, to implement these features.
 
 This is where [JSON:API](https://jsonapi.org/format/) and [GraphQL](https://graphql.org/learn/) (among a few others) 
 provide the needed additional constraints that address the previously listed "techniques" that RESTful API does not address. 
-There are many features that JSON API and GraphQl are capable of, but we are only focusing on the ones that acheive the goal of reducing the size and number of API requests that go between the client and server.
+There are many features that JSON API and GraphQl are capable of, but we are only focusing on the ones that achieve the goal of reducing the size and number of API requests that go between the client and server.
 
 ## Adding Constraints through Specifications
 
@@ -55,7 +55,7 @@ https://jsonapi.org/format/#fetching-pagination
 ---
 
 ### GraphQL
-**GraphQL** can also reduce the fields returned by specifying the them in the GraphQL Query. Keep in mind, as its name implies GraphQL is predominantly a Query Language
+**GraphQL** can also reduce the fields returned by specifying them in the GraphQL Query. Keep in mind, as its name implies GraphQL is predominantly a Query Language
 
 #### Sparse Fieldsets
 ```
@@ -77,7 +77,7 @@ GraphQL utilizes HTTP Caching and identifies when objects with globally uniquie 
 https://graphql.org/learn/caching/#gatsby-focus-wrapper
 
 #### Pagination
-GraphQL suggests various way to paginate returning data by requesting a set such as `first:10 offset:20` which is the equivalent of saying "second page of 10 items". 
+GraphQL suggests various way to paginate returning data by requesting a set such as `first:10 offset:20` which is the equivalent to saying "second page of 10 items". 
 Another example is `first:5 offset:$itemId`, equivalent of saying "first 5 items after the ID of this item".
 https://graphql.org/learn/pagination/
 
