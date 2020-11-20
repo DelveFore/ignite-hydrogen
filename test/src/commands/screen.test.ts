@@ -1,17 +1,67 @@
+import { stdin } from "mock-stdin"
 import { run } from "../../../src/commands/generate/screen"
 import { createBoilerplateToolbox, generateProject } from "../../testUtils"
 import Console, { ConsoleMethod } from "../../testUtils/Console"
 import { BoilerplateProps } from "../../../src/types"
+import { delay, KEYS, sendKeystrokes } from "../../testUtils/cli"
 import temp = require("temp")
 import mockProcess = require("jest-mock-process")
 
 const originalDir = process.cwd()
+// HELPERS
+const selectNoNavigation = async io => {
+  await sendKeystrokes(async () => {
+    // Move pass Navigation without making a selection
+    io.send(KEYS.Enter)
+    await delay(10)
+  })
+}
+
+const selectOnlyPrimaryNavigation = async io => {
+  await sendKeystrokes(async () => {
+    io.send(KEYS.Space)
+    await delay(10)
+    io.send(KEYS.Enter)
+    await delay(10)
+  })
+}
+
+const selectOnlyDrawerNavigation = async io => {
+  await sendKeystrokes(async () => {
+    io.send(KEYS.Down)
+    await delay(10)
+    io.send(KEYS.Space)
+    await delay(10)
+    io.send(KEYS.Enter)
+    await delay(10)
+  })
+}
+
+const selectDrawerAndPrimaryNavigation = async io => {
+  await sendKeystrokes(async () => {
+    io.send(KEYS.Space)
+    await delay(10)
+    io.send(KEYS.Down)
+    await delay(10)
+    io.send(KEYS.Space)
+    await delay(10)
+    io.send(KEYS.Enter)
+    await delay(10)
+  })
+}
+
 describe("Generate Screen", () => {
   const consoleSpies = new Console(console)
+  // Mock stdin so we can send messages to the CLI
+  let io = null
   let mockExit = null
   let toolbox = null
   beforeAll(() => {
+    io = stdin()
     temp.track()
+  })
+  afterAll(() => {
+    io.restore()
   })
   beforeEach(async () => {
     consoleSpies.mock([ConsoleMethod.log])
@@ -25,7 +75,7 @@ describe("Generate Screen", () => {
     process.chdir(originalDir)
     mockExit.mockRestore()
   })
-  describe("run() not impacted by selections", () => {
+  describe("run() not impacted by boilerplate selections", () => {
     beforeEach(async () => {
       toolbox = createBoilerplateToolbox({ cwd: originalDir })
       const templateProps: BoilerplateProps = {
@@ -51,6 +101,8 @@ describe("Generate Screen", () => {
     })
     it("writes CamelCased Screen", async () => {
       toolbox.parameters.first = "Example"
+      // No need to for Navigation at this time
+      await selectNoNavigation(io)
       await run(toolbox)
       // assertions
       const { filesystem } = toolbox
@@ -63,6 +115,8 @@ describe("Generate Screen", () => {
     })
     it("writes content into index.tsx that uses createScreen()", async () => {
       toolbox.parameters.first = "Example"
+      // No need to for Navigation at this time
+      await selectNoNavigation(io)
       await run(toolbox)
       // assertions
       const { filesystem } = toolbox
@@ -72,6 +126,8 @@ describe("Generate Screen", () => {
     })
     it("index.tsx does not contain ViewStyle (we are using using NativeBase)", async () => {
       toolbox.parameters.first = "Example"
+      // No need to for Navigation at this time
+      await selectNoNavigation(io)
       await run(toolbox)
       // assertions
       const { filesystem } = toolbox
@@ -80,8 +136,54 @@ describe("Generate Screen", () => {
       expect(content).not.toContain("import { ViewStyle } from 'react-native'")
       expect(content).not.toContain("import { color } from '../../theme'")
     })
+    describe("user selected Navigation insertions", () => {
+      it("does not add to Primary or Drawer", async () => {
+        toolbox.parameters.first = "Example"
+        await selectNoNavigation(io)
+        await run(toolbox)
+        // assertions
+        const { filesystem } = toolbox
+        let content = filesystem.read("app/navigation/Primary.tsx")
+        expect(content).not.toContain("Example")
+        content = filesystem.read("app/navigation/Drawer.tsx")
+        expect(content).not.toContain("Example")
+      })
+      it("adds to Primary but not Drawer", async () => {
+        toolbox.parameters.first = "Example"
+        await selectOnlyPrimaryNavigation(io)
+        await run(toolbox)
+        // assertions
+        const { filesystem } = toolbox
+        let content = filesystem.read("app/navigation/Primary.tsx")
+        expect(content).toContain("Example")
+        content = filesystem.read("app/navigation/Drawer.tsx")
+        expect(content).not.toContain("Example")
+      })
+      it("adds to Drawer but not Primary", async () => {
+        toolbox.parameters.first = "Example"
+        await selectOnlyDrawerNavigation(io)
+        await run(toolbox)
+        // assertions
+        const { filesystem } = toolbox
+        let content = filesystem.read("app/navigation/Primary.tsx")
+        expect(content).not.toContain("Example")
+        content = filesystem.read("app/navigation/Drawer.tsx")
+        expect(content).toContain("Example")
+      })
+      it("adds to Drawer and Primary", async () => {
+        toolbox.parameters.first = "Example"
+        await selectDrawerAndPrimaryNavigation(io)
+        await run(toolbox)
+        // assertions
+        const { filesystem } = toolbox
+        let content = filesystem.read("app/navigation/Primary.tsx")
+        expect(content).toContain("Example")
+        content = filesystem.read("app/navigation/Drawer.tsx")
+        expect(content).toContain("Example")
+      })
+    })
   })
-  describe("run() State Machine selection", () => {
+  describe("run() State Machine boilerplate selection", () => {
     beforeEach(async () => {
       toolbox = createBoilerplateToolbox({ cwd: originalDir })
       toolbox.parameters.first = "Example"
@@ -101,6 +203,8 @@ describe("Generate Screen", () => {
         useNativeBase: true,
       }
       await generateProject(toolbox, templateProps, originalDir)
+      // No need to for Navigation at this time
+      await selectNoNavigation(io)
       // generate screen
       await run(toolbox)
       // assertions
@@ -129,6 +233,8 @@ describe("Generate Screen", () => {
         useNativeBase: true,
       }
       await generateProject(toolbox, templateProps, originalDir)
+      // No need to for Navigation at this time
+      await selectNoNavigation(io)
       // generate screen
       await run(toolbox)
       // assertions
@@ -157,6 +263,8 @@ describe("Generate Screen", () => {
         useNativeBase: true,
       }
       await generateProject(toolbox, templateProps, originalDir)
+      // No need to for Navigation at this time
+      await selectNoNavigation(io)
       // generate screen
       await run(toolbox)
       // assertions

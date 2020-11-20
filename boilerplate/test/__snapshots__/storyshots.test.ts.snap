@@ -2764,7 +2764,7 @@ exports[`Storyshots Header Behavior 1`] = `
                       }
                     }
                   >
-                    demoScreen.howTo.test
+                    dashboardScreen.howTo.test
                   </Text>
                 </View>
                 <View
@@ -2930,7 +2930,7 @@ exports[`Storyshots Header Behavior 1`] = `
                       }
                     }
                   >
-                    demoScreen.howTo.test
+                    dashboardScreen.howTo.test
                   </Text>
                 </View>
                 <View
@@ -3067,7 +3067,7 @@ exports[`Storyshots Header Behavior 1`] = `
                       }
                     }
                   >
-                    demoScreen.howTo.test
+                    dashboardScreen.howTo.test
                   </Text>
                 </View>
                 <View
@@ -4468,8 +4468,8 @@ exports[`Storyshots Text Passing Content 1`] = `
                   }
                 }
               >
-                 
-                Hello 
+
+                Hello
                 <Text
                   style={
                     Object {
@@ -4625,10 +4625,10 @@ exports[`Storyshots Text Style Presets 1`] = `
                 }
               >
                 Check out
-                
+
 
                 my
-                
+
 
                 line height
               </Text>
@@ -4990,8 +4990,8 @@ exports[`Storyshots Text Styling 1`] = `
                   }
                 }
               >
-                 
-                Hello 
+
+                Hello
                 <Text
                   style={
                     Object {
