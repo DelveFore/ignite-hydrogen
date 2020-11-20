@@ -2,28 +2,30 @@
 name: Bug report
 about: Create a report to help us improve
 title: ""
-labels: ""
+labels: "bug"
 assignees: ""
 ---
 
-### Hey there! Ignite Bowser seems to be having a problem, eh?
+Please
 
-Welllllll, it just might be. First, search the issues to make sure it's not already
-here, and if not head over to http://community.infinite.red to
-get some help. If you've identified that it's really an Ignite Bowser issue, then:
-
-- Explain what's going on and preferably how to replicate the issue (bonus points for a repro app)
-- Run `ignite doctor` and paste the result below, including the lines with 3 backticks
-- Delete these instructions! We don't want to look at them. ;)
+1. Explain what's going on and preferably how to replicate the issue (bonus points for a _repro_ code example)
+2. Run `ignite doctor` and paste the result below, including the lines with 3 backticks
+3. Delete these instructions! We don't want to look at them. ;)
 
 ---
 
-What's going on?
-
----
-
-Steps to reproduce
-
----
+# Environment
 
 `ignite doctor` results:
+
+```
+# results here
+```
+
+# Steps to reproduce
+
+1. Go to screen
+
+# What Happens (aka "Actual Results")
+
+# What is Expected
