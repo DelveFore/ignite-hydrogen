@@ -29,6 +29,19 @@ There are many features that JSON API and GraphQl are capable of, but we are onl
 
 ## Adding Constraints through Specifications
 
+These terms are worth keeping in mind when understanding a difference in JSON:API and GraphQL that I will bring up later.
+- Remote Procedure Call 
+> "RPC is the earliest, simplest form of API interaction. 
+It is about executing a block of code on another server, 
+and when implemented in HTTP or AMQP it can become a Web API." (Phil Sturgeon)
+- Representational State Transfer 
+> "REST is all about a client-server relationship, where server-side data are made available through
+representations of data in simple formats. This format is usually JSON or XML but could be anything."
+(Phil Sturgeon)
+
+With this understanding I claim that JSON:API behaves more inline with RESTful, while GraphQL behaves like RPC.
+
+
 ### JSON:API
 **JSON:API** has features such as **Sparse Fields**, **Compound Documents**, **Pagination**, and **Caching**.
 
@@ -55,28 +68,22 @@ https://jsonapi.org/format/#fetching-pagination
 ---
 
 ### GraphQL
+As described by Phil Sturgeon, GraphQL compares closer to a RPC API then to a RESTful API like JSON:API
+
+> Listing GraphQL as a direct comparison to these other two concepts is a little odd, as GraphQL is essentially RPC, 
+> with a lot of good ideas from the REST/HTTP community tacked in. Still, it is one of the fastest growing API ecosystems out there, 
+> mostly due to some of the confusion outlined above.
+>
+> GraphQL is basically RPC with a default procedure providing a query language, a little like SQL — if that is something you are familiar with. 
+> You ask for specific resources and specific fields, and it will return that data in the response.
+> (Phil Sturgeon)
+
 **GraphQL** has features such as **Sparse Fields**, **Compound Documents**, **Pagination**, and **Caching**.
 
 
 #### Sparse Fieldsets
-GraphQL can also reduce the fields returned by specifying them in the GraphQL Query. Keep in mind, as its name implies GraphQL is predominantly a Query Language
-https://graphql.org/learn/queries/#fields
-
-```
-GET /graphql
-books {
-  author
-  themes
-}
-```
-Response
-```
-response
-"Hobbit": {
-  "author": "J.R.R. Tolkien"
-  "themes": "fantasy, fiction"
-}
-```
+GraphQL utilizes both HTTP POST and GET verbs for querying data. With HTTP POST verb and queries in the `body` more specific information can be
+retrieved than with HTTP GET requests. Examples of this claim can be found in their documentation: [HTTP Methods, Headers, and Body](https://graphql.github.io/learn/serving-over-http/#http-methods-headers-and-body)
 
 #### Caching
 GraphQL utilizes HTTP Caching and identifies when objects with globally uniquie identifiers are called again.
@@ -87,26 +94,15 @@ GraphQL suggests various way to paginate returning data by requesting a set such
 Another example is `first:5 offset:$itemId`, equivalent of saying "first 5 items after the ID of this item".
 https://graphql.org/learn/pagination/
 
-## Architecture
 
-### RESTful
-RESTful API uses HTTP verbs (Post, Get, Patch, etc...) in order to manipulate data. 
-Because of this, designing a RESTful system requires creating controllers that enact actions (e.g. [POST] /user, [GET] /user/address, [PATCH] /user/age) 
-JSON:API does not deviate from the Controller-Model structure that RESTful uses. 
-
-![Alt text](images/restful-api-diagram.png?raw=true)
-
-
-### GraphQL
-In GraphQL, Queries are sent with HTTP Get to retrieve resources from a database. When modifying data, it is NOT recommended to use HTTP Get. See documentation on Mutations at this [link](https://graphql.org/learn/queries/#mutations). 
-When a client queries a GraphQL system, using HTTP Get with a /user structure, the server queries the database and replies with only a structure that is predefined. 
-
-![Alt text](images/graphql-api-diagram.png?raw=true)
+### Final Thoughts
+From what I've seen of GraphQL, it leans on concepts that derive from JSON:API. That said anyone who is starting off
+may find GraphQL to be a learning curve, but for anyone already familiar with JSON:API, should pick up GraphQL quicker.
 
 ---
 
 ## References
-- Fielding, Roy Thomas (2000). "Chapter 5: Representational State Transfer (REST)". Architectural Styles and the Design of Network-based Software Architectures (Ph.D.). University of California, Irvine. 
+- Fielding, Roy Thomas. Architectural Styles and the Design of Network-based Software Architectures. Doctoral dissertation, University of California, Irvine, 2000 (https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
 
-- https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
+- Sturgeon, Phil. Understanding RPC, REST and GraphQL, 2018 (https://apisyouwonthate.com/blog/understanding-rpc-rest-and-graphql)
 
