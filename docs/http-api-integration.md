@@ -80,7 +80,7 @@ As described by Phil Sturgeon, GraphQL compares closer to a RPC API then to a RE
 
 #### Sparse Fieldsets
 GraphQL utilizes both HTTP POST and GET verbs for querying data. With HTTP POST verb and queries in the `body` more specific information can be
-retrieved than with HTTP GET requests. Examples of this claim can be found in their documentation: [HTTP Methods, Headers, and Body](https://graphql.github.io/learn/serving-over-http/#http-methods-headers-and-body)
+retrieved than with HTTP GET requests. For more information on using POST and GET verbs see their documentation: [HTTP Methods, Headers, and Body](https://graphql.github.io/learn/serving-over-http/#http-methods-headers-and-body)
 
 #### Caching
 GraphQL utilizes HTTP Caching and identifies when objects with globally uniquie identifiers are called again.
