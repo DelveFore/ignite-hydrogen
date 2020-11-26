@@ -12,6 +12,16 @@ As outlined by [Roy Fielding](https://www.ics.uci.edu/~fielding/pubs/dissertatio
 5. Layered System
 6. Code-On-Demand
 
+These terms are worth keeping in mind when understanding a difference in JSON:API and GraphQL that I will bring up later.
+- Remote Procedure Call 
+> "RPC is the earliest, simplest form of API interaction. 
+It is about executing a block of code on another server, 
+and when implemented in HTTP or AMQP it can become a Web API." (Phil Sturgeon)
+
+- Representational State Transfer 
+> "REST is all about a client-server relationship, where server-side data are made available through
+representations of data in simple formats. This format is usually JSON or XML but could be anything."
+(Phil Sturgeon)
 
 ## Limitations of the Constraints
 A supplemental specification is necessary beyond the _six architectural constraints_ (**SAC**) of RESTful API because they do not constrain the resource response fields. Thereby leaving the implementers frustrating their consuming application engineers and/or frustrating users of the application due to performance issues.
@@ -28,19 +38,6 @@ provide the needed additional constraints that address the previously listed "te
 There are many features that JSON API and GraphQl are capable of, but we are only focusing on the ones that achieve the goal of reducing the size and number of API requests that go between the client and server.
 
 ## Adding Constraints through Specifications
-
-These terms are worth keeping in mind when understanding a difference in JSON:API and GraphQL that I will bring up later.
-- Remote Procedure Call 
-> "RPC is the earliest, simplest form of API interaction. 
-It is about executing a block of code on another server, 
-and when implemented in HTTP or AMQP it can become a Web API." (Phil Sturgeon)
-- Representational State Transfer 
-> "REST is all about a client-server relationship, where server-side data are made available through
-representations of data in simple formats. This format is usually JSON or XML but could be anything."
-(Phil Sturgeon)
-
-With this understanding I claim that JSON:API behaves more inline with RESTful, while GraphQL behaves like RPC.
-
 
 ### JSON:API
 **JSON:API** has features such as **Sparse Fields**, **Compound Documents**, **Pagination**, and **Caching**.
