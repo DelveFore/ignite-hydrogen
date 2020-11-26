@@ -91,6 +91,7 @@ GraphQL suggests various way to paginate returning data by requesting a set such
 Another example is `first:5 offset:$itemId`, equivalent of saying "first 5 items after the ID of this item".
 https://graphql.org/learn/pagination/
 
+---
 
 ### Final Thoughts
 As I've described in this article, GraphQL and JSON:API overlap in providing additional contraints that RESTful does not have. That said, whoever is starting off may find GraphQL to have a steep learning curve, but for anyone already familiar with JSON:API, should be able to pick it up quicker.
