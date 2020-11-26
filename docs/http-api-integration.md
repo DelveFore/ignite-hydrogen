@@ -96,8 +96,7 @@ https://graphql.org/learn/pagination/
 
 
 ### Final Thoughts
-From what I've seen of GraphQL, it leans on concepts that derive from JSON:API. That said anyone who is starting off
-may find GraphQL to be a learning curve, but for anyone already familiar with JSON:API, should pick up GraphQL quicker.
+As I've described in this article, GraphQL and JSON:API overlap in providing additional contraints that RESTful does not have. That said, whoever is starting off may find GraphQL to have a steep learning curve, but for anyone already familiar with JSON:API, should be able to pick it up quicker.
 
 ---
 
