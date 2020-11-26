@@ -4,7 +4,7 @@ _**Specifications Beyond the Six Architectural Constraints of RESTful**_
 This article intends to explain why Hydrogen supports specific RESTful-styled specifications; [JSON:API](https://jsonapi.org/format/) and [GraphQL](https://graphql.org/learn/).
 
 ## Prerequisite Understanding and Terms
-As outlined by [Roy Fielding](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm) (citation), the **Six Architectural Constraints for RESTful API** are as follows:
+As outlined by [Roy Fielding](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm) (Fielding, Roy Thomas), the **Six Architectural Constraints for RESTful API** are as follows:
 1. Client-Server
 2. Stateless
 3. Cache
