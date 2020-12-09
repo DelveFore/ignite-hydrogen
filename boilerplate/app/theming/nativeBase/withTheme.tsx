@@ -5,7 +5,6 @@ import StyleProvider from "./StyleProvider"
 /**
  * Currently this only supports NativeBase
  *
- * TODO Support UI Library "React Native paper"
  *
  * @param Component
  */
