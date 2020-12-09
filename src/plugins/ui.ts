@@ -37,7 +37,10 @@ export default class Plugin implements BoilerplatePlugin {
           `${process.cwd()}/app/theme/variables`,
         )
         filesystem.remove(`${process.cwd()}/native-base-theme`)
+        filesystem.remove(`${process.cwd()}/app/theming/paper`)
       }
+    } else {
+      filesystem.remove(`${process.cwd()}/app/theming/nativeBase`)
     }
   }
 
@@ -48,7 +51,7 @@ export default class Plugin implements BoilerplatePlugin {
   }
 
   getTemplates = () => {
-    return []
+    return [{ template: "app/theming/index.ts.ejs", target: "app/theming/index.ts" }]
   }
 
   selectFromUserInteraction = async () => {
@@ -65,9 +68,8 @@ export default class Plugin implements BoilerplatePlugin {
           },
           {
             message:
-              "[COMING SOON] React Native Paper (https://callstack.github.io/react-native-paper/)",
+              "React Native Paper (https://callstack.github.io/react-native-paper/)",
             name: OPTIONS.Paper,
-            disabled: true,
           },
         ],
       },

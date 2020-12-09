@@ -1,0 +1,7 @@
+<% if (props.useNativeBase) { -%>
+  export withTheme = './nativeBase/withTheme.tsx'
+<% } else { -%>
+  import _withTheme from './paper/withTheme'
+
+  export const withTheme = _withTheme
+<% } -%>
