@@ -16,7 +16,8 @@ const selectWithoutMobx = async io => {
     await delay(10)
   })
 }
-//TODO There is no difference if you select with or without Mobx. Component Generator behave differently if Mobx is selected.
+
+// TODO There is no difference if you select with or without Mobx. Component Generator behave differently if Mobx is selected.
 /*
 const selectWithMobx = async io => {
   await sendKeystrokes(async () => {
