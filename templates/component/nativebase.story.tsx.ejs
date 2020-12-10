@@ -1,7 +1,7 @@
 import * as React from "react"
 import { storiesOf } from "@storybook/react-native"
 import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { color } from "../../theme"
+import { colors } from "../../theme"
 import { <%= props.pascalName %> } from "./<%= props.kebabCaseName %>"
 
 storiesOf("<%= props.pascalName %>", module)
@@ -9,7 +9,7 @@ storiesOf("<%= props.pascalName %>", module)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <<%= props.pascalName %> style={{ backgroundColor: color.error }} />
+        <<%= props.pascalName %> style={{ backgroundColor: colors.error }} />
       </UseCase>
     </Story>
   ))

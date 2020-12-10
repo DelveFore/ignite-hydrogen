@@ -4,7 +4,7 @@ import { useNavigation, DrawerActions } from "@react-navigation/native"
 import { BulletItem, Text, Header, Screen, Wallpaper } from "../../components"
 import createScreen from '../createScreen'
 import { Button, List, ListItem, Text as TextNB, Thumbnail, Right, Left, Body } from 'native-base'
-import { color } from "../../theme"
+import { colors } from "../../theme"
 // TODO Support MST (https://mobx-react.js.org/)
 import { useSelector } from 'react-redux'
 import styles from './styles'
@@ -44,7 +44,7 @@ export default createScreen('Dashboard', () => {
   return (
     <% if (props.includeDetox) { -%><View testID="DashboardScreen" style={styles.FULL}><% } else { -%><View style={styles.FULL}><% } %>
       <Wallpaper />
-      <Screen style={styles.CONTAINER} preset="scroll" backgroundColor={color.transparent}>
+      <Screen style={styles.CONTAINER} preset="scroll" backgroundColor={colors.transparent}>
         <Header
           headerTx="dashboardScreen.howTo"
           leftIcon="back"

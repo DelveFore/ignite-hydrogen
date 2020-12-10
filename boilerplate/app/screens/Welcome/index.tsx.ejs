@@ -4,7 +4,7 @@ import { Button } from "native-base"
 import { useNavigation } from "@react-navigation/native"
 import { Header, Screen, Text, Wallpaper, BulletItem } from "../../components"
 import createScreen from '../createScreen'
-import { color } from '../../theme'
+import { colors } from '../../theme'
 import styles from './styles'
 
 export default createScreen('Welcome', (props) => {
@@ -35,7 +35,7 @@ export default createScreen('Welcome', (props) => {
       <View style={styles.FULL}>
     <% } -%>
       <Wallpaper />
-      <Screen style={styles.CONTAINER} preset="scroll" backgroundColor={color.transparent}>
+      <Screen style={styles.CONTAINER} preset="scroll" backgroundColor={colors.transparent}>
         <Header headerTx="welcomeScreen.poweredBy" style={styles.HEADER} titleStyle={styles.HEADER_TITLE} />
         <Text style={styles.TITLE_WRAPPER}>
           <Text style={styles.TITLE} text="Your new app, " />
