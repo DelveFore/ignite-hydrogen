@@ -59,6 +59,10 @@ export const generateBoilerplate = async (
       template: "app/screens/Dashboard/index.tsx.ejs",
       target: "app/screens/Dashboard/index.tsx",
     },
+    {
+      template: "app/screens/Dashboard/UserListItem.tsx.ejs",
+      target: "app/screens/Dashboard/UserListItem.tsx",
+    }
   ]
   const templates = [
     { template: "index.js.ejs", target: useExpo ? "App.js" : "index.js" },
@@ -100,6 +104,7 @@ export const generateBoilerplate = async (
 
   await ignite.copyBatch(toolbox, templates, templateProps, {
     quiet: true,
+    askToOverwrite: true, // TODO Ask IgniteRed why this askToOverwrite isn't an option for `copyBatch`. It appears you are required to do it in the project configuration.
     directory: boilerplatePath,
   })
 

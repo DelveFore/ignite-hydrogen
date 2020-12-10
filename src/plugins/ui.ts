@@ -26,22 +26,32 @@ export default class Plugin implements BoilerplatePlugin {
 
   cleanUp = async () => {
     const { filesystem } = this.toolbox
+    const projectBase = process.cwd()
     if (this.selected === OPTIONS.NativeBase) {
-      if (filesystem.exists(`${process.cwd()}/native-base-theme`)) {
+      if (filesystem.exists(`${projectBase}/native-base-theme`)) {
         filesystem.move(
-          `${process.cwd()}/native-base-theme/components`,
-          `${process.cwd()}/app/theme/components`,
+          `${projectBase}/native-base-theme/components`,
+          `${projectBase}/app/theme/components`,
         )
         filesystem.move(
-          `${process.cwd()}/native-base-theme/variables`,
-          `${process.cwd()}/app/theme/variables`,
+          `${projectBase}/native-base-theme/variables`,
+          `${projectBase}/app/theme/variables`,
         )
-        filesystem.remove(`${process.cwd()}/native-base-theme`)
-        filesystem.remove(`${process.cwd()}/app/theming/paper`)
+        filesystem.remove(`${projectBase}/native-base-theme`)
+        filesystem.remove(`${projectBase}/app/theming/paper`)
       }
+      filesystem.move(
+        `${projectBase}/app/screens/createScreen/nativeBase.ts`,
+        `${projectBase}/app/screens/createScreen.ts`
+      )
     } else {
+      filesystem.move(
+        `${projectBase}/app/screens/createScreen/paper.ts`,
+        `${projectBase}/app/screens/createScreen.ts`
+      )
       filesystem.remove(`${process.cwd()}/app/theming/nativeBase`)
     }
+    filesystem.remove(`${projectBase}/app/screens/createScreen`)
   }
 
   postPackageInstall = async () => {
@@ -86,7 +96,9 @@ export default class Plugin implements BoilerplatePlugin {
   }
 
   selectFromProjectInfo = async () => {
-    this.selected = ProjectInfo.hasNativeBase() ? OPTIONS.NativeBase : OPTIONS.Paper
+    this.selected = ProjectInfo.hasNativeBase() && !ProjectInfo.hasReactNativePaper()
+      ? OPTIONS.NativeBase
+      : OPTIONS.Paper
     this.willEjectNativeBaseTheme = false
     return {
       selected: this.selected,
