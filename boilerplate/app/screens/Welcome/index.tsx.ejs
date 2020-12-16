@@ -1,10 +1,14 @@
 import React from "react"
 import { View, SafeAreaView } from "react-native"
+<% if (props.useNativeBase) { -%>
 import { Button } from "native-base"
+<% } else { -%>
+import { Button } from "react-native-paper"
+<% } -%>
 import { useNavigation } from "@react-navigation/native"
 import { Header, Screen, Text, Wallpaper, BulletItem } from "../../components"
 import createScreen from '../createScreen'
-import { color } from '../../theme'
+import { colors } from '../../theme'
 import styles from './styles'
 
 export default createScreen('Welcome', (props) => {
@@ -35,7 +39,7 @@ export default createScreen('Welcome', (props) => {
       <View style={styles.FULL}>
     <% } -%>
       <Wallpaper />
-      <Screen style={styles.CONTAINER} preset="scroll" backgroundColor={color.transparent}>
+      <Screen style={styles.CONTAINER} preset="scroll" backgroundColor={colors.transparent}>
         <Header headerTx="welcomeScreen.poweredBy" style={styles.HEADER} titleStyle={styles.HEADER_TITLE} />
         <Text style={styles.TITLE_WRAPPER}>
           <Text style={styles.TITLE} text="Your new app, " />
@@ -52,12 +56,16 @@ export default createScreen('Welcome', (props) => {
       </Screen>
       <SafeAreaView style={styles.FOOTER}>
         <View style={styles.FOOTER_CONTENT}>
+          <% if (props.useNativeBase) { -%>
           <Button
             <% if (props.includeDetox) { -%> testID="next-screen-button"<% } -%>
             primary
             full
             onPress={nextScreen}
           >
+          <% } else { %>
+            <Button mode="contained" onPress={nextScreen} >
+          <% } %>
             <Text tx="welcomeScreen.continue" />
           </Button>
         </View>

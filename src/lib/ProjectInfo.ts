@@ -21,4 +21,9 @@ export default {
     const version = getDepVersion(info, "native-base")
     return !isNil(version) && !isEmpty(version)
   },
+  hasReactNativePaper() {
+    const info = JSON.parse(read(process.cwd() + "/package.json"))
+    const version = getDepVersion(info, "react-native-paper")
+    return !isNil(version) && !isEmpty(version)
+  }
 }

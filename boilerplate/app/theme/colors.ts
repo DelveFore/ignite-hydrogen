@@ -9,7 +9,7 @@ import { palette } from "./palette"
  * If you have a specific use-case, like a spinner color.  It makes more sense to
  * put that in the <Spinner /> component.
  */
-export const color = {
+export const colors = {
   /**
    * The palette is available to use, but prefer using the name.
    */
@@ -51,7 +51,7 @@ export const color = {
 
   /**
    * Storybook background for Text stories, or any stories where
-   * the text color is color.text, which is white by default, and does not show
+   * the text color is colors.text, which is white by default, and does not show
    * in Stories against the default white background
    */
   storybookDarkBg: palette.black,

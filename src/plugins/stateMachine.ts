@@ -40,7 +40,9 @@ export default class Plugin implements BoilerplatePlugin {
   postPackageInstall = async () => null
 
   getTemplates = () => {
-    return [{ template: "app/state/index.ts.ejs", target: "app/state/index.ts" }]
+    return [
+      { template: "app/state/tether.ts.ejs", target: "app/state/tether.ts" }
+    ]
   }
 
   selectFromUserInteraction = async () => {
