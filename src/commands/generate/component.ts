@@ -46,12 +46,12 @@ export const run = async function(toolbox: GluegunToolbox) {
 
   const jobs = [
     {
-      template: "nativebase.story.tsx.ejs",
-      target: `app/components/${kebabCaseName}/${kebabCaseName}.story.tsx`,
+      template: "component/nativebase.story.tsx.ejs",
+      target: `app/components/${pascalName}/${pascalName}.story.tsx`,
     },
     {
-      template: "nativebase.tsx.ejs",
-      target: `app/components/${kebabCaseName}/${kebabCaseName}.tsx`,
+      template: "component/nativebase.tsx.ejs",
+      target: `app/components/${pascalName}/index.tsx`,
     },
   ]
 
