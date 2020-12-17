@@ -1,6 +1,6 @@
 # Contributing to Ignite CLI
 
-We welcome all contributors to Ignite Bowser! This contributing guide will help you get up and running to submit your first pull request.
+We welcome all contributors to Ignite Hydrogen! This contributing guide will help you get up and running to submit your first pull request.
 
 Before submitting a pull request, you will want to make sure that your branch meets the following requirements:
 

@@ -134,7 +134,7 @@ describe("Generate Screen", () => {
       const content = filesystem.read("app/screens/Example/index.tsx")
       expect(content).not.toContain("ViewStyle")
       expect(content).not.toContain("import { ViewStyle } from 'react-native'")
-      expect(content).not.toContain("import { color } from '../../theme'")
+      expect(content).not.toContain("import { colors } from '../../theme'")
     })
     describe("user selected Navigation insertions", () => {
       it("does not add to Primary or Drawer", async () => {

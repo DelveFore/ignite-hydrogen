@@ -2,7 +2,7 @@ import { codeStyleCleanUp, generateBoilerplate } from "../../lib/boilerplate"
 import { IgniteToolbox, BoilerplateProps, BoilerplateToolbox } from "../../types"
 import { read } from "fs-jetpack"
 import Plugins from "../../plugins"
-import ProjectInfo, { getDepVersion } from "../../lib/ProjectInfo"
+import { getDepVersion } from "../../lib/ProjectInfo"
 
 export const description = "Generates directly from the Boilerplate overwrites existing files."
 export const run = async (toolbox: IgniteToolbox) => {
@@ -46,8 +46,8 @@ export const run = async (toolbox: IgniteToolbox) => {
     i18n: false,
     includeDetox: !!packageJson.dependencies.detox,
     useExpo: !!packageJson.dependencies.expo,
-    useStateMachineMST: ProjectInfo.hasMST(),
-    useNativeBase: ProjectInfo.hasNativeBase(),
+    useStateMachineMST: plugins.isMSTSelected(),
+    useNativeBase: plugins.isNativeBaseSelected(),
   }
   await generateBoilerplate(boilerplateToolbox, props, `${__dirname}/../../../`, plugins)
   spinner.stop()

@@ -14,7 +14,7 @@ Currently includes:
 
 ## Quick Start
 
-The Ignite Bowser boilerplate project's structure will look similar to this:
+The Ignite Hydrogen boilerplate project's structure will look similar to this:
 
 ```
 ignite-project

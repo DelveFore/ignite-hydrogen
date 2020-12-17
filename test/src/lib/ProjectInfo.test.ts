@@ -95,5 +95,69 @@ describe("ProjectInfo", () => {
       fsMock.use(vol)
       expect(ProjectInfo.hasNativeBase()).toEqual(false)
     })
+    it("returns true when Paper and NativeBase exist", () => {
+      const vol = Volume.fromJSON(
+        {
+          "package.json": `{
+            "dependencies": {
+              "native-base": "^2.13.12",
+              "react-native-paper": "^4.20.0"
+            }
+          }`,
+        },
+        process.cwd(),
+      )
+      const fsMock: any = fs
+      fsMock.use(vol)
+      expect(ProjectInfo.hasNativeBase()).toEqual(true)
+    })
+  })
+  describe("hasReactNativePaper", () => {
+    it("returns true when just Paper", () => {
+      const vol = Volume.fromJSON(
+        {
+          "package.json": `{
+            "dependencies": {
+              "react-native-paper": "^4.20.0"
+            }
+          }`,
+        },
+        process.cwd(),
+      )
+      const fsMock: any = fs
+      fsMock.use(vol)
+      expect(ProjectInfo.hasReactNativePaper()).toEqual(true)
+    })
+    it("returns false", () => {
+      const vol = Volume.fromJSON(
+        {
+          "package.json": `{
+            "dependencies": {
+              "native-base": "^2.13.12"
+            }
+          }`,
+        },
+        process.cwd(),
+      )
+      const fsMock: any = fs
+      fsMock.use(vol)
+      expect(ProjectInfo.hasReactNativePaper()).toEqual(false)
+    })
+    it("returns true when Paper and NativeBase exist", () => {
+      const vol = Volume.fromJSON(
+        {
+          "package.json": `{
+            "dependencies": {
+              "native-base": "^2.13.12",
+              "react-native-paper": "^4.20.0"
+            }
+          }`,
+        },
+        process.cwd(),
+      )
+      const fsMock: any = fs
+      fsMock.use(vol)
+      expect(ProjectInfo.hasReactNativePaper()).toEqual(true)
+    })
   })
 })

@@ -1,0 +1,6 @@
+<% if (props.useNativeBase) { -%>
+import _addThemeContext from './nativeBase/addThemeContext'
+<% } else { -%>
+import _addThemeContext from './paper/addThemeContext'
+<% } -%>
+export const addThemeContext = _addThemeContext

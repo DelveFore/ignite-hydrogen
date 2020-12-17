@@ -6,6 +6,8 @@ module.exports = {
     "<rootDir>/src/**/*.test.{js,ts}",
     "<rootDir>/test/**/*.test.{js,ts}",
     "<rootDir>/boilerplate/app/state/**/*.test.{js,ts}",
+    "<rootDir>/boilerplate/app/theme/**/*.test.{js,ts}",
+    "<rootDir>/boilerplate/app/theming/**/*.test.{js,ts}",
   ],
   collectCoverageFrom: [
     "src/**/*.{ts,tsx,js,jsx}",
@@ -17,6 +19,7 @@ module.exports = {
   testEnvironment: "node",
   transform: {
     "^.+\\.ts$": "ts-jest",
+    "^.+\\.tsx$": "ts-jest",
   },
   coverageThreshold: {
     global: {
