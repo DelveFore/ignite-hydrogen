@@ -1,5 +1,6 @@
-# Ignite Hydrogen
+**PLEASE NOTE** We are evaluating the changes to Ignite v6 and the removal of Plugins and Third-party support for Boilerplate Templates. To read more on the their decision please see [Jamon Holmgren's post](https://shift.infinite.red/introducing-ignite-4-0-flame-1dfc891f9966)
 
+# Ignite Hydrogen
 > This project is still in early development. We do encourage participation and feel free to open Github Issues.
 
 Extending from fantastic and hotest React Native boilerplate [Ignite Red's Bower](https://github.com/infinitered/ignit-bower), the Ignite Hydrogen project is aimed at easily implementing principles and concepts from DelveFore to a specific purpose (more to come soon!).
