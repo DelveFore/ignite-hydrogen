@@ -1,5 +1,6 @@
-# Ignite Hydrogen
+**PLEASE NOTE** We are evaluating the changes to Ignite v6 and the removal of Boilerplate Templates
 
+# Ignite Hydrogen
 > This project is still in early development. We do encourage participation and feel free to open Github Issues.
 
 Extending from fantastic and hotest React Native boilerplate [Ignite Red's Bower](https://github.com/infinitered/ignit-bower), the Ignite Hydrogen project is aimed at easily implementing principles and concepts from DelveFore to a specific purpose (more to come soon!).
