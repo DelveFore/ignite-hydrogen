@@ -1,4 +1,4 @@
-**PLEASE NOTE** We are evaluating the changes to Ignite v6 and the removal of Boilerplate Templates
+**PLEASE NOTE** We are evaluating the changes to Ignite v6 and the removal of Plugins and Third-party support for Boilerplate Templates. To read more on the their decision please see [Jamon Holmgren's post](https://shift.infinite.red/introducing-ignite-4-0-flame-1dfc891f9966)
 
 # Ignite Hydrogen
 > This project is still in early development. We do encourage participation and feel free to open Github Issues.
