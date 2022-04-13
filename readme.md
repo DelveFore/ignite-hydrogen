@@ -1,6 +1,11 @@
 # Ignite Hydrogen
 
-> This project is still in early development. We do encourage participation and feel free to open Github Issues.
+
+> This product is deprecated due to Ignite Red no longer supporting other tooling like this one. Instead this project will reform into using the underlining tools from Ignite Red (e.g. Gluegun)
+
+
+
+--- 
 
 Extending from fantastic and hotest React Native boilerplate [Ignite Red's Bower](https://github.com/infinitered/ignit-bower), the Ignite Hydrogen project is aimed at easily implementing principles and concepts from DelveFore to a specific purpose (more to come soon!).
 
